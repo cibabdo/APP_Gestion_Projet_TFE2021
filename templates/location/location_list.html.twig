@@ -1,0 +1,18 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Pays</th>                 
+                <th style="text-align: center;">Code postal</th>      
+                <th style="text-align: center;">Localité</th>      
+            </tr>
+        </thead>
+        <tbody>           
+            {% for location in locations %}             
+                <tr class="choice" onclick="document.location.href='{{path("location_edit",{id:location.id})}}';">
+                    <td style="text-align: center;">{{location.country}}</td>
+                    <td style="text-align: center;">{{location.zipcode}}</td>
+                    <td style="text-align: center;">{{location.location}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>   

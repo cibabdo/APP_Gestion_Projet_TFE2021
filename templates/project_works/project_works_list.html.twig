@@ -1,0 +1,22 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Poste</th>                 
+                <th style="text-align: center;">Entreprise</th>                 
+                <th style="text-align: center;">Date réception provisoire</th> 
+                <th style="text-align: center;">Date réception définitive</th> 
+                <th style="text-align: center;">Date réception vinçotte</th>                 
+            </tr>
+        </thead>
+        <tbody>                    
+            {% for work in works %}             
+                <tr class="choice" onclick="document.location.href='{{path("project_works_edit",{projectId:projectId, workId:work.id})}}';">
+                    <td style="text-align: center;">{{work.work.name}}</td>                    
+                    <td style="text-align: center;">{{work.company.name}}</td>                   
+                    <td style="text-align: center;">{% if work.provisionalReceptionDate is not empty %}{{work.provisionalReceptionDate|date("d/m/Y")}}{% endif %}</td>  
+                    <td style="text-align: center;">{% if work.finalDeliveryDate is not empty %}{{work.finalDeliveryDate|date("d/m/Y")}}{% endif %}</td>                  
+                    <td style="text-align: center;">{% if work.vincotteReceptionDate is not empty %}{{work.vincotteReceptionDate|date("d/m/Y")}}{% endif %}</td>
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>   

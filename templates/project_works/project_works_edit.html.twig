@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row mt-5">
+    <div class="col">
+        {{ form_start(form, {'attr' : {'autocomplete' : 'off'}}) }}
+        <h2 class="text-center">Projet {{name}}</h2> 
+
+        <div class="mb-3">
+            {{ form_label(form.company, 'Entreprise', {'label_attr': { class: 'form-label' }}) }}
+            {% if form_errors(form.company) %}            
+                <div class="form-error text-danger">
+                    <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.company) }}
+                </div>            
+            {% endif %}
+            {{ form_widget(form.company, {'attr': {'class': 'form-control'}}) }}    
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.work, 'Poste', {'label_attr': { class: 'form-label' }}) }}
+            {% if form_errors(form.work) %}            
+                <div class="form-error text-danger">
+                    <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.work) }}
+                </div>            
+            {% endif %}
+            {{ form_widget(form.work, {'attr': {'class': 'form-control'}}) }}    
+        </div>
+        
+        <div class="mb-3">
+            {{ form_label(form.comment, 'Commentaire', {'label_attr': { class: 'form-label' }}) }}
+            {% if form_errors(form.comment) %}            
+                <div class="form-error text-danger">
+                    <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.comment) }}
+                </div>            
+            {% endif %}
+            {{ form_widget(form.comment, {'attr': {'class': 'form-control'}}) }}    
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Documents</label>
+            {% if documents|length > 0 %}
+                {% for document in documents %}       
+                    <div class="card m-2" style="width: 18rem;">
+                        <div class="card-img-top"></div>
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-file-earmark"></i> {{document.filename}}</h5>
+                            <p class="card-text">{{document.comment}}</p>
+                            <a href="{{path('document_view',{id:projectId, documentId:document.id})}}" class="btn btn-primary btn-sm view">Voir</a>
+                            <a href="{{path('document_delete',{id:projectId, documentId:document.id})}}" class="btn btn-danger btn-sm delete">Supprimer</a>
+                        </div>
+                    </div>
+                {% endfor %}    
+            {% else %}
+                <p><i>Pas de documents...</i></p>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <!--<div>{{ form_label(form.documents, 'Uploader des documents', {'label_attr': { class: 'form-label' }}) }}</div>-->
+            {% if form_errors(form.documents) %}            
+                <div class="form-error text-danger">
+                    <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.documents) }}
+                </div>            
+            {% endif %}
+            {{ form_widget(form.documents, {'attr': {'class': 'form-control-file'}}) }}    
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.provisionalReceptionDate, 'Date réception provisoire', {'label_attr': { class: 'form-label' }}) }}
+            {% if form_errors(form.provisionalReceptionDate) %}            
+                <div class="form-error text-danger">
+                    <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.provisionalReceptionDate) }}
+                </div>            
+            {% endif %}
+            {{ form_widget(form.provisionalReceptionDate, {'attr': {'class': 'form-control'}}) }}    
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.finalDeliveryDate, 'Date réception définitive', {'label_attr': { class: 'form-label' }}) }}
+            {% if form_errors(form.finalDeliveryDate) %}            
+                <div class="form-error text-danger">
+                    <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.finalDeliveryDate) }}
+                </div>            
+            {% endif %}
+            {{ form_widget(form.finalDeliveryDate, {'attr': {'class': 'form-control'}}) }}    
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.vincotteReceptionDate, 'Date réception vinçotte', {'label_attr': { class: 'form-label' }}) }}
+            {% if form_errors(form.vincotteReceptionDate) %}            
+                <div class="form-error text-danger">
+                    <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.vincotteReceptionDate) }}
+                </div>            
+            {% endif %}
+            {{ form_widget(form.vincotteReceptionDate, {'attr': {'class': 'form-control'}}) }}    
+        </div>
+
+        <div class="my-2">
+            <button type="submit" class="btn btn-primary">Ok</button>     
+            {% if form.vars.value.id %}           
+                <a href="#" class="btn btn-danger ml-3" onClick="deleteProject()">Supprimer</a>                   
+            {% endif %}
+            <a href="{{path('project_edit',{id:projectId,onglet:'work'})}}" class="btn btn-secondary ml-3">Retour</a>                
+        </div>      
+                  
+        {{ form_end(form) }}
+    </div>    
+</div>
+<script>
+    document.getElementById("project_work_comment").focus()    
+
+    function deleteProject() {
+        if (confirm('Confirmer la suppression ?')) {                    
+            $.ajax({
+                url: '{{path("project_works_delete",{projectId:projectId, workId:workId})}}',
+                type: 'DELETE',
+                dataType: 'text',
+                success: function (result) {                    
+                    document.location.href = '{{path("project_edit",{id:projectId, onglet:"work"})}}?message=Poste supprimé'
+                },
+                error: function(jqXHR, textStatus, errorThrown ) {
+                    console.log(jqXHR, textStatus, errorThrown)
+                    alert('Erreur lors de la suppression')                    
+                }
+            })            
+        }        
+    }  
+
+    $('.view').on('click', function() {
+        window.open($(this).attr('href'));
+        return false;
+    })
+
+    $('.delete').on('click', function() {
+        const url = $(this).attr('href');
+        const $obj = $(this);
+        if (confirm('Confirmer la suppression ?')) {                    
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                dataType: 'text',
+                success: function (result) {         
+                    console.log('ici', $(this).parent().parent());
+                    $obj.parent().parent().remove();
+                },
+                error: function(jqXHR, textStatus, errorThrown ) {
+                    console.log(jqXHR, textStatus, errorThrown)
+                    alert('Erreur lors de la suppression')                    
+                }
+            })            
+        }  
+        return false;
+    })
+</script>
+{% endblock %}

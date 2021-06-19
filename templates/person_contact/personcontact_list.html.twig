@@ -1,0 +1,25 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Nom</th> 
+                <th style="text-align: center;">Fonction</th> 
+                <th style="text-align: center;">Entreprise</th> 
+                <th style="text-align: center;">Bureau d'étude</th>                 
+                <th style="text-align: center;">Téléphone</th>   
+                <th style="text-align: center;">Email</th>   
+            </tr>
+        </thead>
+        <tbody>           
+            {% set role = ["", "Architecte", "Ingénieur", "Coordinateur"] %}
+            {% for personcontact in personcontacts %}             
+                <tr class="choice" onclick="document.location.href='{{path("personcontact_edit",{id:personcontact.id})}}';">
+                    <td style="text-align: center;">{{personcontact.firstname}} {{personcontact.lastname}}</td>
+                    <td style="text-align: center;">{{role[personcontact.role]}}</td>
+                    <td style="text-align: center;">{{personcontact.company.name | default('')}}</td>
+                    <td style="text-align: center;">{{personcontact.engineeringoffice.name | default('')}}</td>
+                    <td style="text-align: center;">{{personcontact.phone}}</td>
+                    <td style="text-align: center;">{{personcontact.email}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>          
+    </table>   

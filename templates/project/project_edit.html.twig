@@ -1,0 +1,347 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row mt-5">
+    <div class="col">
+        {{ form_start(form, {'attr' : {'autocomplete' : 'off'}}) }}
+            {% for message in app.flashes('message') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}              
+                </div>
+            {% endfor %}
+            <h1 class="text-center">Projet {{name}}</h1> 
+            
+            <ul id="tab_project" class="nav nav-tabs justify-content-center mb-3">
+                <li class="nav-item">
+                  <a class="nav-link active" data-id="tab_datas" href="#">Données</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-id="tab_persons" href="#">Intervenants</a>
+                </li>  
+                <li class="nav-item">
+                    <a class="nav-link {% if form.vars.value.id is null %} disabled {% endif %}" data-id="work" href="{{path('project_works_list',{projectId:id})}}">Travaux</a>
+                </li>   
+                <li class="nav-item">
+                    <a class="nav-link {% if form.vars.value.id is null %} disabled {% endif %}"  data-id="planning" href="{{path('planning_list',{id:id})}}">Planning</a>
+                </li> 
+                <li class="nav-item">
+                    <a class="nav-link {% if form.vars.value.id is null %} disabled {% endif %}" data-id="document" href="{{path('document_list',{id:id})}}">Documents</a>
+                </li>   
+                <li class="nav-item">
+                    <a class="nav-link {% if form.vars.value.id is null %} disabled {% endif %}"  data-id="comment" href="{{path('project_comments',{id:id})}}">Commentaires</a>
+                </li>                         
+            </ul>
+
+            <div id="tab_datas" class="tab_body tab_active">
+                <div class="mb-3">
+                    {{ form_label(form.site, 'Site', {'label_attr': { class: 'form-label' }}) }}
+                    {% if form_errors(form.site) %}            
+                        <div class="form-error text-danger">
+                            <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.site) }}
+                        </div>            
+                    {% endif %}
+                    {{ form_widget(form.site, {'attr': {'class': 'form-control'}}) }}    
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.title, 'Nom du projet', {'label_attr': { class: 'form-label' }}) }}
+                    {% if form_errors(form.title) %}            
+                        <div class="form-error text-danger">
+                            <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.title) }}
+                        </div>            
+                    {% endif %}
+                    {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}    
+                </div>  
+                
+                <div class="mb-3">
+                    {{ form_label(form.reference, 'Référence du projet', {'label_attr': { class: 'form-label' }}) }}
+                    {% if form_errors(form.reference) %}            
+                        <div class="form-error text-danger">
+                            <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.reference) }}
+                        </div>            
+                    {% endif %}
+                    {{ form_widget(form.reference, {'attr': {'class': 'form-control'}}) }}    
+                </div>           
+
+                <div class="mb-3">
+                    {{ form_label(form.year, 'Année du projet', {'label_attr': { class: 'form-label' }}) }}
+                    {% if form_errors(form.year) %}            
+                        <div class="form-error text-danger">
+                            <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.year) }}
+                        </div>            
+                    {% endif %}
+                    {{ form_widget(form.year, {'attr': {'class': 'form-control'}}) }}    
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.description, 'Description du projet', {'label_attr': { class: 'form-label' }}) }}
+                    {% if form_errors(form.description) %}            
+                        <div class="form-error text-danger">
+                            <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.description) }}
+                        </div>            
+                    {% endif %}
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}    
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.workStartDate, 'Début du projet', {'label_attr': { class: 'form-label' }}) }}
+                    {% if form_errors(form.workStartDate) %}            
+                        <div class="form-error text-danger">
+                            <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.workStartDate) }}
+                        </div>            
+                    {% endif %}
+                    {{ form_widget(form.workStartDate, {'attr': {'class': 'form-control'}}) }}    
+
+                    {{ form_label(form.startSituation, 'Etat des lieux', {'label_attr': { class: 'form-label' }}) }}
+                    {% if form_errors(form.startSituation) %}            
+                        <div class="form-error text-danger">
+                            <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.startSituation) }}
+                        </div>            
+                    {% endif %}
+                    {{ form_widget(form.startSituation) }}  
+                </div>  
+
+                <div class="mb-3">
+                    
+                    {{ form_label(form.workEndDate, 'Fin du projet', {'label_attr': { class: 'form-label' }}) }}
+                    {% if form_errors(form.workEndDate) %}                            
+                        <div class="form-error text-danger">
+                            <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.workEndDate) }}
+                        </div>     
+                    {% endif %}
+                    {{ form_widget(form.workEndDate, {'attr': {'class': 'form-control'}}) }}    
+                
+                    {{ form_label(form.endSituation, 'Etat des lieux', {'label_attr': { class: 'form-label' }}) }}
+                    {% if form_errors(form.endSituation) %}                            
+                        <div class="form-error text-danger">
+                            <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.endSituation) }}
+                        </div>
+                    {% endif %}
+                    {{ form_widget(form.endSituation) }}  
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.state, 'Statut du projet', {'label_attr': { class: 'form-label' }}) }}
+                    {% if form_errors(form.state) %}            
+                        <div class="form-error text-danger">
+                            <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.state) }}
+                        </div>            
+                    {% endif %}
+                    {{ form_widget(form.state, {'attr': {'class': 'form-control'}}) }}    
+                </div>
+            </div>
+
+            <div id="tab_persons" class="tab_body">
+
+                <div class="mb-3">
+                    {{ form_label(form.company, 'Entreprises', {'label_attr': { class: 'form-label' }}) }}
+                    {% if form_errors(form.company) %}            
+                        <div class="form-error text-danger">
+                            <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.company) }}
+                        </div>            
+                    {% endif %}
+                    {{ form_widget(form.company, {'attr': {'class': 'form-control select2', 'style':'width:200px;'}}) }}    
+                </div>
+
+                <fieldset class="form-group">
+                    <legend>Personnes internes</legend>
+                    <div class="mb-3">
+                        {{ form_label(form.architect, 'Architecte', {'label_attr': { class: 'form-label' }}) }}
+                        {% if form_errors(form.architect) %}            
+                            <div class="form-error text-danger">
+                                <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.architect) }}
+                            </div>            
+                        {% endif %}
+                        {{ form_widget(form.architect, {'attr': {'class': 'form-control'}}) }}    
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.secondArchitect, 'Architecte en second', {'label_attr': { class: 'form-label' }}) }}
+                        {% if form_errors(form.secondArchitect) %}            
+                            <div class="form-error text-danger">
+                                <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.secondArchitect) }}
+                            </div>            
+                        {% endif %}
+                        {{ form_widget(form.secondArchitect, {'attr': {'class': 'form-control'}}) }}    
+                    </div>                
+
+                    <div class="mb-3">
+                        {{ form_label(form.lowVoltageEngineer, 'Ingénieur Electricité Faible', {'label_attr': { class: 'form-label' }}) }}
+                        {% if form_errors(form.lowVoltageEngineer) %}            
+                            <div class="form-error text-danger">
+                                <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.lowVoltageEngineer) }}
+                            </div>            
+                        {% endif %}
+                        {{ form_widget(form.lowVoltageEngineer, {'attr': {'class': 'form-control'}}) }}    
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.strongVoltageEngineer, 'Ingénieur Electricité Fort', {'label_attr': { class: 'form-label' }}) }}
+                        {% if form_errors(form.strongVoltageEngineer) %}            
+                            <div class="form-error text-danger">
+                                <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.strongVoltageEngineer) }}
+                            </div>            
+                        {% endif %}
+                        {{ form_widget(form.strongVoltageEngineer, {'attr': {'class': 'form-control'}}) }}    
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.hvacEngineer, 'Ingénieur HVAC', {'label_attr': { class: 'form-label' }}) }}
+                        {% if form_errors(form.hvacEngineer) %}            
+                            <div class="form-error text-danger">
+                                <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.hvacEngineer) }}
+                            </div>            
+                        {% endif %}
+                        {{ form_widget(form.hvacEngineer, {'attr': {'class': 'form-control'}}) }}    
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.sanitaryEngineer, 'Ingénieur Sanitaires', {'label_attr': { class: 'form-label' }}) }}
+                        {% if form_errors(form.sanitaryEngineer) %}            
+                            <div class="form-error text-danger">
+                                <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.sanitaryEngineer) }}
+                            </div>            
+                        {% endif %}
+                        {{ form_widget(form.sanitaryEngineer, {'attr': {'class': 'form-control'}}) }}    
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.medicalFluidEngineer, 'Ingénieur Fluides médicaux', {'label_attr': { class: 'form-label' }}) }}
+                        {% if form_errors(form.medicalFluidEngineer) %}            
+                            <div class="form-error text-danger">
+                                <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.medicalFluidEngineer) }}
+                            </div>            
+                        {% endif %}
+                        {{ form_widget(form.medicalFluidEngineer, {'attr': {'class': 'form-control'}}) }}    
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.supervisor, 'Conducteur en charge', {'label_attr': { class: 'form-label' }}) }}
+                        {% if form_errors(form.supervisor) %}            
+                            <div class="form-error text-danger">
+                                <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.supervisor) }}
+                            </div>            
+                        {% endif %}
+                        {{ form_widget(form.supervisor, {'attr': {'class': 'form-control'}}) }}    
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <legend>Personnes externes</legend>
+                    <div class="mb-3">
+                        {{ form_label(form.externalArchitectureOffice, 'Architecte externe', {'label_attr': { class: 'form-label' }}) }}
+                        {% if form_errors(form.externalArchitectureOffice) %}            
+                            <div class="form-error text-danger">
+                                <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.externalArchitectureOffice) }}
+                            </div>            
+                        {% endif %}
+                        {{ form_widget(form.externalArchitectureOffice, {'attr': {'class': 'form-control'}}) }}    
+                    </div>  
+
+                    <div class="mb-3">
+                        {{ form_label(form.safetyCoordinator, 'Coordinateur sécurité externe', {'label_attr': { class: 'form-label' }}) }}
+                        {% if form_errors(form.safetyCoordinator) %}            
+                            <div class="form-error text-danger">
+                                <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.safetyCoordinator) }}
+                            </div>            
+                        {% endif %}
+                        {{ form_widget(form.safetyCoordinator, {'attr': {'class': 'form-control'}}) }}    
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.externalEngineer, 'Ingénieur externe', {'label_attr': { class: 'form-label' }}) }}
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_INTERNAL') %}
+                            {% if form.vars.value.externalEngineer is not null %}
+                                <a href="{{path('invitation', {id:id,personId:form.vars.value.externalEngineer.id})}}" class="btn btn-sm btn-info ml-3">Inviter</a>
+                            {% endif %}
+                        {% endif %}    
+                        {% if form_errors(form.externalEngineer) %}            
+                            <div class="form-error text-danger">
+                                <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.externalEngineer) }}
+                            </div>            
+                        {% endif %}
+                        {{ form_widget(form.externalEngineer, {'attr': {'class': 'form-control'}}) }}    
+                    </div>  
+                </fieldset>
+            </div>   
+            
+            <div id="tab_others" class="tab_body"></div>
+
+            <div id="buttons" class="my-2 show">
+                <button type="submit" class="btn btn-primary">Ok</button>     
+                {% if form.vars.value.id %}           
+                    <a href="#" class="btn btn-danger ml-3" onClick="deleteProject()">Supprimer</a>                   
+                {% endif %}
+                <a href="{{path('project_list')}}" class="btn btn-secondary ml-3">Retour</a>                
+            </div>      
+                  
+        {{ form_end(form) }}
+    </div>    
+</div>
+<script>
+    document.getElementById("project_title").focus()    
+
+    function deleteProject() {
+        if (confirm('Confirmer la suppression ?')) {                    
+            $.ajax({
+                url: '{{path("project_delete",{id:id})}}',
+                type: 'DELETE',
+                dataType: 'text',
+                success: function (result) {                    
+                    document.location.href = '{{path("project_list")}}?message=Projet supprimé'
+                },
+                error: function(jqXHR, textStatus, errorThrown ) {
+                    console.log(jqXHR, textStatus, errorThrown)
+                    alert('Erreur lors de la suppression')                    
+                }
+            })            
+        }        
+    }
+
+    $('#tab_project .nav-link').click(function() {           
+        const id = $(this).attr('data-id')
+        const href = $(this).attr('href')             
+        if (href != '#') {
+            $('#buttons').removeClass('show').addClass('hidden')
+            $.ajax({
+                url: href,
+                type: 'GET',
+                dataType: 'text',
+                async: false,
+                success: function (result) {                    
+                    $('#tab_others').html(result)
+                    $('.tab_body').removeClass('tab_active')            
+                    $('#tab_others').addClass('tab_active')
+                    return false;
+                },
+                error: function(jqXHR, textStatus, errorThrown ) {
+                    console.log(jqXHR, textStatus, errorThrown)
+                    alert('Erreur lors du chargement')                    
+                }
+            })            
+        }
+        else {            
+            $('#buttons').removeClass('hidden').addClass('show')
+            $('.tab_body').removeClass('tab_active')            
+            $('#'+id).addClass('tab_active')
+        }
+        $(this).addClass('active')
+        $('#tab_project .nav-link').removeClass('active')    
+        return false;    
+    })
+
+    const onglet = '{{onglet}}';
+    if (onglet != '') {      
+        const obj = $('a[data-id="'+onglet+'"]')       
+        obj.parent().addClass('active')
+        obj.trigger('click')
+    }
+
+    $('.select2').select2()
+</script>
+{% endblock %}

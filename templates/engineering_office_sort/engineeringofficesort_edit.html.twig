@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col">
+        {{ form_start(form, {'attr' : {'autocomplete' : 'off'}}) }}
+            <h1 class="text-center">Type de bureau</h1>
+            <div class="mb-3">
+                {{ form_label(form.name, 'Nom du type', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.name) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.name) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}    
+            </div>    
+            <div class="my-2">
+                <button type="submit" class="btn btn-primary">Ok</button>     
+                {% if form.vars.value.id %}           
+                    <a href="#" class="btn btn-danger ml-3" onClick="deleteEngineeringofficesort()">Supprimer</a>
+                {% endif %}
+                <a href="{{path('engineeringofficesort_list')}}" class="btn btn-secondary ml-3">Retour</a>
+            </div>            
+        {{ form_end(form) }}
+    </div>    
+</div>
+<script>
+    document.getElementById("engineering_office_sort_name").focus()    
+
+    function deleteEngineeringofficesort() {
+        if (confirm('Confirmer la suppression ?')) {                    
+            $.ajax({
+                url: '{{path("engineeringofficesort_delete",{id:id})}}',
+                type: 'DELETE',
+                dataType: 'text',
+                success: function (result) {                    
+                    document.location.href = '{{path("engineeringofficesort_list")}}?message=Type de bureau supprimé'
+                },
+                error: function(jqXHR, textStatus, errorThrown ) {
+                    console.log(jqXHR, textStatus, errorThrown)
+                    alert('Erreur lors de la suppression')                    
+                }
+            })            
+        }        
+    }
+</script>
+{% endblock %}

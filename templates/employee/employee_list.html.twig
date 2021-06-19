@@ -1,0 +1,22 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Nom</th> 
+                <th style="text-align: center;">Département</th> 
+                <th style="text-align: center;">Fonction</th>   
+                <th style="text-align: center;">Téléphone</th>   
+                <th style="text-align: center;">Email</th>   
+            </tr>
+        </thead>
+        <tbody>           
+            {% for employee in employees %}             
+                <tr class="choice" onclick="document.location.href='{{path("employee_edit",{id:employee.id})}}';">
+                    <td style="text-align: center;">{{employee.firstname}} {{employee.lastname}}</td>
+                    <td style="text-align: center;">{{employee.department.name}}</td>
+                    <td style="text-align: center;">{{employee.role.name}}</td>                    
+                    <td style="text-align: center;">{{employee.phone}}</td>
+                    <td style="text-align: center;">{{employee.email}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>          
+    </table>   

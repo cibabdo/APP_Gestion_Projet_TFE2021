@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col text-center">
+        {% for message in app.flashes('message') %}
+            <div class="alert alert-success alert-dismissible fade show" user="alert">
+                {{ message }}              
+            </div>
+        {% endfor %}        
+        {{ form_start(form, {'attr' : {'autocomplete' : 'off'}}) }}
+            <h1 class="text-center">Requêtes</h1>
+            <div class="mb-3">
+                {{ form_label(form.state, 'Etat projets', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.state) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.state) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.state, {'attr': {'class': 'form-control'}}) }}                    
+            </div>  
+        {{ form_end(form) }}    
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div id="result" class="d-flex flex-row  justify-content-center" style="flex-wrap: wrap;">
+            ...
+        </div> 
+    </div>
+</div>
+<script>
+    setTimeout(function() {
+        const tab = document.getElementsByClassName('alert')    
+        if (tab.length) tab[0].remove()
+    },3000)    
+
+    $('#request_state').on('change', function() {
+        console.log('ici')
+        const state = $(this).val();        
+        $.ajax({
+            url: '{{path("request_search")}}',
+            data: 'state='+state,
+            type: 'GET',
+            dataType: 'text',
+            success: function (result) {                    
+                $('#result').html(result)
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur lors de la recherche')                    
+            }
+        })       
+    })
+
+    $('#request_state').trigger('change')  
+</script>
+{% endblock %}
+

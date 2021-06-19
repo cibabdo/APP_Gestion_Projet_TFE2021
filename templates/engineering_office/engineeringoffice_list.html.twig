@@ -1,0 +1,22 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Désignation</th> 
+                <th style="text-align: center;">Type</th> 
+                <th style="text-align: center;">Localité</th>   
+                <th style="text-align: center;">Téléphone</th>   
+                <th style="text-align: center;">Email</th>   
+            </tr>
+        </thead>
+        <tbody>           
+            {% for engineeringoffice in engineeringoffices %}             
+                <tr class="choice" onclick="document.location.href='{{path("engineeringoffice_edit",{id:engineeringoffice.id})}}';">
+                    <td style="text-align: center;">{{engineeringoffice.name}}</td>
+                    <td style="text-align: center;">{{engineeringoffice.sort.name}}</td>
+                    <td style="text-align: center;">{{engineeringoffice.location}}</td>                    
+                    <td style="text-align: center;">{{engineeringoffice.phone}}</td>
+                    <td style="text-align: center;">{{engineeringoffice.email}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>   

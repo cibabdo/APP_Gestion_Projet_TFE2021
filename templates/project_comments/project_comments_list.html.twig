@@ -1,0 +1,18 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;" width="15%">Date</th>                 
+                <th style="text-align: center;" width="25%">Personne</th>                 
+                <th style="text-align: center;" width="60%">Commentaire</th>                 
+            </tr>
+        </thead>
+        <tbody>                       
+            {% for comment in comments %}             
+                <tr class="choice" onclick="document.location.href='{{path("project_comment_edit",{id:comment.project.Id, commentId:comment.id})}}';">
+                    <td style="text-align: center;">{{comment.date|date("d/m/Y")}}</td>                    
+                    <td style="text-align: center;">Luigi</td>
+                    <td style="text-align: center;">{{comment.comment}}</td>                    
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>   

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col text-center">
+        <h2>Invitation pour le projet {{name}}</h2>
+        <h3>pour Monsieur {{person}}</h3>
+        <p>{{email}}</p>
+        {{ form_start(form, {'attr' : {'autocomplete' : 'off'}}) }}
+            <div id="buttons" class="my-2">
+                <button type="submit" class="btn btn-primary">Confirmer</button>
+                <a href="{{path('project_edit', {id:id})}}" class="btn btn-secondary ml-3">Retour sur le projet</a>                
+            </div>    
+        {{ form_end(form) }}         
+    </div>
+</div>
+<script>
+</script>
+{% endblock %}
+

@@ -1,0 +1,14 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Désignation</th>                 
+            </tr>
+        </thead>
+        <tbody>           
+            {% for engineeringofficesort in engineeringofficesorts %}             
+                <tr class="choice" onclick="document.location.href='{{path("engineeringofficesort_edit",{id:engineeringofficesort.id})}}';">
+                    <td style="text-align: center;">{{engineeringofficesort.name}}</td>                    
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>   

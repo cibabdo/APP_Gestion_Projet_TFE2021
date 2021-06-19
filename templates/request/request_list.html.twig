@@ -1,0 +1,29 @@
+ {% if projects|length > 0 %}   
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Désignation</th>                 
+                <th style="text-align: center;">Référence</th>                 
+                <th style="text-align: center;">Année</th> 
+                <th style="text-align: center;">Début</th> 
+                <th style="text-align: center;">Fin</th> 
+                <th style="text-align: center;">Statut</th> 
+            </tr>
+        </thead>
+        <tbody>           
+            {% set state = ["Pas commencé", "Etude", "En cours", "Clôturé", "Stand By", "Reporté"] %}
+            {% for project in projects %}             
+                <tr class="choice" onclick="document.location.href='{{path("project_edit",{id:project.id})}}';">
+                    <td style="text-align: center;">{{project.title}}</td>                    
+                    <td style="text-align: center;">{{project.reference}}</td>  
+                    <td style="text-align: center;">{{project.year}}</td>  
+                    <td style="text-align: center;">{{project.workStartDate|date("d/m/Y")}}</td>  
+                    <td style="text-align: center;">{{project.workEndDate|date("d/m/Y")}}</td>
+                    <td style="text-align: center;">{{state[project.state]}}</td>  
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>   
+{% else %}
+    Pas de résulat par rapport à votre recherche
+{% endif %}

@@ -1,0 +1,14 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Désignation</th>                 
+            </tr>
+        </thead>
+        <tbody>           
+            {% for site in sites %}             
+                <tr class="choice" onclick="document.location.href='{{path("site_edit",{id:site.id})}}';">
+                    <td style="text-align: center;">{{site.name}}</td>                    
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>   

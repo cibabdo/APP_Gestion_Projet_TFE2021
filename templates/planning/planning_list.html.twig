@@ -1,0 +1,22 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Tâche</th>                                 
+                <th style="text-align: center;">Début</th>                                 
+                <th style="text-align: center;">Fin</th>                                 
+                <th style="text-align: center;">Effecutée %</th>                                 
+                <th style="text-align: center;">Couleur</th>                
+            </tr>
+        </thead>
+        <tbody>           
+            {% for planning in plannings %}             
+                <tr class="choice" onclick="document.location.href='{{path("planning_edit",{id:planning.id})}}';">
+                    <td style="text-align: center;">{{planning.name}}</td>                    
+                    <td style="text-align: center;">{{planning.start}}</td>
+                    <td style="text-align: center;">{{planning.end}}</td>
+                    <td style="text-align: center;">{{planning.percent_done}}</td>
+                    <td style="text-align: center;">{{planning.color}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>   

@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col">
+        {{ form_start(form, {'attr' : {'autocomplete' : 'off'}}) }}
+            <h1 class="text-center">Tâche planning</h1>
+            <div class="mb-3">
+                {{ form_label(form.name, 'Nom de la tâche', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.name) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.name) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}    
+            </div>  
+            
+            <div class="mb-3">                    
+                {{ form_label(form.dependency, 'Dépend de la tâche', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.dependency) %}                            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.dependency) }}
+                    </div>     
+                {% endif %}
+                {{ form_widget(form.dependency, {'attr': {'class': 'form-control'}}) }}    
+            </div>
+
+            <div class="mb-3">                    
+                {{ form_label(form.startDate, 'Début', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.startDate) %}                            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.startDate) }}
+                    </div>     
+                {% endif %}
+                {{ form_widget(form.startDate, {'attr': {'class': 'form-control'}}) }}    
+            </div>    
+
+            <div class="mb-3">                    
+                {{ form_label(form.endDate, 'Fin', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.endDate) %}                            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.endDate) }}
+                    </div>     
+                {% endif %}
+                {{ form_widget(form.endDate, {'attr': {'class': 'form-control'}}) }}    
+            </div>    
+
+            <div class="mb-3">                    
+                {{ form_label(form.percentDone, 'Pourcentage effecutée', {'label_attr': { class: 'form-label' }}) }} : <span id="val">{{percentDone}} %</span>
+                {% if form_errors(form.percentDone) %}                            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.percentDone) }}
+                    </div>     
+                {% endif %}
+                {{ form_widget(form.percentDone, {'attr': {'class': 'form-control'}}) }}    
+            </div>    
+
+            <div class="mb-3">                    
+                {{ form_label(form.color, 'Couleur', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.color) %}                            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.color) }}
+                    </div>     
+                {% endif %}
+                {{ form_widget(form.color, {'attr': {'class': 'form-control'}}) }}    
+            </div>    
+
+            <div class="my-2">
+                <button type="submit" class="btn btn-primary">Ok</button>     
+                {% if form.vars.value.id %}           
+                    <a href="#" class="btn btn-danger ml-3" onClick="deletePlanning()">Supprimer</a>
+                {% endif %}
+                <a href="{{path('project_edit', {id:projectId, onglet:'planning'})}}" class="btn btn-secondary ml-3">Retour</a>
+            </div>            
+        {{ form_end(form) }}
+    </div>    
+</div>
+<script>
+    document.getElementById("planning_name").focus()  
+    
+    $('#planning_percentDone').on('input', function () {
+        const val = $(this).val()
+        $('#val').html(val + ' %')
+    })
+
+    function deletePlanning() {
+        if (confirm('Confirmer la suppression ?')) {                    
+            $.ajax({
+                url: '{{path("planning_delete",{id:projectId, taskId:id})}}',
+                type: 'DELETE',
+                dataType: 'text',
+                success: function (result) {                    
+                    document.location.href = '{{path("planning_list", {id:projectId})}}?message=Tâche supprimée'
+                },
+                error: function(jqXHR, textStatus, errorThrown ) {
+                    console.log(jqXHR, textStatus, errorThrown)
+                    alert('Erreur lors de la suppression')                    
+                }
+            })            
+        }        
+    }
+</script>
+{% endblock %}

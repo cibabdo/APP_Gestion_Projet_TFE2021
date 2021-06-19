@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col text-center">
+        {% for message in app.flashes('message') %}
+            <div class="alert alert-success alert-dismissible fade show" user="alert">
+                {{ message }}              
+            </div>
+        {% endfor %}
+        <h2>Utilisateur</h2>
+        <div class="form-group inline">
+            <input type="text" class="form-control" id="search" value="" data-url="{{path('user_search')}}" data-target="#users" placeholder="Nom de l'utilisateur" autofocus>        
+        </div>   
+        &nbsp;<a href="{{path('user_new')}}" class="btn btn-primary btn-sm ml-5 add">Ajouter</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div id="users" class="d-flex flex-row  justify-content-center" style="flex-wrap: wrap;">
+            {% include ('user/user_list.html.twig') %}
+        </div> 
+    </div>
+</div>
+<script>
+    setTimeout(function() {
+        const tab = document.getElementsByClassName('alert')    
+        if (tab.length) tab[0].remove()
+    },3000)    
+
+    let timer_search;
+    $('#search').on('input', function(ev) {
+        if (timer_search) clearTimeout(timer_search)
+        const url = $(this).attr('data-url')  
+        const target = $(this).attr('data-target')  
+        const val = $(this).val()        
+        timer_search = setTimeout(function() {          
+            $.get(url + '?str='+val, function(data) {              
+                $(target).html(data)
+            })
+        }, 250)
+    })    
+</script>
+{% endblock %}
+

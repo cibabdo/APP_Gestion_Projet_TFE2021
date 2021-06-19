@@ -1,0 +1,50 @@
+<div class="row justify-content-center mt-5">
+    
+        {% if documents|length > 0 %}
+            {% for document in documents %}       
+                <div class="card m-2" style="width: 18rem;">
+                    <div class="card-img-top"></div>
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-file-earmark"></i> {{document.filename}}</h5>
+                        <p class="card-text">{{document.comment}}</p>
+                        {% if document.projectWork is not null %}
+                            <p class="card-text">{{document.projectWork.company.name}} - {{document.projectWork.work.name}}</p>
+                        {% endif %}
+                        <a href="{{path('document_view',{id:projectId, documentId:document.id})}}" class="btn btn-primary btn-sm view">Voir</a>
+                        <a href="{{path('document_delete',{id:projectId, documentId:document.id})}}" class="btn btn-danger btn-sm delete">Supprimer</a>
+                    </div>
+                </div>
+            {% endfor %}    
+        {% else %}
+            Pas de documents
+        {% endif %}
+   
+</div>
+<script>   
+
+    $('.view').on('click', function() {
+        window.open($(this).attr('href'));
+        return false;
+    })
+
+    $('.delete').on('click', function() {
+        const url = $(this).attr('href');
+        const $obj = $(this);
+        if (confirm('Confirmer la suppression ?')) {                    
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                dataType: 'text',
+                success: function (result) {         
+                    console.log('ici', $(this).parent().parent());
+                    $obj.parent().parent().remove();
+                },
+                error: function(jqXHR, textStatus, errorThrown ) {
+                    console.log(jqXHR, textStatus, errorThrown)
+                    alert('Erreur lors de la suppression')                    
+                }
+            })            
+        }  
+        return false;
+    })
+</script>

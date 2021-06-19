@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col text-center">
+        <h2>Statistiques</h2>                       
+        <span id='customer' class='span_choice'>Projets en cours</span>        
+    </div>
+</div>
+<div style="height: 1000px; width: 1000px;">     
+    <canvas id="myChart"></canvas>   
+</div>
+<script>
+    const ctx = document.getElementById('myChart');
+    let myChart = new Chart(ctx, {
+        type: '{{stat.type}}',        
+        data: {{stat.data|json_encode()}},
+        options: {{stat.options|json_encode()}}
+    })
+    
+    $('#year').on('change', function(e) {
+        const id = $('.span_choice_selected').attr('id')
+        $.get('/stat/search?id='+id+'&year='+$(this).val(), function(data) {
+            const ctx = document.getElementById('myChart');
+            myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: data.type,     
+                data: data.data,
+                options: data.options
+            })
+        }, 'json')
+    })
+    $('.span_choice').on('click', function(ev) {
+        $('.span_choice_selected').removeClass('span_choice_selected')
+        $(this).addClass('span_choice_selected')
+        const id = $(this).attr('id')
+        $.get('/stat/search?id='+id+'&year='+$('#year').val(), function(data) {
+            const ctx = document.getElementById('myChart');
+            myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: data.type,     
+                data: data.data,
+                options: data.options
+            })
+        }, 'json')
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col">
+        {{ form_start(form, {'attr' : {'autocomplete' : 'off'}}) }}
+            <h1 class="text-center">Employé</h1>
+            <div class="mb-3">
+                {{ form_label(form.firstname, 'Prénom', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.firstname) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.firstname) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.firstname, {'attr': {'class': 'form-control'}}) }}    
+            </div>    
+
+            <div class="mb-3">
+                {{ form_label(form.lastname, 'Nom', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.lastname) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.lastname) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.lastname, {'attr': {'class': 'form-control'}}) }}    
+            </div>   
+
+            <div class="mb-3">
+                {{ form_label(form.department, 'Département', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.department) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.department) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.department, {'attr': {'class': 'form-control'}}) }}    
+            </div>  
+
+            <div class="mb-3">
+                {{ form_label(form.role, 'Fonction', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.role) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.role) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}    
+            </div> 
+
+            <div class="mb-3">
+                {{ form_label(form.phone, 'Téléphone', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.phone) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.phone) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}    
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.fax, 'Fax', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.fax) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.fax) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.fax, {'attr': {'class': 'form-control'}}) }}    
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.email, 'Email', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.email) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.email) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}    
+            </div>
+
+            <div class="my-2">
+                <button type="submit" class="btn btn-primary">Ok</button>     
+                {% if form.vars.value.id %}           
+                    <a href="#" class="btn btn-danger ml-3" onClick="deleteEmployee()">Supprimer</a>
+                {% endif %}
+                <a href="{{path('employee_list')}}" class="btn btn-secondary ml-3">Retour</a>
+            </div>            
+        {{ form_end(form) }}
+    </div>    
+</div>
+<script>
+    document.getElementById("employee_firstname").focus()    
+
+    function deleteEmployee() {
+        if (confirm('Confirmer la suppression ?')) {                    
+            $.ajax({
+                url: '{{path("employee_delete",{id:id})}}',
+                type: 'DELETE',
+                dataType: 'text',
+                success: function (result) {                    
+                    document.location.href = '{{path("employee_list")}}?message=Employé supprimé'
+                },
+                error: function(jqXHR, textStatus, errorThrown ) {
+                    console.log(jqXHR, textStatus, errorThrown)
+                    alert('Erreur lors de la suppression')                    
+                }
+            })            
+        }        
+    }
+</script>
+{% endblock %}

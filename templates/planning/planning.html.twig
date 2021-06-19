@@ -1,0 +1,87 @@
+<div class="row mt-2">
+    <div class="col text-center">
+        {% for message in app.flashes('message') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}              
+            </div>
+        {% endfor %}      
+        <a href="{{path('planning_new', {id:projectId})}}" class="btn btn-primary btn-sm ml-5 add">Nouvelle tâche</a>
+    </div>
+</div>
+<div id="plannings" class="m-5">
+    Chargement...
+</div>
+<script>
+    setTimeout(function() {
+        const tab = document.getElementsByClassName('alert')    
+        if (tab.length) tab[0].remove()
+    },3000)    
+      
+    setTimeout(function() {
+        tasks = getTasks();        
+        google.charts.load('current', {'packages':['gantt']});
+        google.charts.setOnLoadCallback(drawChart);
+    },1000)    
+
+    function daysToMilliseconds(days) {
+      return days * 24 * 60 * 60 * 1000;
+    }
+    
+    function getTasks() {        
+        $.ajax({
+            async: false,
+            url: "{{path('planning_list_json',{id:projectId})}}",
+            type: 'GET',
+            dataType: 'json',
+            success: function (result) {         
+                tasks = result;
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur chargement des tâches')
+            }
+        })    
+        return tasks;
+    }
+    
+    function drawChart() {                
+        var data = new google.visualization.DataTable();
+
+        //console.log(tasks) 
+
+        data.addColumn('string', 'Task ID');
+        data.addColumn('string', 'Task Name');
+        data.addColumn('string', 'Resource');
+        data.addColumn('date', 'Start Date');
+        data.addColumn('date', 'End Date');
+        data.addColumn('number', 'Duration');
+        data.addColumn('number', 'Percent Complete');
+        data.addColumn('string', 'Dependencies');
+        
+        if (tasks !== undefined) {
+            tasks.forEach(element => {
+                data.addRows([
+                    [element.name, element.name, null, new Date(element.startDate), new Date(element.endDate), null, element.percentDone, element.dependency]
+                ]);
+            });        
+        }
+
+        var options = {
+            height: 500,
+            gantt: {
+                /*trackHeight: 30*/
+                criticalPathEnabled: false, // Critical path arrows will be the same as other arrows.
+                arrow: {
+                    angle: 100,
+                    width: 5,
+                    color: 'green',
+                    radius: 0
+                }
+            }
+        };
+
+        var chart = new google.visualization.Gantt(document.getElementById('plannings'));
+
+        chart.draw(data, options);
+    }       
+</script>

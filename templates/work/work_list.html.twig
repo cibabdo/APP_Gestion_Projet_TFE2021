@@ -1,0 +1,14 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Désignation</th>                 
+            </tr>
+        </thead>
+        <tbody>           
+            {% for work in works %}             
+                <tr class="choice" onclick="document.location.href='{{path("work_edit",{id:work.id})}}';">
+                    <td style="text-align: center;">{{work.name}}</td>                    
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>   

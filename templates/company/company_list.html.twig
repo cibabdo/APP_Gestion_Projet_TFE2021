@@ -1,0 +1,22 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Désignation</th> 
+                <th style="text-align: center;">Activité</th> 
+                <th style="text-align: center;">Localité</th>   
+                <th style="text-align: center;">Téléphone</th>   
+                <th style="text-align: center;">Email</th>   
+            </tr>
+        </thead>
+        <tbody>           
+            {% for company in companies %}             
+                <tr class="choice" onclick="document.location.href='{{path("company_edit",{id:company.id})}}';">
+                    <td style="text-align: center;">{{company.name}}</td>
+                    <td style="text-align: center;">{{company.activity.name}}</td>
+                    <td style="text-align: center;">{{company.location}}</td>                    
+                    <td style="text-align: center;">{{company.phone}}</td>
+                    <td style="text-align: center;">{{company.email}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>   

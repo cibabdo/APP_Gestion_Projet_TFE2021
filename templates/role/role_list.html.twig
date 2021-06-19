@@ -1,0 +1,14 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Désignation</th>                 
+            </tr>
+        </thead>
+        <tbody>           
+            {% for role in roles %}             
+                <tr class="choice" onclick="document.location.href='{{path("role_edit",{id:role.id})}}';">
+                    <td style="text-align: center;">{{role.name}}</td>                    
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>   

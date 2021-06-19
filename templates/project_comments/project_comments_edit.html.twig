@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row mt-5">
+    <div class="col">
+        {{ form_start(form, {'attr' : {'autocomplete' : 'off'}}) }}
+            <h2 class="text-center">Projet {{name}}</h2> 
+
+            <div class="mb-3">
+                {{ form_label(form.date, 'Date', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.date) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.date) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}    
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.comment, 'Commentaire', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.comment) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.comment) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.comment, {'attr': {'class': 'form-control'}}) }}    
+            </div>          
+
+            <div class="my-2">
+                <button type="submit" class="btn btn-primary">Ok</button>     
+                {% if form.vars.value.id %}           
+                    <a href="#" class="btn btn-danger ml-3" onClick="deleteProject()">Supprimer</a>                    
+                {% endif %}
+                <a href="{{path('project_edit',{id:projectId, onglet:'comment'})}}" class="btn btn-secondary ml-3">Retour</a>
+            </div>      
+                  
+        {{ form_end(form) }}
+    </div>    
+</div>
+<script>
+    document.getElementById("project_comment_comment").focus()    
+
+    function deleteProject() {
+        if (confirm('Confirmer la suppression ?')) {                    
+            $.ajax({
+                url: '{{path("project_comments_delete",{id:projectId, commentId:id})}}',
+                type: 'DELETE',
+                dataType: 'text',
+                success: function (result) {                    
+                    document.location.href = '{{path("project_edit",{id:projectId, onglet:"comment"})}}?message=Commentaire supprimé'
+                },
+                error: function(jqXHR, textStatus, errorThrown ) {
+                    console.log(jqXHR, textStatus, errorThrown)
+                    alert('Erreur lors de la suppression')                    
+                }
+            })            
+        }        
+    }
+</script>
+{% endblock %}

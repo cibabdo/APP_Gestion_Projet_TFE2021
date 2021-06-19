@@ -1,0 +1,35 @@
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Nom</th> 
+                <th style="text-align: center;">Email</th> 
+                <th style="text-align: center;">Language</th>                 
+                <th style="text-align: center;">Role</th>                
+            </tr>
+        </thead>
+        <tbody>           
+            {% 
+                set roles = {
+                    "ROLE_ADMIN" : "Administrateur", 
+                    "ROLE_USER" : "Utilisateur", 
+                    "ROLE_INTERNAL" : "Interne",
+                    "ROLE_EXTERNAL" : "Externe",
+                    "ROLE_ARCHITECT" : "Architecte",
+                    "ROLE_SUPERVISOR" : "Conducteur",
+                    "ROLE_ENGINEER" : "Ingénieur"
+                }                
+            %}
+            {% for user in users %}             
+                <tr class="choice" onclick="document.location.href='{{path("user_edit",{id:user.id})}}';">
+                    <td style="text-align: center;">{{user.username}}</td>
+                    <td style="text-align: center;">{{user.email}}</td>
+                    <td style="text-align: center;">{{user.language}}</td>
+                    <td style="text-align: center;">
+                        {% for role in user.roles %}             
+                            {{roles[role]}}                            
+                        {% endfor %}   
+                    </td>                    
+                </tr>
+            {% endfor %}
+        </tbody>          
+    </table>   
