@@ -31,6 +31,11 @@
         <div id="result" class="d-flex flex-row  justify-content-center" style="flex-wrap: wrap;">
             ...
         </div> 
+    </div> 
+</div>
+<div class="row lign-items-center justify-content-center mt-2">
+    <div class="col col-2 text-center">
+        <a href="{{path('request_pdf')}}" class="btn btn-primary btn-sm pdf">créer PDF</a>
     </div>
 </div>
 <script>
@@ -39,9 +44,10 @@
         if (tab.length) tab[0].remove()
     },3000)    
 
+    let state = '';
     $('#request_state').on('change', function() {
         console.log('ici')
-        const state = $(this).val();        
+        state = $(this).val();        
         $.ajax({
             url: '{{path("request_search")}}',
             data: 'state='+state,
@@ -55,6 +61,11 @@
                 alert('Erreur lors de la recherche')                    
             }
         })       
+    })
+
+    $('.pdf').on('click', function() {
+        window.open($(this).attr('href') + '?state='+state);
+        return false;
     })
 
     $('#request_state').trigger('change')  

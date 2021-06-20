@@ -16,7 +16,9 @@
         <div class="form-group inline">
             <input type="text" class="form-control" id="search" value="" data-url="{{path('project_search')}}" data-target="#projects" placeholder="Nom du projet" autofocus>        
         </div>   
-        &nbsp;<a href="{{path('project_new')}}" class="btn btn-primary btn-sm ml-5 add">Ajouter</a>
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_INTERNAL') %}
+            &nbsp;<a href="{{path('project_new')}}" class="btn btn-primary btn-sm ml-5 add">Ajouter</a>
+        {% endif %}
     </div>
 </div>
 <div class="row">

@@ -60,22 +60,22 @@ class __TwigTemplate_7d87fd9a778185a8c6b067e3e5f7c69fa8c7890905699145d8b6ad979cc
         <script src=\"https://code.jquery.com/jquery-3.5.1.min.js\" integrity=\"sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=\" crossorigin=\"anonymous\"></script>
         <script src=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js\"></script>
         <script src=\"https://www.gstatic.com/charts/loader.js\"></script>
+        <script src=\"";
+        // line 13
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("./js/Chart.min.js"), "html", null, true);
+        echo "\"></script>  
     </head>
     <body>
         ";
-        // line 15
+        // line 16
         $this->displayBlock('navbar', $context, $blocks);
         echo "     
         <div class=\"container\">
             ";
-        // line 17
+        // line 18
         $this->displayBlock('content', $context, $blocks);
         echo "       
-        </div>         
-        <script src=\"";
-        // line 19
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("./js/Chart.min.js"), "html", null, true);
-        echo "\"></script>                       
+        </div>                                      
         <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf\" crossorigin=\"anonymous\"></script>  
     </body>
 </html>";
@@ -87,7 +87,7 @@ class __TwigTemplate_7d87fd9a778185a8c6b067e3e5f7c69fa8c7890905699145d8b6ad979cc
 
     }
 
-    // line 15
+    // line 16
     public function block_navbar($context, array $blocks = [])
     {
         $macros = $this->macros;
@@ -105,7 +105,7 @@ class __TwigTemplate_7d87fd9a778185a8c6b067e3e5f7c69fa8c7890905699145d8b6ad979cc
 
     }
 
-    // line 17
+    // line 18
     public function block_content($context, array $blocks = [])
     {
         $macros = $this->macros;
@@ -135,7 +135,7 @@ class __TwigTemplate_7d87fd9a778185a8c6b067e3e5f7c69fa8c7890905699145d8b6ad979cc
 
     public function getDebugInfo()
     {
-        return array (  109 => 17,  91 => 15,  77 => 19,  72 => 17,  67 => 15,  58 => 9,  54 => 8,  45 => 1,);
+        return array (  109 => 18,  91 => 16,  76 => 18,  71 => 16,  65 => 13,  58 => 9,  54 => 8,  45 => 1,);
     }
 
     public function getSourceContext()
@@ -152,13 +152,13 @@ class __TwigTemplate_7d87fd9a778185a8c6b067e3e5f7c69fa8c7890905699145d8b6ad979cc
         <script src=\"https://code.jquery.com/jquery-3.5.1.min.js\" integrity=\"sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=\" crossorigin=\"anonymous\"></script>
         <script src=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js\"></script>
         <script src=\"https://www.gstatic.com/charts/loader.js\"></script>
+        <script src=\"{{asset('./js/Chart.min.js')}}\"></script>  
     </head>
     <body>
         {% block navbar %}{% endblock %}     
         <div class=\"container\">
             {% block content %}{% endblock %}       
-        </div>         
-        <script src=\"{{asset('./js/Chart.min.js')}}\"></script>                       
+        </div>                                      
         <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf\" crossorigin=\"anonymous\"></script>  
     </body>
 </html>", "base.html.twig", "C:\\xampp803\\htdocs\\symfony\\templates\\base.html.twig");

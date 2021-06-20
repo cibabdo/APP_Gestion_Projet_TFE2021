@@ -121,7 +121,12 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
                   <a class=\"nav-link active\" data-id=\"tab_datas\" href=\"#\">Données</a>
                 </li>
                 <li class=\"nav-item\">
-                  <a class=\"nav-link\" data-id=\"tab_persons\" href=\"#\">Intervenants</a>
+                  <a class=\"nav-link ";
+        // line 24
+        if ((null === twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 24, $this->source); })()), "vars", [], "any", false, false, false, 24), "value", [], "any", false, false, false, 24), "id", [], "any", false, false, false, 24))) {
+            echo " disabled ";
+        }
+        echo "\" data-id=\"tab_persons\" href=\"#\">Intervenants</a>
                 </li>  
                 <li class=\"nav-item\">
                     <a class=\"nav-link ";
@@ -703,18 +708,25 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
         // line 277
         if (twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 277, $this->source); })()), "vars", [], "any", false, false, false, 277), "value", [], "any", false, false, false, 277), "id", [], "any", false, false, false, 277)) {
             echo "           
-                    <a href=\"#\" class=\"btn btn-danger ml-3\" onClick=\"deleteProject()\">Supprimer</a>                   
-                ";
+                    ";
+            // line 278
+            if (($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_ADMIN") || $this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_INTERNAL"))) {
+                // line 279
+                echo "                        <a href=\"#\" class=\"btn btn-danger ml-3\" onClick=\"deleteProject()\">Supprimer</a>                   
+                    ";
+            }
+            // line 281
+            echo "                ";
         }
-        // line 280
+        // line 282
         echo "                <a href=\"";
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_list");
         echo "\" class=\"btn btn-secondary ml-3\">Retour</a>                
             </div>      
                   
         ";
-        // line 283
-        echo         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 283, $this->source); })()), 'form_end');
+        // line 285
+        echo         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 285, $this->source); })()), 'form_end');
         echo "
     </div>    
 </div>
@@ -725,14 +737,14 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
         if (confirm('Confirmer la suppression ?')) {                    
             \$.ajax({
                 url: '";
-        // line 292
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_delete", ["id" => (isset($context["id"]) || array_key_exists("id", $context) ? $context["id"] : (function () { throw new RuntimeError('Variable "id" does not exist.', 292, $this->source); })())]), "html", null, true);
+        // line 294
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_delete", ["id" => (isset($context["id"]) || array_key_exists("id", $context) ? $context["id"] : (function () { throw new RuntimeError('Variable "id" does not exist.', 294, $this->source); })())]), "html", null, true);
         echo "',
                 type: 'DELETE',
                 dataType: 'text',
                 success: function (result) {                    
                     document.location.href = '";
-        // line 296
+        // line 298
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_list");
         echo "?message=Projet supprimé'
                 },
@@ -777,8 +789,8 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
     })
 
     const onglet = '";
-        // line 338
-        echo twig_escape_filter($this->env, (isset($context["onglet"]) || array_key_exists("onglet", $context) ? $context["onglet"] : (function () { throw new RuntimeError('Variable "onglet" does not exist.', 338, $this->source); })()), "html", null, true);
+        // line 340
+        echo twig_escape_filter($this->env, (isset($context["onglet"]) || array_key_exists("onglet", $context) ? $context["onglet"] : (function () { throw new RuntimeError('Variable "onglet" does not exist.', 340, $this->source); })()), "html", null, true);
         echo "';
     if (onglet != '') {      
         const obj = \$('a[data-id=\"'+onglet+'\"]')       
@@ -809,7 +821,7 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
 
     public function getDebugInfo()
     {
-        return array (  781 => 338,  736 => 296,  729 => 292,  717 => 283,  710 => 280,  704 => 277,  691 => 268,  685 => 265,  680 => 263,  675 => 262,  669 => 260,  666 => 259,  664 => 258,  660 => 257,  652 => 253,  646 => 250,  641 => 248,  637 => 247,  629 => 243,  623 => 240,  618 => 238,  614 => 237,  603 => 230,  597 => 227,  592 => 225,  588 => 224,  580 => 220,  574 => 217,  569 => 215,  565 => 214,  557 => 210,  551 => 207,  546 => 205,  542 => 204,  534 => 200,  528 => 197,  523 => 195,  519 => 194,  511 => 190,  505 => 187,  500 => 185,  496 => 184,  488 => 180,  482 => 177,  477 => 175,  473 => 174,  465 => 170,  459 => 167,  454 => 165,  450 => 164,  442 => 160,  436 => 157,  431 => 155,  427 => 154,  417 => 148,  411 => 145,  406 => 143,  402 => 142,  391 => 135,  385 => 132,  380 => 130,  376 => 129,  368 => 125,  362 => 122,  357 => 120,  353 => 119,  347 => 117,  341 => 114,  336 => 112,  332 => 111,  323 => 106,  317 => 103,  312 => 101,  308 => 100,  302 => 98,  296 => 95,  291 => 93,  287 => 92,  279 => 88,  273 => 85,  268 => 83,  264 => 82,  256 => 78,  250 => 75,  245 => 73,  241 => 72,  233 => 68,  227 => 65,  222 => 63,  218 => 62,  210 => 58,  204 => 55,  199 => 53,  195 => 52,  187 => 48,  181 => 45,  176 => 43,  172 => 42,  159 => 36,  149 => 33,  139 => 30,  129 => 27,  115 => 17,  106 => 14,  103 => 13,  99 => 12,  95 => 11,  90 => 8,  80 => 7,  69 => 4,  59 => 3,  36 => 1,);
+        return array (  793 => 340,  748 => 298,  741 => 294,  729 => 285,  722 => 282,  719 => 281,  715 => 279,  713 => 278,  709 => 277,  696 => 268,  690 => 265,  685 => 263,  680 => 262,  674 => 260,  671 => 259,  669 => 258,  665 => 257,  657 => 253,  651 => 250,  646 => 248,  642 => 247,  634 => 243,  628 => 240,  623 => 238,  619 => 237,  608 => 230,  602 => 227,  597 => 225,  593 => 224,  585 => 220,  579 => 217,  574 => 215,  570 => 214,  562 => 210,  556 => 207,  551 => 205,  547 => 204,  539 => 200,  533 => 197,  528 => 195,  524 => 194,  516 => 190,  510 => 187,  505 => 185,  501 => 184,  493 => 180,  487 => 177,  482 => 175,  478 => 174,  470 => 170,  464 => 167,  459 => 165,  455 => 164,  447 => 160,  441 => 157,  436 => 155,  432 => 154,  422 => 148,  416 => 145,  411 => 143,  407 => 142,  396 => 135,  390 => 132,  385 => 130,  381 => 129,  373 => 125,  367 => 122,  362 => 120,  358 => 119,  352 => 117,  346 => 114,  341 => 112,  337 => 111,  328 => 106,  322 => 103,  317 => 101,  313 => 100,  307 => 98,  301 => 95,  296 => 93,  292 => 92,  284 => 88,  278 => 85,  273 => 83,  269 => 82,  261 => 78,  255 => 75,  250 => 73,  246 => 72,  238 => 68,  232 => 65,  227 => 63,  223 => 62,  215 => 58,  209 => 55,  204 => 53,  200 => 52,  192 => 48,  186 => 45,  181 => 43,  177 => 42,  164 => 36,  154 => 33,  144 => 30,  134 => 27,  126 => 24,  115 => 17,  106 => 14,  103 => 13,  99 => 12,  95 => 11,  90 => 8,  80 => 7,  69 => 4,  59 => 3,  36 => 1,);
     }
 
     public function getSourceContext()
@@ -837,7 +849,7 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
                   <a class=\"nav-link active\" data-id=\"tab_datas\" href=\"#\">Données</a>
                 </li>
                 <li class=\"nav-item\">
-                  <a class=\"nav-link\" data-id=\"tab_persons\" href=\"#\">Intervenants</a>
+                  <a class=\"nav-link {% if form.vars.value.id is null %} disabled {% endif %}\" data-id=\"tab_persons\" href=\"#\">Intervenants</a>
                 </li>  
                 <li class=\"nav-item\">
                     <a class=\"nav-link {% if form.vars.value.id is null %} disabled {% endif %}\" data-id=\"work\" href=\"{{path('project_works_list',{projectId:id})}}\">Travaux</a>
@@ -1091,7 +1103,9 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
             <div id=\"buttons\" class=\"my-2 show\">
                 <button type=\"submit\" class=\"btn btn-primary\">Ok</button>     
                 {% if form.vars.value.id %}           
-                    <a href=\"#\" class=\"btn btn-danger ml-3\" onClick=\"deleteProject()\">Supprimer</a>                   
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_INTERNAL') %}
+                        <a href=\"#\" class=\"btn btn-danger ml-3\" onClick=\"deleteProject()\">Supprimer</a>                   
+                    {% endif %}
                 {% endif %}
                 <a href=\"{{path('project_list')}}\" class=\"btn btn-secondary ml-3\">Retour</a>                
             </div>      

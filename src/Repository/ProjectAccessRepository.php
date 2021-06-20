@@ -25,7 +25,8 @@ class ProjectAccessRepository extends ServiceEntityRepository
     public function findAllWithAccess($value)
     {        
         return $this->createQueryBuilder('c')
-        ->andWhere('c.user_id = :val')
+        ->join('c.user', 'u')
+        ->andWhere('u.id = :val')
         ->setParameter('val', $value)        
         ->getQuery()
         ->getResult();

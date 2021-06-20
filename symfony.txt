@@ -1,0 +1,10 @@
+php bin/console debut:autowiring => liste de services
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+copy content httpd.conf dans le httpd.conf de Apache
+
+MySql to Doctrine :
+
+https://symfony.com/doc/current/doctrine/reverse_engineering.html
+https://ourcodeworld.com/articles/read/1314/how-to-automatically-generate-the-doctrine-repository-class-of-an-entity-in-symfony-5

@@ -114,19 +114,25 @@ class __TwigTemplate_bd3523f30f656abef32e5f3e43a84f0bdc3cea32b467c88c9c869628790
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_search");
         echo "\" data-target=\"#projects\" placeholder=\"Nom du projet\" autofocus>        
         </div>   
-        &nbsp;<a href=\"";
+        ";
         // line 19
-        echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_new");
-        echo "\" class=\"btn btn-primary btn-sm ml-5 add\">Ajouter</a>
-    </div>
+        if (($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_ADMIN") || $this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_INTERNAL"))) {
+            // line 20
+            echo "            &nbsp;<a href=\"";
+            echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_new");
+            echo "\" class=\"btn btn-primary btn-sm ml-5 add\">Ajouter</a>
+        ";
+        }
+        // line 22
+        echo "    </div>
 </div>
 <div class=\"row\">
     <div class=\"col\">
         <div id=\"projects\" class=\"d-flex flex-row  justify-content-center\" style=\"flex-wrap: wrap;\">
             ";
-        // line 25
-        $this->loadTemplate("project/project_list.html.twig", "project/project.html.twig", 25)->display($context);
-        // line 26
+        // line 27
+        $this->loadTemplate("project/project_list.html.twig", "project/project.html.twig", 27)->display($context);
+        // line 28
         echo "        </div> 
     </div>
 </div>
@@ -170,7 +176,7 @@ class __TwigTemplate_bd3523f30f656abef32e5f3e43a84f0bdc3cea32b467c88c9c869628790
 
     public function getDebugInfo()
     {
-        return array (  130 => 26,  128 => 25,  119 => 19,  114 => 17,  110 => 15,  101 => 12,  98 => 11,  94 => 10,  90 => 8,  80 => 7,  69 => 4,  59 => 3,  36 => 1,);
+        return array (  136 => 28,  134 => 27,  127 => 22,  121 => 20,  119 => 19,  114 => 17,  110 => 15,  101 => 12,  98 => 11,  94 => 10,  90 => 8,  80 => 7,  69 => 4,  59 => 3,  36 => 1,);
     }
 
     public function getSourceContext()
@@ -193,7 +199,9 @@ class __TwigTemplate_bd3523f30f656abef32e5f3e43a84f0bdc3cea32b467c88c9c869628790
         <div class=\"form-group inline\">
             <input type=\"text\" class=\"form-control\" id=\"search\" value=\"\" data-url=\"{{path('project_search')}}\" data-target=\"#projects\" placeholder=\"Nom du projet\" autofocus>        
         </div>   
-        &nbsp;<a href=\"{{path('project_new')}}\" class=\"btn btn-primary btn-sm ml-5 add\">Ajouter</a>
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_INTERNAL') %}
+            &nbsp;<a href=\"{{path('project_new')}}\" class=\"btn btn-primary btn-sm ml-5 add\">Ajouter</a>
+        {% endif %}
     </div>
 </div>
 <div class=\"row\">

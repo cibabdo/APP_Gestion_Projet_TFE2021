@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ProjectController extends AbstractController {  
      /**
@@ -20,17 +21,18 @@ class ProjectController extends AbstractController {
     {
         if ($request->query->get('message')) $this->addFlash('message', $request->query->get('message'));    
         
-        // for external person, see projects with access
-        /*
+        // for external person, see projects with access        
         if ($this->isGranted('ROLE_EXTERNAL')) {
-            $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());
-            $projects = $projectRepository->findAllIn();
-        } 
+            $projects_w = [];
+            $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
+            foreach($access as $a) {
+                array_push($projects_w, $projectRepository->find($a->getProject()->getId()));
+            }     
+            if (count($projects_w) > 0) $projects = $projects_w;
+        }   
         else {
             $projects = $projectRepository->findAll();
-        }
-        */
-        $projects = $projectRepository->findAll();
+        }        
         
         return $this->render('project/project.html.twig', [
             'projects' => $projects            
@@ -40,13 +42,37 @@ class ProjectController extends AbstractController {
     /**
      * @Route("/project/search", name="project_search")
      */
-    public function search(Request $request, ProjectRepository $projectRepository): Response
+    public function search(Request $request, ProjectRepository $projectRepository, ProjectAccessRepository $projectAccessRepository): Response
     {   
+        $projects = null;
         if ($request->query->get('str') == '') {
-            $projects = $projectRepository->findAll();
+            // for external person, see projects with access        
+            if ($this->isGranted('ROLE_EXTERNAL')) {
+                $projects_w = [];                
+                $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
+                foreach($access as $a) {
+                    array_push($projects_w, $projectRepository->find($a->getProject()->getId()));
+                }    
+                if (count($projects_w) > 0) $projects = $projects_w;              
+            }   
+            else {
+                $projects = $projectRepository->findAll();
+            }  
         }
         else {
-            $projects = $projectRepository->findByNameLike($request->query->get('str'));
+            // for external person, see projects with access        
+            if ($this->isGranted('ROLE_EXTERNAL')) { 
+                $projects_w = [];                       
+                $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
+                foreach($access as $a) {
+                    $result = $projectRepository->findByNameAndId($request->query->get('str'), $a->getProject()->getId());
+                    if (count($result) > 0) array_push($projects_w, $result);
+                }       
+                if (count($projects_w) > 0) $projects = $projects_w;                
+            }   
+            else {
+                $projects = $projectRepository->findByNameLike($request->query->get('str'));
+            }             
         }        
         return $this->render('project/project_list.html.twig', [
             'projects' => $projects
@@ -58,6 +84,8 @@ class ProjectController extends AbstractController {
      */
     public function add(Request $request, PersonContactRepository $personContact, ManagerRegistry $managerRegistry): Response
     {
+        if ($this->isGranted('ROLE_EXTERNAL')) throw new AccessDeniedException('Vous n\'êtes pas autorisé'); 
+
         $project = new Project();    
         $today = new \DateTime();
         $project->setYear($today->format('Y'));
@@ -84,7 +112,7 @@ class ProjectController extends AbstractController {
             // message            
             $this->addFlash('message', 'Projet enregistré');
             // redirect
-            return $this->redirectToRoute('project_list');
+            return $this->redirectToRoute('project_edit', ['id' => $project->getId()]);
         }       
 
         return $this->render('project/project_edit.html.twig', [
@@ -98,15 +126,23 @@ class ProjectController extends AbstractController {
     /**
      * @Route("/project/{id}", methods={"GET","POST"}, name="project_edit")
      */
-    public function update(Request $request, $id, PersonContactRepository $personContact, ManagerRegistry $managerRegistry, ProjectRepository $projectRepository): Response
+    public function update(Request $request, $id, PersonContactRepository $personContact, ManagerRegistry $managerRegistry, ProjectRepository $projectRepository, ProjectAccessRepository $projectAccessRepository): Response
     {     
+        // for external person, see projects with access        
+        if ($this->isGranted('ROLE_EXTERNAL')) {
+            $isAccess = false;            
+            $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
+            foreach($access as $a) {
+                if ($id == $a->getProject()->getId()) {
+                    $isAccess = true;
+                    break;
+                }
+            }             
+            if (!$isAccess) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
+        }   
+
         $project = $projectRepository->findOneBy(['id' => $id]);
-
-        /*
-        $project->setEngineers($this->getChoices($personContact->findByRole(2)));
-        $project->setCoordinators($this->getChoices($personContact->findByRole(3)));
-        */
-
+    
         $project->setEngineers($personContact->findByRole(2));
         $project->setCoordinators($personContact->findByRole(3));
 
@@ -124,7 +160,7 @@ class ProjectController extends AbstractController {
             // message            
             $this->addFlash('message', 'Projet modifié');
             // redirect
-            return $this->redirectToRoute('project_list');
+            return $this->redirectToRoute('project_edit', ['id' => $id]);
         }
 
         return $this->render('project/project_edit.html.twig', [
@@ -140,6 +176,9 @@ class ProjectController extends AbstractController {
      */
     public function delete($id, ProjectRepository $projectRepository): Response
     {      
+        // security
+        if ($this->isGranted('ROLE_EXTERNAL')) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
+
         // find                 
         $project = $projectRepository->findOneBy(['id' => $id]);        
         // delete       

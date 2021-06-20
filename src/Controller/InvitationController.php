@@ -7,10 +7,11 @@ use App\Form\SigninType;
 use App\Entity\ProjectAccess;
 use Symfony\Component\Mime\Email;
 use App\Entity\UserSigninSecurity;
+use App\Repository\UserRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Component\Form\FormError;
-use Doctrine\Persistence\ManagerRegistry;
 
+use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\PersonContactRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -26,14 +27,18 @@ class InvitationController extends AbstractController
     /**
      * @Route("/project/{id}/invitation/{personId}", name="invitation")
      */
-    public function index($id, $personId, Request $request, MailerInterface $mailer, ProjectRepository $projectRepository, PersonContactRepository $personContactRepository, 
+    public function index($id, $personId, Request $request, MailerInterface $mailer, UserRepository $userRepository, ProjectRepository $projectRepository, PersonContactRepository $personContactRepository, 
                                                                                      ManagerRegistry $managerRegistry): Response
-    {
-        if (($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_INTERNAL')) == false) 
-            throw new AccessDeniedException('Vous n\'êtes pas autorisé'); 
+    {                
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_INTERNAL')) 
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé');                
+               
+        $person = $personContactRepository->find($personId);
+       
+        $user = $userRepository->findByEmail($person->getEmail());        
+        if ($user != null) throw new AccessDeniedException('L\'utilisateur est déjà inscrit');
 
         $project = $projectRepository->find($id);
-        $person = $personContactRepository->find($personId);
 
         $form = $this->createFormBuilder()->getForm();
 
@@ -54,10 +59,7 @@ class InvitationController extends AbstractController
             // save
             $em = $managerRegistry->getManager();
             $em->persist($invit);
-            $em->flush();
-            
-            // pdf
-            // todo
+            $em->flush();           
 
             // mail
             $html = '<p>Bonjour, vous êtes invité à vous inscrire via ce <a href="http://localhost:8000/invitation/inscription?nonce=' . $invit->getNonce() . '">lien</p>';

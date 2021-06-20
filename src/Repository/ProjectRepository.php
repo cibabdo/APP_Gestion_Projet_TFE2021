@@ -31,6 +31,20 @@ class ProjectRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+     /**
+    * @return Project[] Returns an array of Project objects
+    */    
+    public function findByNameAndId($value, $id)
+    {        
+        return $this->createQueryBuilder('c')
+            ->where('c.id = :id')
+            ->andWhere('c.title like :val')
+            ->setParameter('id', $id)
+            ->setParameter('val', '%'.$value.'%')                
+            ->getQuery()
+            ->getResult();
+    }
+    
     /**
     * @return Project[] Returns an array of Project objects
     */    
@@ -41,8 +55,23 @@ class ProjectRepository extends ServiceEntityRepository
             ->setParameter('val', $value)                
             ->getQuery()
             ->getResult();
-    }       
-   
+    }    
+    
+      /**
+    * @return Project[] Returns an array of Project objects
+    */    
+    public function findByYear($value)
+    {                
+        return $this->createQueryBuilder('c')
+            ->select("DATE_FORMAT(c.workStartDate, '%m') as month, count(c.id) as nb")
+            ->where('c.year = :val')
+            ->setParameter('val', $value)                   
+            ->groupBy('month')
+            ->orderBy('month', 'asc')            
+            ->getQuery()
+            ->getResult();
+    } 
+     
     // /**
     //  * @return Project[] Returns an array of Project objects
     //  */

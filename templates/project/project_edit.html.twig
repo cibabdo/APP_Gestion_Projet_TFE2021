@@ -21,7 +21,7 @@
                   <a class="nav-link active" data-id="tab_datas" href="#">Données</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" data-id="tab_persons" href="#">Intervenants</a>
+                  <a class="nav-link {% if form.vars.value.id is null %} disabled {% endif %}" data-id="tab_persons" href="#">Intervenants</a>
                 </li>  
                 <li class="nav-item">
                     <a class="nav-link {% if form.vars.value.id is null %} disabled {% endif %}" data-id="work" href="{{path('project_works_list',{projectId:id})}}">Travaux</a>
@@ -275,7 +275,9 @@
             <div id="buttons" class="my-2 show">
                 <button type="submit" class="btn btn-primary">Ok</button>     
                 {% if form.vars.value.id %}           
-                    <a href="#" class="btn btn-danger ml-3" onClick="deleteProject()">Supprimer</a>                   
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_INTERNAL') %}
+                        <a href="#" class="btn btn-danger ml-3" onClick="deleteProject()">Supprimer</a>                   
+                    {% endif %}
                 {% endif %}
                 <a href="{{path('project_list')}}" class="btn btn-secondary ml-3">Retour</a>                
             </div>      

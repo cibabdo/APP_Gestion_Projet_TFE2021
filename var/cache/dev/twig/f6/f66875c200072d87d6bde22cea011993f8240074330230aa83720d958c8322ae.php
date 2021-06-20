@@ -146,6 +146,14 @@ class __TwigTemplate_64a0d83afcf0a3140ab79cdf3da78ad2cbf02e7b9d16eaebebd1d8f04b3
         <div id=\"result\" class=\"d-flex flex-row  justify-content-center\" style=\"flex-wrap: wrap;\">
             ...
         </div> 
+    </div> 
+</div>
+<div class=\"row lign-items-center justify-content-center mt-2\">
+    <div class=\"col col-2 text-center\">
+        <a href=\"";
+        // line 38
+        echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("request_pdf");
+        echo "\" class=\"btn btn-primary btn-sm pdf\">créer PDF</a>
     </div>
 </div>
 <script>
@@ -154,12 +162,13 @@ class __TwigTemplate_64a0d83afcf0a3140ab79cdf3da78ad2cbf02e7b9d16eaebebd1d8f04b3
         if (tab.length) tab[0].remove()
     },3000)    
 
+    let state = '';
     \$('#request_state').on('change', function() {
         console.log('ici')
-        const state = \$(this).val();        
+        state = \$(this).val();        
         \$.ajax({
             url: '";
-        // line 46
+        // line 52
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("request_search");
         echo "',
             data: 'state='+state,
@@ -173,6 +182,11 @@ class __TwigTemplate_64a0d83afcf0a3140ab79cdf3da78ad2cbf02e7b9d16eaebebd1d8f04b3
                 alert('Erreur lors de la recherche')                    
             }
         })       
+    })
+
+    \$('.pdf').on('click', function() {
+        window.open(\$(this).attr('href') + '?state='+state);
+        return false;
     })
 
     \$('#request_state').trigger('change')  
@@ -198,7 +212,7 @@ class __TwigTemplate_64a0d83afcf0a3140ab79cdf3da78ad2cbf02e7b9d16eaebebd1d8f04b3
 
     public function getDebugInfo()
     {
-        return array (  163 => 46,  140 => 26,  134 => 24,  128 => 21,  123 => 19,  119 => 18,  113 => 15,  110 => 14,  101 => 12,  98 => 11,  94 => 10,  90 => 8,  80 => 7,  69 => 4,  59 => 3,  36 => 1,);
+        return array (  172 => 52,  155 => 38,  140 => 26,  134 => 24,  128 => 21,  123 => 19,  119 => 18,  113 => 15,  110 => 14,  101 => 12,  98 => 11,  94 => 10,  90 => 8,  80 => 7,  69 => 4,  59 => 3,  36 => 1,);
     }
 
     public function getSourceContext()
@@ -236,6 +250,11 @@ class __TwigTemplate_64a0d83afcf0a3140ab79cdf3da78ad2cbf02e7b9d16eaebebd1d8f04b3
         <div id=\"result\" class=\"d-flex flex-row  justify-content-center\" style=\"flex-wrap: wrap;\">
             ...
         </div> 
+    </div> 
+</div>
+<div class=\"row lign-items-center justify-content-center mt-2\">
+    <div class=\"col col-2 text-center\">
+        <a href=\"{{path('request_pdf')}}\" class=\"btn btn-primary btn-sm pdf\">créer PDF</a>
     </div>
 </div>
 <script>
@@ -244,9 +263,10 @@ class __TwigTemplate_64a0d83afcf0a3140ab79cdf3da78ad2cbf02e7b9d16eaebebd1d8f04b3
         if (tab.length) tab[0].remove()
     },3000)    
 
+    let state = '';
     \$('#request_state').on('change', function() {
         console.log('ici')
-        const state = \$(this).val();        
+        state = \$(this).val();        
         \$.ajax({
             url: '{{path(\"request_search\")}}',
             data: 'state='+state,
@@ -260,6 +280,11 @@ class __TwigTemplate_64a0d83afcf0a3140ab79cdf3da78ad2cbf02e7b9d16eaebebd1d8f04b3
                 alert('Erreur lors de la recherche')                    
             }
         })       
+    })
+
+    \$('.pdf').on('click', function() {
+        window.open(\$(this).attr('href') + '?state='+state);
+        return false;
     })
 
     \$('#request_state').trigger('change')  

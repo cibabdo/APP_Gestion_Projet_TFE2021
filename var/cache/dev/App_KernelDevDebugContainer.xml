@@ -590,6 +590,7 @@
       <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Security\AccessDeniedHandler" class="App\Security\AccessDeniedHandler" autowire="true" autoconfigure="true"/>
+    <service id="App\Service\BackupDB" class="App\Service\BackupDB" autowire="true" autoconfigure="true"/>
     <service id="argument_metadata_factory" class="Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory" public="false"/>
     <service id="response_listener" class="Symfony\Component\HttpKernel\EventListener\ResponseListener" public="false">
       <tag name="kernel.event_subscriber"/>
@@ -5735,13 +5736,14 @@
         <argument key="managerRegistry" type="service" id="doctrine"/>
       </argument>
     </service>
-    <service id=".service_locator.VB3YC4r" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.01Z0d64" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="mailer" type="service" id="mailer.mailer"/>
         <argument key="managerRegistry" type="service" id="doctrine"/>
         <argument key="personContactRepository" type="service" id="App\Repository\PersonContactRepository"/>
         <argument key="projectRepository" type="service" id="App\Repository\ProjectRepository"/>
+        <argument key="userRepository" type="service" id="App\Repository\UserRepository"/>
       </argument>
     </service>
     <service id=".service_locator..qT1yBQ" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
@@ -5816,12 +5818,6 @@
         <argument key="projectRepository" type="service" id="App\Repository\ProjectRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.mbtGKvu" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="projectRepository" type="service" id="App\Repository\ProjectRepository"/>
-      </argument>
-    </service>
     <service id=".service_locator.UiD67Xg" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -5829,11 +5825,18 @@
         <argument key="personContact" type="service" id="App\Repository\PersonContactRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.riCqZKw" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.Z5.qbUN" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="managerRegistry" type="service" id="doctrine"/>
         <argument key="personContact" type="service" id="App\Repository\PersonContactRepository"/>
+        <argument key="projectAccessRepository" type="service" id="App\Repository\ProjectAccessRepository"/>
+        <argument key="projectRepository" type="service" id="App\Repository\ProjectRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.mbtGKvu" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
         <argument key="projectRepository" type="service" id="App\Repository\ProjectRepository"/>
       </argument>
     </service>
@@ -5968,7 +5971,7 @@
         <argument key="workRepository" type="service" id="App\Repository\WorkRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.8bSOmZv" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.JZKBV1T" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\CompanyActivityController::add" type="service" id=".service_locator..L36_5A"/>
@@ -6001,7 +6004,7 @@
         <argument key="App\Controller\EngineeringOfficeSortController::index" type="service" id=".service_locator.Rm4mf66"/>
         <argument key="App\Controller\EngineeringOfficeSortController::search" type="service" id=".service_locator.Rm4mf66"/>
         <argument key="App\Controller\EngineeringOfficeSortController::update" type="service" id=".service_locator.wOHcRd0"/>
-        <argument key="App\Controller\InvitationController::index" type="service" id=".service_locator.VB3YC4r"/>
+        <argument key="App\Controller\InvitationController::index" type="service" id=".service_locator.01Z0d64"/>
         <argument key="App\Controller\InvitationController::inscription" type="service" id=".service_locator..qT1yBQ"/>
         <argument key="App\Controller\LocationController::add" type="service" id=".service_locator..L36_5A"/>
         <argument key="App\Controller\LocationController::delete" type="service" id=".service_locator.hSXMeJY"/>
@@ -6020,8 +6023,8 @@
         <argument key="App\Controller\ProjectController::add" type="service" id=".service_locator.UiD67Xg"/>
         <argument key="App\Controller\ProjectController::delete" type="service" id=".service_locator.mbtGKvu"/>
         <argument key="App\Controller\ProjectController::index" type="service" id=".service_locator.AqfwKkF"/>
-        <argument key="App\Controller\ProjectController::search" type="service" id=".service_locator.mbtGKvu"/>
-        <argument key="App\Controller\ProjectController::update" type="service" id=".service_locator.riCqZKw"/>
+        <argument key="App\Controller\ProjectController::search" type="service" id=".service_locator.AqfwKkF"/>
+        <argument key="App\Controller\ProjectController::update" type="service" id=".service_locator.Z5.qbUN"/>
         <argument key="App\Controller\ProjectDocumentsController::add" type="service" id=".service_locator.uXwNJGO"/>
         <argument key="App\Controller\ProjectDocumentsController::delete" type="service" id=".service_locator.5JeWqft"/>
         <argument key="App\Controller\ProjectDocumentsController::index" type="service" id=".service_locator.gwGFJwG"/>
@@ -6038,6 +6041,7 @@
         <argument key="App\Controller\ProjectWorksController::index" type="service" id=".service_locator.y.sYzv_"/>
         <argument key="App\Controller\ProjectWorksController::search" type="service" id=".service_locator.wAptDNV"/>
         <argument key="App\Controller\ProjectWorksController::update" type="service" id=".service_locator.KzzcAEa"/>
+        <argument key="App\Controller\RequestController::pdf" type="service" id=".service_locator.mbtGKvu"/>
         <argument key="App\Controller\RequestController::search" type="service" id=".service_locator.mbtGKvu"/>
         <argument key="App\Controller\RoleController::add" type="service" id=".service_locator..L36_5A"/>
         <argument key="App\Controller\RoleController::delete" type="service" id=".service_locator.sJz.jzM"/>
@@ -6051,6 +6055,7 @@
         <argument key="App\Controller\SiteController::index" type="service" id=".service_locator.BqCUdYh"/>
         <argument key="App\Controller\SiteController::search" type="service" id=".service_locator.BqCUdYh"/>
         <argument key="App\Controller\SiteController::update" type="service" id=".service_locator.8FmjY1c"/>
+        <argument key="App\Controller\StatController::search" type="service" id=".service_locator.mbtGKvu"/>
         <argument key="App\Controller\UserController::add" type="service" id=".service_locator.Yen46Xh"/>
         <argument key="App\Controller\UserController::delete" type="service" id=".service_locator.FXD6KYr"/>
         <argument key="App\Controller\UserController::index" type="service" id=".service_locator.FXD6KYr"/>
@@ -6097,7 +6102,7 @@
         <argument key="App\Controller\EngineeringOfficeSortController:index" type="service" id=".service_locator.Rm4mf66"/>
         <argument key="App\Controller\EngineeringOfficeSortController:search" type="service" id=".service_locator.Rm4mf66"/>
         <argument key="App\Controller\EngineeringOfficeSortController:update" type="service" id=".service_locator.wOHcRd0"/>
-        <argument key="App\Controller\InvitationController:index" type="service" id=".service_locator.VB3YC4r"/>
+        <argument key="App\Controller\InvitationController:index" type="service" id=".service_locator.01Z0d64"/>
         <argument key="App\Controller\InvitationController:inscription" type="service" id=".service_locator..qT1yBQ"/>
         <argument key="App\Controller\LocationController:add" type="service" id=".service_locator..L36_5A"/>
         <argument key="App\Controller\LocationController:delete" type="service" id=".service_locator.hSXMeJY"/>
@@ -6116,8 +6121,8 @@
         <argument key="App\Controller\ProjectController:add" type="service" id=".service_locator.UiD67Xg"/>
         <argument key="App\Controller\ProjectController:delete" type="service" id=".service_locator.mbtGKvu"/>
         <argument key="App\Controller\ProjectController:index" type="service" id=".service_locator.AqfwKkF"/>
-        <argument key="App\Controller\ProjectController:search" type="service" id=".service_locator.mbtGKvu"/>
-        <argument key="App\Controller\ProjectController:update" type="service" id=".service_locator.riCqZKw"/>
+        <argument key="App\Controller\ProjectController:search" type="service" id=".service_locator.AqfwKkF"/>
+        <argument key="App\Controller\ProjectController:update" type="service" id=".service_locator.Z5.qbUN"/>
         <argument key="App\Controller\ProjectDocumentsController:add" type="service" id=".service_locator.uXwNJGO"/>
         <argument key="App\Controller\ProjectDocumentsController:delete" type="service" id=".service_locator.5JeWqft"/>
         <argument key="App\Controller\ProjectDocumentsController:index" type="service" id=".service_locator.gwGFJwG"/>
@@ -6134,6 +6139,7 @@
         <argument key="App\Controller\ProjectWorksController:index" type="service" id=".service_locator.y.sYzv_"/>
         <argument key="App\Controller\ProjectWorksController:search" type="service" id=".service_locator.wAptDNV"/>
         <argument key="App\Controller\ProjectWorksController:update" type="service" id=".service_locator.KzzcAEa"/>
+        <argument key="App\Controller\RequestController:pdf" type="service" id=".service_locator.mbtGKvu"/>
         <argument key="App\Controller\RequestController:search" type="service" id=".service_locator.mbtGKvu"/>
         <argument key="App\Controller\RoleController:add" type="service" id=".service_locator..L36_5A"/>
         <argument key="App\Controller\RoleController:delete" type="service" id=".service_locator.sJz.jzM"/>
@@ -6147,6 +6153,7 @@
         <argument key="App\Controller\SiteController:index" type="service" id=".service_locator.BqCUdYh"/>
         <argument key="App\Controller\SiteController:search" type="service" id=".service_locator.BqCUdYh"/>
         <argument key="App\Controller\SiteController:update" type="service" id=".service_locator.8FmjY1c"/>
+        <argument key="App\Controller\StatController:search" type="service" id=".service_locator.mbtGKvu"/>
         <argument key="App\Controller\UserController:add" type="service" id=".service_locator.Yen46Xh"/>
         <argument key="App\Controller\UserController:delete" type="service" id=".service_locator.FXD6KYr"/>
         <argument key="App\Controller\UserController:index" type="service" id=".service_locator.FXD6KYr"/>
@@ -6605,12 +6612,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.8bSOmZv"/>
+      <argument type="service" id=".service_locator.JZKBV1T"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.8bSOmZv"/>
+      <argument type="service" id=".service_locator.JZKBV1T"/>
     </service>
     <service id=".errored..service_locator.beq5mCo.Symfony\Component\HttpFoundation\Response" class="Symfony\Component\HttpFoundation\Response"/>
     <service id=".errored..service_locator.C9JCBPC.Symfony\Component\Config\Loader\LoaderInterface" class="Symfony\Component\Config\Loader\LoaderInterface"/>
@@ -6995,7 +7002,7 @@
     <service id="doctrine.migrations.metadata_storage" alias="doctrine.migrations.storage.table_storage"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.WaGDpDt" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.8bSOmZv"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.JZKBV1T"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface" alias="logger" public="false"/>
     <service id=".service_locator.AjmrG8B" alias=".service_locator.Xl5XdWY" public="false"/>

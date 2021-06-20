@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * EngineeringOffice
  *
- * @ORM\Table(name="engineering_office", indexes={@ORM\Index(name="fk_sort_idx", columns={"type_id"})})
+ * @ORM\Table(name="engineering_office", indexes={@ORM\Index(name="fk_sort_idx", columns={"sort_id"})})
  * @ORM\Entity(repositoryClass="App\Repository\EngineeringOfficeRepository")
  * @UniqueEntity(
  *  fields={"name"},
