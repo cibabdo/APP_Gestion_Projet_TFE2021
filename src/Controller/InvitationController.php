@@ -158,4 +158,40 @@ class InvitationController extends AbstractController
             '<html><body>accès autorisé</body></html>'
         );        
     }
+
+    /**
+     * @Route("/test", name="test")
+     */
+    public function test(Request $request, ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $encoder)
+    {   
+        
+        $user = new User();
+        $user->setUsername('Donato');
+        $user->setEmail('donato.abiuso@gmail.com');
+        $user->setLanguage('FR');
+        $user->setRoles(['ROLE_ADMIN']);
+        $form = $this->createForm(SigninType::class, $user);
+
+        // form submit
+        $form->handleRequest($request);       
+        if ($form->isSubmitted() && $form->isValid()) {
+            // crypt password
+            $hash = $encoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($hash);
+            
+            // save user
+            $em = $managerRegistry->getManager();
+            $em->persist($user);
+            $em->flush();          
+
+            // redirect
+            return $this->redirectToRoute('security_login');
+        }
+
+        //render
+        return $this->render('security/signin.html.twig', [
+            'form' => $form->createView(),
+            'message' => ''      
+        ]); 
+    }
 }
