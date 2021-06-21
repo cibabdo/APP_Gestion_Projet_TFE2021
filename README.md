@@ -16,16 +16,30 @@ SDK Visual Studio Code
 
 ### WWW - CLOUD
 
-Version en ligne chez LWS
-=> la loose => erreur 500 depuis dimanche :'(
+# OBSOLOTE
 
-http://www.abiusodtfe2021.be/
+# Version en ligne chez LWS
+# => la loose => erreur 500 depuis dimanche :'(
 
-Accès lws -> Voir mail Mr Beck
+# http://www.abiusodtfe2021.be/
+
+# Accès lws -> Voir mail Mr Beck
+
+Dépot chez ovh
+http://www.chipinbox.be/
+
+Accès phpmyadmin -> https://phpmyadmin.cluster021.hosting.ovh.net/index.php 
+Login: chipinbomr782
+Pass: 11wsT673
+
+Accès FTP -> ftp://chipinbomr@ftp.cluster021.hosting.ovh.net:21/ 
+Login : chipinbomr
+Pass: 11wsT673
 
 Version sur serveur privé
-
 http://tfe2021abiusod.dyndns-web.com:8000 
+
+Pas d'accès externe :)
 
 Code source sur Github
 https://github.com/cibabdo/APP_Gestion_Projet_TFE2021
