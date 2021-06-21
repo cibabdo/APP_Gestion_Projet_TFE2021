@@ -16,15 +16,6 @@ SDK Visual Studio Code
 
 ### WWW - CLOUD
 
-# OBSOLOTE
-
-# Version en ligne chez LWS
-# => la loose => erreur 500 depuis dimanche :'(
-
-# http://www.abiusodtfe2021.be/
-
-# Accès lws -> Voir mail Mr Beck
-
 Dépot chez ovh
 http://www.chipinbox.be/
 
