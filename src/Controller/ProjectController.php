@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\PersonContact;
 use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
@@ -110,7 +111,7 @@ class ProjectController extends AbstractController {
             $em->persist($project);
             $em->flush();
             // message            
-            $this->addFlash('message', 'Projet enregistré');
+            $this->addFlash('message', 'Projet enregistré (n\'oubliez pas d\'inviter vos personnes externes si vous les avez modifiés)');
             // redirect
             return $this->redirectToRoute('project_edit', ['id' => $project->getId()]);
         }       
@@ -158,7 +159,7 @@ class ProjectController extends AbstractController {
             $em->persist($project);
             $em->flush();
             // message            
-            $this->addFlash('message', 'Projet modifié');
+            $this->addFlash('message', 'Projet modifié (n\'oubliez pas d\'inviter vos personnes externes si vous les avez modifiés)');
             // redirect
             return $this->redirectToRoute('project_edit', ['id' => $id]);
         }

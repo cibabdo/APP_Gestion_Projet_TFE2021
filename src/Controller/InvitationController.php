@@ -59,15 +59,18 @@ class InvitationController extends AbstractController
             // save
             $em = $managerRegistry->getManager();
             $em->persist($invit);
-            $em->flush();           
-
+            $em->flush();              
+         
             // mail
             $html = '<p>Bonjour, vous êtes invité à vous inscrire via ce <a href="http://localhost:8000/invitation/inscription?nonce=' . $invit->getNonce() . '">lien</p>';
+            $html .= '<p>Vous trouvery en pièce joint la procédure d\'accès à notre réseau sécurisé<p>';
             $email = (new Email())
             ->from('donato.abiuso@chuliege.be')
             ->to($person->getEmail())           
             ->subject('CHU - Invitation pour le projet ' . $project->getTitle())            
             ->html($html);
+            //->attachFromPath($this->getParameter('attach_directory') . '/procedure_chu_vpn.pdf');
+            //->attach(fopen('./attach/procedure_chu_vpn.pdf', 'r'));
             $mailer->send($email);
 
             // message            
