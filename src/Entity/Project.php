@@ -131,9 +131,9 @@ class Project
     private $externalEngineer;
 
     /**
-     * @var \EngineeringOffice
+     * @var \PersonContact
      *
-     * @ORM\ManyToOne(targetEntity="EngineeringOffice")
+     * @ORM\ManyToOne(targetEntity="PersonContact")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="external_architecture_office_id", referencedColumnName="id")
      * })
@@ -475,12 +475,12 @@ class Project
         return $this;
     }
 
-    public function getExternalArchitectureOffice(): ?EngineeringOffice
+    public function getExternalArchitectureOffice(): ?PersonContact
     {
         return $this->externalArchitectureOffice;
     }
 
-    public function setExternalArchitectureOffice(?EngineeringOffice $externalArchitectureOffice): self
+    public function setExternalArchitectureOffice(?PersonContact $externalArchitectureOffice): self
     {
         $this->externalArchitectureOffice = $externalArchitectureOffice;
 

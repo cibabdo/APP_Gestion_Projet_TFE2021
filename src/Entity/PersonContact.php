@@ -22,6 +22,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class PersonContact
 {
+    //public static $TYPE = array("Architecte"=>1, "Ingenieur"=>2, "Coordinateur"=>3);
+
     /**
      * @var int
      *
@@ -90,7 +92,7 @@ class PersonContact
     /**
      * @var string|null
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @ORM\Column(name="email", type="string", length=255, nullable=false)
      * @Assert\Email()
      */
     private $email;
