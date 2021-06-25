@@ -53,6 +53,8 @@ return [
         '/en' => [[['_route' => 'home', '_controller' => 'App\\Controller\\HomeController::index', '_locale' => 'en'], null, ['GET' => 0], null, true, false, null]],
         '/invitation/inscription' => [[['_route' => 'invitation_inscription', '_controller' => 'App\\Controller\\InvitationController::inscription', '_locale' => 'fr'], null, null, null, false, false, null]],
         '/en/invitation/inscription' => [[['_route' => 'invitation_inscription', '_controller' => 'App\\Controller\\InvitationController::inscription', '_locale' => 'en'], null, null, null, false, false, null]],
+        '/test' => [[['_route' => 'test', '_controller' => 'App\\Controller\\InvitationController::test', '_locale' => 'fr'], null, null, null, false, false, null]],
+        '/en/test' => [[['_route' => 'test', '_controller' => 'App\\Controller\\InvitationController::test', '_locale' => 'en'], null, null, null, false, false, null]],
         '/admin/location' => [[['_route' => 'location_list', '_controller' => 'App\\Controller\\LocationController::index', '_locale' => 'fr'], null, null, null, false, false, null]],
         '/en/admin/location' => [[['_route' => 'location_list', '_controller' => 'App\\Controller\\LocationController::index', '_locale' => 'en'], null, null, null, false, false, null]],
         '/admin/location/search' => [[['_route' => 'location_search', '_controller' => 'App\\Controller\\LocationController::search', '_locale' => 'fr'], null, null, null, false, false, null]],

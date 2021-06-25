@@ -81,6 +81,8 @@ return [
     'invitation.en' => [['id', 'personId'], ['_controller' => 'App\\Controller\\InvitationController::index', '_locale' => 'en', '_canonical_route' => 'invitation'], [], [['variable', '/', '[^/]++', 'personId', true], ['text', '/invitation'], ['variable', '/', '[^/]++', 'id', true], ['text', '/en/project']], [], []],
     'invitation_inscription.fr' => [[], ['_controller' => 'App\\Controller\\InvitationController::inscription', '_locale' => 'fr', '_canonical_route' => 'invitation_inscription'], [], [['text', '/invitation/inscription']], [], []],
     'invitation_inscription.en' => [[], ['_controller' => 'App\\Controller\\InvitationController::inscription', '_locale' => 'en', '_canonical_route' => 'invitation_inscription'], [], [['text', '/en/invitation/inscription']], [], []],
+    'test.fr' => [[], ['_controller' => 'App\\Controller\\InvitationController::test', '_locale' => 'fr', '_canonical_route' => 'test'], [], [['text', '/test']], [], []],
+    'test.en' => [[], ['_controller' => 'App\\Controller\\InvitationController::test', '_locale' => 'en', '_canonical_route' => 'test'], [], [['text', '/en/test']], [], []],
     'location_list.fr' => [[], ['_controller' => 'App\\Controller\\LocationController::index', '_locale' => 'fr', '_canonical_route' => 'location_list'], [], [['text', '/admin/location']], [], []],
     'location_list.en' => [[], ['_controller' => 'App\\Controller\\LocationController::index', '_locale' => 'en', '_canonical_route' => 'location_list'], [], [['text', '/en/admin/location']], [], []],
     'location_search.fr' => [[], ['_controller' => 'App\\Controller\\LocationController::search', '_locale' => 'fr', '_canonical_route' => 'location_search'], [], [['text', '/admin/location/search']], [], []],
