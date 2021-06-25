@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Role;
 use App\Entity\Company;
 use App\Entity\PersonContact;
 use App\Entity\EngineeringOffice;
@@ -31,12 +32,10 @@ class PersonContactType extends AbstractType
                     'Anglais' => 'EN'
                 ],
             ])
-            ->add('role', ChoiceType::class, [
-                'choices'  => [
-                    'Architecte' => '1',                    
-                    'Ingénieur' => '2',
-                    'Coordinateur' => '3'
-                ],
+            ->add('role', EntityType::class, [
+                'class' => Role::class,
+                'choice_label' => "name",
+                'required' => false              
             ])
             ->add('company', EntityType::class, [
                 'class' => Company::class,

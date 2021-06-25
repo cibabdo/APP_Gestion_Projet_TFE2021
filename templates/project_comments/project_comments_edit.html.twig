@@ -52,7 +52,7 @@
                 type: 'DELETE',
                 dataType: 'text',
                 success: function (result) {                    
-                    document.location.href = '{{path("project_edit",{id:projectId, onglet:"comment"})}}?message=Commentaire supprimé'
+                    document.location.href = '{{path("project_edit",{id:projectId, onglet:"comment"})}}&message=Commentaire supprimé'
                 },
                 error: function(jqXHR, textStatus, errorThrown ) {
                     console.log(jqXHR, textStatus, errorThrown)

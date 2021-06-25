@@ -5,12 +5,13 @@ namespace App\Controller;
 use App\Entity\Planning;
 use App\Form\PlanningType;
 use App\Repository\ProjectRepository;
+use Symfony\Component\Form\FormError;
 use App\Repository\PlanningRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -101,11 +102,26 @@ class ProjectPlanningController extends AbstractController
 
         // form submit
         $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {            
+            // verify coherence date, startDate must be >= starDate task dependency            
+            if ($planning->getDependency() != null) {
+                $parentTask = $planningRepository->find($planning->getDependency());                         
+                if ($planning->getStartDate() < $parentTask->getStartDate()) {
+                    $form->get('startDate')->addError(new FormError('La date de début doit être postérieure ou égale à la date de début de la tâche dépendante (' . $parentTask->getStartDate()->format('d/m/Y') . '-' . $parentTask->getEndDate()->format('d/m/Y') . ')'));
+                }
+            }            
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {           
             // save
             $em = $managerRegistry->getManager();
             $em->persist($planning);
             $em->flush();
+
+            // si on repousse la date de fin d'une tâche, ne doit-on repousser les autres tâches qui en dépendent !?  (réflexion entre collèges)
+            // todo
+            
             // message            
             $this->addFlash('message', 'Tâche enregistrée');
             // redirect
@@ -126,7 +142,7 @@ class ProjectPlanningController extends AbstractController
      */
     public function update(Request $request, $id, $taskId, ManagerRegistry $managerRegistry, PlanningRepository $planningRepository): Response
     {
-        $planning = $planningRepository->findOneBy(['id' => $taskId]);
+        $planning = $planningRepository->findOneBy(['id' => $taskId]);       
 
         $dependencies = $planningRepository->findAllWithoutMe($id, $taskId);
         $tab = array();
@@ -140,11 +156,25 @@ class ProjectPlanningController extends AbstractController
 
         // form submit
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {           
+        if ($form->isSubmitted()) {            
+            // verify coherence date, startDate must be >= starDate task dependency            
+            if ($planning->getDependency() != null) {
+                $parentTask = $planningRepository->find($planning->getDependency());     
+                //dd($planning, $parentTask);
+                if ($planning->getStartDate() < $parentTask->getStartDate()) {
+                    $form->get('startDate')->addError(new FormError('La date de début doit être postérieure ou égale à la date de début de la tâche dépendante (' . $parentTask->getStartDate()->format('d/m/Y') . '-' . $parentTask->getEndDate()->format('d/m/Y') . ')'));
+                }
+            }            
+        }
+        if ($form->isSubmitted() && $form->isValid()) {     
             // save
             $em = $managerRegistry->getManager();
             $em->persist($planning);
             $em->flush();
+            
+            // si on repousse la date de fin d'une tâche, ne doit-on repousser les autres tâches qui en dépendent !?  (réflexion entre collèges)
+            // todo
+
             // message            
             $this->addFlash('message', 'Tâche modifiée');
             // redirect
@@ -154,6 +184,7 @@ class ProjectPlanningController extends AbstractController
 
         return $this->render('planning/planning_edit.html.twig', [
             'form' => $form->createView(),          
+            'projectId' => $id,
             'id' => $planning->getId(),
             'percentDone' => $planning->getPercentDone()
         ]);

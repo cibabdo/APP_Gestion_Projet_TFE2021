@@ -20,15 +20,23 @@ class StatController extends AbstractController
     /**
      * @Route("/stat", name="stat")
      */
-    public function index(): Response
+    public function index(ProjectRepository $projectRepository): Response
     {       
         $today = new \DateTime();
         $year = $today->format('Y');
 
+        $result = $projectRepository->findMinMaxYear();
+        $min = $result[0]['min'];
+        $max = $result[0]['max'];
+        $years = [];
+        for ($i=$min; $i<=$max; $i++) {
+            array_push($years, $i);
+        }      
+
         return $this->render('stat/stat.html.twig', [
             'stat' => [
                 'year' => $year,
-                'years' => $this->getYears()
+                'years' => $years /*$this->getYears()*/
             ]
         ]);
     }

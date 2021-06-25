@@ -103,9 +103,12 @@ class PersonContact
     private $language;
 
     /**
-     * @var int
+     * @var \Role
      *
-     * @ORM\Column(name="role", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Role")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="role", referencedColumnName="id")
+     * })
      */
     private $role;
 
@@ -254,12 +257,12 @@ class PersonContact
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getRole(): ?Role
     {
         return $this->role;
     }
 
-    public function setRole(?string $role): self
+    public function setRole(?Role $role): self
     {
         $this->role = $role;
 

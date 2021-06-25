@@ -17,17 +17,17 @@
         if (tab.length) tab[0].remove()
     },3000)    
       
-    setTimeout(function() {
+    setTimeout(function() {       
         tasks = getTasks();        
         google.charts.load('current', {'packages':['gantt']});
         google.charts.setOnLoadCallback(drawChart);
-    },1000)    
+    },500)    
 
     function daysToMilliseconds(days) {
       return days * 24 * 60 * 60 * 1000;
     }
     
-    function getTasks() {        
+    function getTasks() {      
         $.ajax({
             async: false,
             url: "{{path('planning_list_json',{id:projectId})}}",
@@ -56,21 +56,21 @@
         data.addColumn('date', 'End Date');
         data.addColumn('number', 'Duration');
         data.addColumn('number', 'Percent Complete');
-        data.addColumn('string', 'Dependencies');
+        data.addColumn('string', 'Dependencies');       
         
         if (tasks !== undefined) {
             tasks.forEach(element => {
                 data.addRows([
-                    [element.name, element.name, null, new Date(element.startDate), new Date(element.endDate), null, element.percentDone, element.dependency]
+                    [element.name, element.name, element.name, new Date(element.startDate), new Date(element.endDate), null, element.percentDone, element.dependency]
                 ]);
             });        
         }
 
         var options = {
             height: 500,
-            gantt: {
-                /*trackHeight: 30*/
-                criticalPathEnabled: false, // Critical path arrows will be the same as other arrows.
+            /*
+            gantt: {              
+                criticalPathEnabled: true, // Critical path arrows will be the same as other arrows.
                 arrow: {
                     angle: 100,
                     width: 5,
@@ -78,10 +78,33 @@
                     radius: 0
                 }
             }
+            */
         };
 
         var chart = new google.visualization.Gantt(document.getElementById('plannings'));
 
         chart.draw(data, options);
+
+        google.visualization.events.addListener(chart, 'select', selectHandler);
+        google.visualization.events.addListener(chart, 'ready', readyHandler);
+
+        function readyHandler() {                      
+            console.log(chart);            
+        }
+        
+        function selectHandler() {   
+            /*         
+            console.log(chart.getSelection());
+            console.log(chart.getSelection()[0]);
+            */
+            const index = chart.getSelection()[0]['row'];
+            //console.log(num);
+            const task = tasks[index];
+            //console.log(task.id);
+            var url = "{{path('planning_edit',{id:projectId, taskId:'idToChange'})}}";
+            url = url.replace('idToChange', task.id)
+            //console.log(url)
+            window.location.href = url;
+        }
     }       
 </script>

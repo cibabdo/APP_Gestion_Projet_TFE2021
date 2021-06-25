@@ -10,7 +10,7 @@
             {% for comment in comments %}             
                 <tr class="choice" onclick="document.location.href='{{path("project_comment_edit",{id:comment.project.Id, commentId:comment.id})}}';">
                     <td style="text-align: center;">{{comment.date|date("d/m/Y")}}</td>                    
-                    <td style="text-align: center;">Luigi</td>
+                    <td style="text-align: center;">{{comment.user.username}}</td>
                     <td style="text-align: center;">{{comment.comment}}</td>                    
                 </tr>
             {% endfor %}

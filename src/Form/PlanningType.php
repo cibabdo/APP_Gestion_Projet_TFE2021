@@ -24,7 +24,7 @@ class PlanningType extends AbstractType
                     'min' => 0,
                     'max' => 100
                 ]])
-            ->add('color', ColorType::class)     
+            /*->add('color', ColorType::class)     */
             ->add('dependency', ChoiceType::class, [
                 'choices'  => $builder->getData()->getDependencies(),
                 'required' => false

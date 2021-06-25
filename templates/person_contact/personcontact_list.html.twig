@@ -9,12 +9,11 @@
                 <th style="text-align: center;">Email</th>   
             </tr>
         </thead>
-        <tbody>           
-            {% set role = ["", "Architecte", "Ingénieur", "Coordinateur"] %}
+        <tbody>                       
             {% for personcontact in personcontacts %}             
                 <tr class="choice" onclick="document.location.href='{{path("personcontact_edit",{id:personcontact.id})}}';">
                     <td style="text-align: center;">{{personcontact.firstname}} {{personcontact.lastname}}</td>
-                    <td style="text-align: center;">{{role[personcontact.role]}}</td>
+                    <td style="text-align: center;">{{personcontact.role.name}}</td>
                     <td style="text-align: center;">{{personcontact.company.name | default('')}}</td>
                     <td style="text-align: center;">{{personcontact.engineeringoffice.name | default('')}}</td>
                     <td style="text-align: center;">{{personcontact.phone}}</td>

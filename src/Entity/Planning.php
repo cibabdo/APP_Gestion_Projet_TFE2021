@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -44,6 +45,7 @@ class Planning
      * @var \DateTime|null
      *
      * @ORM\Column(name="end_date", type="date", nullable=false)
+     * @Assert\GreaterThan(propertyPath="startDate", message="La date doit être postérieure à la date de début")
      */
     private $endDate;
 
