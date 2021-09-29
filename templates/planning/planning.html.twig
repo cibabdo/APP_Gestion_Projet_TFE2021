@@ -8,7 +8,7 @@
         <a href="{{path('planning_new', {id:projectId})}}" class="btn btn-primary btn-sm ml-5 add">Nouvelle tâche</a>
     </div>
 </div>
-<svg id="gantt" class=""></svg>
+<svg id="gantt" class="m-5"></svg>
 <script>
     setTimeout(function() {
         const tab = document.getElementsByClassName('alert')    
@@ -52,7 +52,7 @@
        
     });
 
-    gantt.change_view_mode('Day');       
+    gantt.change_view_mode('Week');       
     
     setTimeout(function() {
         scrollToToday();       
@@ -87,7 +87,7 @@
         let url = "{{path('planning_update_dates',{id:projectId, taskId:0})}}";
         url = url.replace('/0', '/'+taskId)
         $.ajax({            
-            async: false,
+            async: true,
             url: url,
             type: 'POST', 
             dataType: 'json',
@@ -106,7 +106,7 @@
         let url = "{{path('planning_update_progress',{id:projectId, taskId:0})}}";
         url = url.replace('/0', '/'+taskId)
         $.ajax({
-            async: false,
+            async: true,
             url: url,
             type: 'POST', 
             data: 'progress=' + progress,
@@ -125,7 +125,7 @@
         url = url.replace('/0', '/'+ taskId)
         document.location.href = url;
     }  
-
+    //aller à la tâche
     function scrollToToday() {   
         let date = new Date();
         let dd = String(date.getDate()).padStart(2, '0');
@@ -133,6 +133,7 @@
         let date_w = 'date_' + dd + '-' + mm;
         //console.log(date_w);
         let obj = document.getElementById(date_w);
+        if (obj === undefined || obj == null) return;	        
         $('#'+date_w).addClass('gantt-today');
         let x = obj.getAttribute('x');
         if (x === undefined || x == null) return;	        

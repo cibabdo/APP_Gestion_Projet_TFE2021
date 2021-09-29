@@ -163,7 +163,7 @@ var date_utils = {
         return date_string + (with_time ? ' ' + time_string : '');
     },
 
-    format(date, format_string = 'YYYY-MM-DD HH:mm:ss.SSS', lang = 'fr') {
+    format(date, format_string = 'YYYY-MM-DD HH:mm:ss.SSS', lang = 'en') {
         const values = this.get_date_values(date).map(d => padStart(d, 2, 0));
         const format_map = {
             YYYY: values[0],
@@ -545,7 +545,9 @@ class Bar {
             append_to: this.bar_group
         });
 
-        animateSVG(this.$bar, 'width', 0, this.width);
+        if (navigator.userAgent.indexOf("Firefox") === -1) {
+            animateSVG(this.$bar, 'width', 0, this.width);
+        }
 
         if (this.invalid) {
             this.$bar.classList.add('bar-invalid');
@@ -566,7 +568,9 @@ class Bar {
             style: "fill: " + this.task.color + ' !important' /* DONATO 28/09/2021 */
         });
 
-        animateSVG(this.$bar_progress, 'width', 0, this.progress_width);
+        if (navigator.userAgent.indexOf("Firefox") === -1) {
+            animateSVG(this.$bar_progress, 'width', 0, this.progress_width);
+        }
     }
 
     draw_label() {
@@ -657,8 +661,8 @@ class Bar {
         });
     }
 
-    show_popup() {
-        if (this.gantt.bar_being_dragged) return;
+    show_popup() {        
+        if (this.gantt.bar_being_dragged) return;        
 
         const start_date = date_utils.format(this.task._start, 'MMM D', this.gantt.options.language);
         const end_date = date_utils.format(
@@ -725,8 +729,9 @@ class Bar {
         ]);
     }
 
-    progress_changed() {
+    progress_changed() {        
         const new_progress = this.compute_progress();
+        if (this.task.progress == new_progress) return; /* DONATO 28/09/2021 */
         this.task.progress = new_progress;
         this.gantt.trigger_event('progress_change', [this.task, new_progress]);
     }
@@ -1110,7 +1115,7 @@ class Gantt {
             date_format: 'YYYY-MM-DD',
             popup_trigger: 'click',
             custom_popup_html: null,
-            language: 'fr'
+            language: 'en'
         };
         this.options = Object.assign({}, default_options, options);
     }
@@ -1696,8 +1701,12 @@ class Gantt {
 
             bar_wrapper.classList.add('active');
 
+            /*
             x_on_start = e.offsetX;
             y_on_start = e.offsetY;
+            */
+            x_on_start = e.layerX;
+            y_on_start = e.layerY;
 
             parent_bar_id = bar_wrapper.getAttribute('data-id');
             const ids = [
@@ -1719,8 +1728,12 @@ class Gantt {
 
         $.on(this.$svg, 'mousemove', e => {
             if (!action_in_progress()) return;
+            /*
             const dx = e.offsetX - x_on_start;
             const dy = e.offsetY - y_on_start;  
+            */
+            const dx = e.layerX - x_on_start;
+            const dy = e.layerY - y_on_start;
             
             let parent_width = 1;
 
@@ -1792,8 +1805,12 @@ class Gantt {
 
         $.on(this.$svg, 'mousedown', '.handle.progress', (e, handle) => {
             is_resizing = true;
+            /*
             x_on_start = e.offsetX;
             y_on_start = e.offsetY;
+            */
+            x_on_start = e.layerX;
+            y_on_start = e.layerY;
 
             const $bar_wrapper = $.closest('.bar-wrapper', handle);
             const id = $bar_wrapper.getAttribute('data-id');
@@ -1810,8 +1827,12 @@ class Gantt {
 
         $.on(this.$svg, 'mousemove', e => {            
             if (!is_resizing) return;
+            /*
             let dx = e.offsetX - x_on_start;
             let dy = e.offsetY - y_on_start;
+            */
+            let dx = e.layerX - x_on_start;
+            let dy = e.layerY - y_on_start;
 
             if (dx > $bar_progress.max_dx) {
                 dx = $bar_progress.max_dx;

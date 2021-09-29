@@ -1,3 +1,7 @@
+#gantt {
+  min-height: 400px !important;
+}
+
 .gantt .grid-background {
   fill: none; }
 
