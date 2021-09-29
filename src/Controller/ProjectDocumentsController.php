@@ -73,18 +73,28 @@ class ProjectDocumentsController extends AbstractController
      */
     public function add(Request $request, $id, ProjectRepository $projectRepository, SluggerInterface $slugger, ManagerRegistry $managerRegistry): Response
     {
+        //upload d'un nouveau document
         $document = new Document();
+        //appelle du formulaire type
         $form = $this->createForm(DocumentType::class, $document);
         $form->handleRequest($request);
 
+        //On recupére l'id du projet
         $project = $projectRepository->find($id);
         $document->setProject($project);        
 
+        //verification du forumulaire
         if ($form->isSubmitted() && $form->isValid()) {      
+            //récuperation du document
             $documentFile = $form->get('document')->getData();           
+            //vérification
             if ($documentFile) {
+                //on garde le path d'origine
                 $originalFilename = pathinfo($documentFile->getClientOriginalName(), PATHINFO_FILENAME);               
+                //créer un slug ??
                 $safeFilename = $slugger->slug($originalFilename);
+                //on lui donne un nom unique
+                //amélioration possible vers le versionning
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$documentFile->guessExtension();              
                 try {
                     $documentFile->move(
@@ -92,18 +102,18 @@ class ProjectDocumentsController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
+                    // todo la gestion des erreurs
                 }
                 // update document                
                 $document->setPath($this->getParameter('documents_directory'));
                 $document->setFilename($newFilename);
-                // save
+                // instanciation de la DB
                 $em = $managerRegistry->getManager();
                 $em->persist($document);
                 $em->flush();
                 // message            
                 $this->addFlash('message', 'Document uploadé');
-                // redirect
+                // redirection
                 //return $this->redirectToRoute('document_list', ['id' => $id]);
                 return $this->redirectToRoute('project_edit', ['id' => $id, 'onglet' => 'document']);
             }      

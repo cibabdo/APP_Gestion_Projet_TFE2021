@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Form\ProjectType;
+use App\Entity\PersonContact;
+use App\Entity\ProjectPerson;
 use App\Repository\ProjectRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\PersonContactRepository;
@@ -21,7 +23,7 @@ class ProjectController extends AbstractController {
     {
         if ($request->query->get('message')) $this->addFlash('message', $request->query->get('message'));    
         
-        // for external person, see projects with access        
+        // pour personne externe, voir projets si accès        
         if ($this->isGranted('ROLE_EXTERNAL')) {
             $projects_w = [];
             $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
@@ -46,7 +48,7 @@ class ProjectController extends AbstractController {
     {   
         $projects = null;
         if ($request->query->get('str') == '') {
-            // for external person, see projects with access        
+            // pour personne externe, voir projets si accès              
             if ($this->isGranted('ROLE_EXTERNAL')) {
                 $projects_w = [];                
                 $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
@@ -60,7 +62,7 @@ class ProjectController extends AbstractController {
             }  
         }
         else {
-            // for external person, see projects with access        
+            // pour personne externe, voir projets si accès             
             if ($this->isGranted('ROLE_EXTERNAL')) { 
                 $projects_w = [];                       
                 $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
@@ -82,35 +84,131 @@ class ProjectController extends AbstractController {
     /**
      * @Route("/project/new", name="project_new")
      */
-    public function add(Request $request, PersonContactRepository $personContact, ManagerRegistry $managerRegistry): Response
+    public function add(Request $request, ManagerRegistry $managerRegistry): Response
     {
+        //Vérification des permissions
         if ($this->isGranted('ROLE_EXTERNAL')) throw new AccessDeniedException('Vous n\'êtes pas autorisé'); 
 
         $project = new Project();    
         $today = new \DateTime();
         $project->setYear($today->format('Y'));
         $project->setWorkStartDate(new \DateTime());
-        $project->setWorkEndDate(new \DateTime('tomorrow'));
-
-        /*
-        $project->setEngineers($this->getChoices($personContact->findByRole(2)));            
-        $project->setCoordinators($this->getChoices($personContact->findByRole(3)));            
-        */
-        $project->setEngineers($personContact->findByRole(2));
-        $project->setCoordinators($personContact->findByRole(3));
+        $project->setWorkEndDate(new \DateTime('tomorrow'));            
 
         $form = $this->createForm(ProjectType::class, $project);               
 
         // form submit
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {               
+        if ($form->isSubmitted() && $form->isValid()) { 
+            // add new persons (internal)
+            $person = $this->getPerson('architect', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getArchitect());
+                $project->addPerson($person);       
+            }
+            else {
+                if ($project->getArchitect()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getArchitect())->setInput('architect'));  
+            }
             
-            // save
+            $person = $this->getPerson('secondArchitect', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getSecondArchitect());
+                $project->addPerson($person);
+            }
+            else {
+                if ($project->getSecondArchitect()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getSecondArchitect())->setInput('secondArchitect'));  
+            }
+
+            $person = $this->getPerson('hvacEngineer', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getHvacEngineer());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getHvacEngineer()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getHvacEngineer())->setInput('hvacEngineer'));  
+            }
+
+            $person = $this->getPerson('lowVoltageEngineer', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getLowVoltageEngineer());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getLowVoltageEngineer()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getLowVoltageEngineer())->setInput('lowVoltageEngineer'));  
+            }
+
+            $person = $this->getPerson('medicalFluidEngineer', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getMedicalFluidEngineer());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getMedicalFluidEngineer()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getMedicalFluidEngineer())->setInput('medicalFluidEngineer'));  
+            }
+
+            $person = $this->getPerson('strongVoltageEngineer', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getStrongVoltageEngineer());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getStrongVoltageEngineer()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getStrongVoltageEngineer())->setInput('strongVoltageEngineer'));  
+            }
+
+            $person = $this->getPerson('supervisor', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getSupervisor());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getSupervisor()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getSupervisor())->setInput('supervisor'));  
+            }
+
+            $person = $this->getPerson('sanitaryEngineer', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getSanitaryEngineer());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getSanitaryEngineer()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getSanitaryEngineer())->setInput('sanitaryEngineer'));  
+            }                   
+
+            // add new persons (external)
+            $person = $this->getPerson('externalArchitectureOffice', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getExternalArchitectureOffice());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getExternalArchitectureOffice()) $project->addPerson((new ProjectPerson())->setProject($project)->setPersonEngineering($project->getExternalArchitectureOffice())->setInput('externalArchitectureOffice'));  
+            }  
+
+            $person = $this->getPerson('externalEngineer', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getExternalEngineer());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getExternalEngineer()) $project->addPerson((new ProjectPerson())->setProject($project)->setPersonEngineering($project->getExternalEngineer())->setInput('externalEngineer'));  
+            }
+
+            $person = $this->getPerson('safetyCoordinator', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getSafetyCoordinator());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getSafetyCoordinator()) $project->addPerson((new ProjectPerson())->setProject($project)->setPersonEngineering($project->getSafetyCoordinator())->setInput('safetyCoordinator'));  
+            }              
+            
+            // update project
             $em = $managerRegistry->getManager();
             $em->persist($project);
             $em->flush();
+
             // message            
-            $this->addFlash('message', 'Projet enregistré');
+            $this->addFlash('message', 'Projet enregistré (n\'oubliez pas d\'inviter vos personnes externes si vous les avez modifiés)');
+
             // redirect
             return $this->redirectToRoute('project_edit', ['id' => $project->getId()]);
         }       
@@ -126,9 +224,9 @@ class ProjectController extends AbstractController {
     /**
      * @Route("/project/{id}", methods={"GET","POST"}, name="project_edit")
      */
-    public function update(Request $request, $id, PersonContactRepository $personContact, ManagerRegistry $managerRegistry, ProjectRepository $projectRepository, ProjectAccessRepository $projectAccessRepository): Response
+    public function update(Request $request, $id, ManagerRegistry $managerRegistry, ProjectRepository $projectRepository, ProjectAccessRepository $projectAccessRepository): Response
     {     
-        // for external person, see projects with access        
+        // pour personne externe, voir projets si accès              
         if ($this->isGranted('ROLE_EXTERNAL')) {
             $isAccess = false;            
             $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
@@ -141,24 +239,137 @@ class ProjectController extends AbstractController {
             if (!$isAccess) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
         }   
 
-        $project = $projectRepository->findOneBy(['id' => $id]);
-    
-        $project->setEngineers($personContact->findByRole(2));
-        $project->setCoordinators($personContact->findByRole(3));
+        $project = $projectRepository->findOneBy(['id' => $id]);         
+        
+        // set new persons (internal)       
+        $project->setArchitect($this->getPersonEmployee('architect', $project->getPersons()));
+        $project->setSecondArchitect($this->getPersonEmployee('secondArchitect', $project->getPersons()));
+        $project->setHvacEngineer($this->getPersonEmployee('hvacEngineer', $project->getPersons()));
+        $project->setLowVoltageEngineer($this->getPersonEmployee('lowVoltageEngineer', $project->getPersons()));
+        $project->setMedicalFluidEngineer($this->getPersonEmployee('medicalFluidEngineer', $project->getPersons()));
+        $project->setStrongVoltageEngineer($this->getPersonEmployee('strongVoltageEngineer', $project->getPersons()));
+        $project->setSupervisor($this->getPersonEmployee('supervisor', $project->getPersons()));
+        $project->setSanitaryEngineer($this->getPersonEmployee('sanitaryEngineer', $project->getPersons()));
 
+        // set new persons (external)       
+        $project->setExternalArchitectureOffice($this->getPersonEngineer('externalArchitectureOffice', $project->getPersons()));
+        $project->setExternalEngineer($this->getPersonEngineer('externalEngineer', $project->getPersons()));
+        $project->setSafetyCoordinator($this->getPersonEngineer('safetyCoordinator', $project->getPersons()));
+        
         $form = $this->createForm(ProjectType::class, $project);
-
-        //dd($project);
 
         // form submit
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {                       
-            // save
-            $em = $managerRegistry->getManager();
+        if ($form->isSubmitted() && $form->isValid()) {
+            // add new persons (internal)
+            $person = $this->getPerson('architect', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getArchitect());
+                $project->addPerson($person);       
+            }
+            else {
+                if ($project->getArchitect()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getArchitect())->setInput('architect'));  
+            }
+            
+            $person = $this->getPerson('secondArchitect', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getSecondArchitect());
+                $project->addPerson($person);
+            }
+            else {
+                if ($project->getSecondArchitect()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getSecondArchitect())->setInput('secondArchitect'));  
+            }
+
+            $person = $this->getPerson('hvacEngineer', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getHvacEngineer());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getHvacEngineer()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getHvacEngineer())->setInput('hvacEngineer'));  
+            }
+
+            $person = $this->getPerson('lowVoltageEngineer', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getLowVoltageEngineer());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getLowVoltageEngineer()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getLowVoltageEngineer())->setInput('lowVoltageEngineer'));  
+            }
+
+            $person = $this->getPerson('medicalFluidEngineer', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getMedicalFluidEngineer());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getMedicalFluidEngineer()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getMedicalFluidEngineer())->setInput('medicalFluidEngineer'));  
+            }
+
+            $person = $this->getPerson('strongVoltageEngineer', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getStrongVoltageEngineer());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getStrongVoltageEngineer()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getStrongVoltageEngineer())->setInput('strongVoltageEngineer'));  
+            }
+
+            $person = $this->getPerson('supervisor', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getSupervisor());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getSupervisor()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getSupervisor())->setInput('supervisor'));  
+            }
+
+            $person = $this->getPerson('sanitaryEngineer', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getSanitaryEngineer());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getSanitaryEngineer()) $project->addPerson((new ProjectPerson())->setProject($project)->setEmployee($project->getSanitaryEngineer())->setInput('sanitaryEngineer'));  
+            }                   
+
+            // add new persons (external)
+            $person = $this->getPerson('externalArchitectureOffice', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getExternalArchitectureOffice());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getExternalArchitectureOffice()) $project->addPerson((new ProjectPerson())->setProject($project)->setPersonEngineering($project->getExternalArchitectureOffice())->setInput('externalArchitectureOffice'));  
+            }  
+
+            $person = $this->getPerson('externalEngineer', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getExternalEngineer());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getExternalEngineer()) $project->addPerson((new ProjectPerson())->setProject($project)->setPersonEngineering($project->getExternalEngineer())->setInput('externalEngineer'));  
+            }
+
+            $person = $this->getPerson('safetyCoordinator', $project->getPersons());
+            if (isset($person)) {
+                $person->setEmployee($project->getSafetyCoordinator());
+                $project->addPerson($person);            
+            }
+            else {
+                if ($project->getSafetyCoordinator()) $project->addPerson((new ProjectPerson())->setProject($project)->setPersonEngineering($project->getSafetyCoordinator())->setInput('safetyCoordinator'));  
+            }
+                       
+            // update DB        
+            $em = $managerRegistry->getManager();            
             $em->persist($project);
             $em->flush();
+
             // message            
-            $this->addFlash('message', 'Projet modifié');
+            $this->addFlash('message', 'Projet modifié (n\'oubliez pas d\'inviter vos personnes externes si vous les avez modifiés)');
+            
             // redirect
             return $this->redirectToRoute('project_edit', ['id' => $id]);
         }
@@ -169,6 +380,30 @@ class ProjectController extends AbstractController {
             'name' => $project->getTitle(),
             'onglet' => $request->query->get('onglet')
         ]);
+    }
+
+    private function getPerson(String $input, \Doctrine\ORM\PersistentCollection $persons) {
+        // \Doctrine\Common\Collections\ArrayCollection
+        $GLOBALS['input'] = $input;
+        $tab = $persons->filter(function($element) {
+            return ($element->getInput() === $GLOBALS['input']);
+        })->getValues();        
+        if (count($tab) != 0) 
+            return $tab[0];
+        else
+            return null;
+    }
+
+    private function getPersonEmployee(String $input, \Doctrine\ORM\PersistentCollection $persons) {
+        $person = $this->getPerson($input, $persons);
+        if (isset($person)) return $person->getEmployee();
+        return null;
+    }
+
+    private function getPersonEngineer(String $input, \Doctrine\ORM\PersistentCollection $persons) {
+        $person = $this->getPerson($input, $persons);
+        if (isset($person)) return $person->getPersonEngineering();
+        return null;
     }
 
     /**

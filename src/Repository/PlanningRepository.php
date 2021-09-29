@@ -24,12 +24,15 @@ class PlanningRepository extends ServiceEntityRepository
     */    
     public function findAllByProjectId($id)
     {        
-        return $this->createQueryBuilder('c')
-            ->select("c.id, c.name, DATE_FORMAT(c.startDate, '%Y-%m-%d') as startDate, DATE_FORMAT(c.endDate, '%Y-%m-%d') as endDate, c.percentDone, c.color, c.dependency")
-            ->where('c.project = :id')
-            ->setParameter('id', $id)            
-            ->getQuery()
-            ->getResult();
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            "select c.id, u.username, c.name, c.color, DATE_FORMAT(c.updatedAt, '%Y-%m-%d %H:%i:%s') as updatedAt, DATE_FORMAT(c.startDate, '%Y-%m-%d') as start, DATE_FORMAT(c.endDate, '%Y-%m-%d') as end, " .
+            "c.percentDone as progress, coalesce(c.dependency,'') as dependencies " .
+            "from App\Entity\Planning c " . 
+            "join c.user u " .
+            "WHERE c.project = :id"      
+        )->setParameter('id', $id);
+        return $query->getResult();
     }
 
     /**

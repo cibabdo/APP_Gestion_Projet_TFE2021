@@ -1,25 +1,32 @@
-    <table class="table">
+<div class="table-responsive-md">
+    <table class="table table-sm table-hover">
         <thead>
-            <tr>
-                <th style="text-align: center;">Nom</th> 
-                <th style="text-align: center;">Fonction</th> 
-                <th style="text-align: center;">Entreprise</th> 
-                <th style="text-align: center;">Bureau d'étude</th>                 
-                <th style="text-align: center;">Téléphone</th>   
-                <th style="text-align: center;">Email</th>   
+            <tr class="table-success">
+                <th scope="col" style="text-align: center;">Prénom</th> 
+                <th scope="col" style="text-align: center;">Nom</th>                 
+                <th scope="col" style="text-align: center;">Entreprise</th> 
+                <th scope="col" style="text-align: center; font-size: 13px;">Bureau d'étude</th>                 
+                <th scope="col" style="text-align: center;">Téléphone</th>   
+                <th scope="col" style="text-align: center;">Gsm</th>  
+                <th scope="col" style="text-align: center;">Email</th>   
             </tr>
         </thead>
-        <tbody>           
-            {% set role = ["", "Architecte", "Ingénieur", "Coordinateur"] %}
+        <tbody>                       
             {% for personcontact in personcontacts %}             
-                <tr class="choice" onclick="document.location.href='{{path("personcontact_edit",{id:personcontact.id})}}';">
-                    <td style="text-align: center;">{{personcontact.firstname}} {{personcontact.lastname}}</td>
-                    <td style="text-align: center;">{{role[personcontact.role]}}</td>
-                    <td style="text-align: center;">{{personcontact.company.name | default('')}}</td>
-                    <td style="text-align: center;">{{personcontact.engineeringoffice.name | default('')}}</td>
-                    <td style="text-align: center;">{{personcontact.phone}}</td>
-                    <td style="text-align: center;">{{personcontact.email}}</td>
+                {% if not personcontact.company %}
+                <tr class="choice table-info " onclick="document.location.href='{{path("personcontact_edit",{id:personcontact.id})}}';">
+                {% else %}
+                <tr class="choice table-primary " onclick="document.location.href='{{path("personcontact_edit",{id:personcontact.id})}}';">
+                {% endif %}
+                    <td style="text-align: left;">{{personcontact.firstname}}</td>
+                    <td style="text-align: left;">{{personcontact.lastname}}</td>                    
+                    <td style="text-align: left; font-size: 13px;">{{personcontact.company.name | default('')}}</td>
+                    <td style="text-align: left; font-size: 13px;">{{personcontact.engineeringoffice.name | default('')}}</td>
+                    <td style="text-align: left; font-size: 13px;">{{personcontact.phone}}</td>
+                    <td style="text-align: left; font-size: 13px;">{{personcontact.gsm}}</td>
+                    <td style="text-align: left;">{{personcontact.email}}</td>
                 </tr>
             {% endfor %}
         </tbody>          
-    </table>   
+    </table>
+</div>

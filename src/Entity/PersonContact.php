@@ -31,14 +31,7 @@ class PersonContact
      */
     private $id;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="firstname", type="string", length=255, nullable=true)
-     */
-    private $firstname;
-
-    /**
+      /**
      * @var string|null
      *
      * @ORM\Column(name="lastname", type="string", length=255, nullable=true)
@@ -48,30 +41,9 @@ class PersonContact
     /**
      * @var string|null
      *
-     * @ORM\Column(name="address", type="string", length=255, nullable=true)
+     * @ORM\Column(name="firstname", type="string", length=255, nullable=true)
      */
-    private $address;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="zipcode", type="string", length=255, nullable=true)
-     */
-    private $zipcode;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="location", type="string", length=255, nullable=true)
-     */
-    private $location;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="country", type="string", length=255, nullable=true)
-     */
-    private $country;
+    private $firstname;
 
     /**
      * @var string|null
@@ -83,14 +55,14 @@ class PersonContact
     /**
      * @var string|null
      *
-     * @ORM\Column(name="fax", type="string", length=255, nullable=true)
+     * @ORM\Column(name="gsm", type="string", length=255, nullable=true)
      */
-    private $fax;
+    private $gsm;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @ORM\Column(name="email", type="string", length=255, nullable=false)
      * @Assert\Email()
      */
     private $email;
@@ -98,16 +70,9 @@ class PersonContact
     /**
      * @var string|null
      *
-     * @ORM\Column(name="language", type="string", length=255, nullable=true)
+     * @ORM\Column(name="language", type="string", length=255, nullable=false)
      */
     private $language;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="role", type="integer", nullable=false)
-     */
-    private $role;
 
     /**
      * @var \Company
@@ -218,14 +183,14 @@ class PersonContact
         return $this;
     }
 
-    public function getFax(): ?string
+    public function getGsm(): ?string
     {
-        return $this->fax;
+        return $this->gsm;
     }
 
-    public function setFax(?string $fax): self
+    public function setGsm(?string $gsm): self
     {
-        $this->fax = $fax;
+        $this->gsm = $gsm;
 
         return $this;
     }
@@ -250,18 +215,6 @@ class PersonContact
     public function setLanguage(?string $language): self
     {
         $this->language = $language;
-
-        return $this;
-    }
-
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(?string $role): self
-    {
-        $this->role = $role;
 
         return $this;
     }

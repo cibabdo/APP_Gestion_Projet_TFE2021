@@ -8,80 +8,134 @@
         <a href="{{path('planning_new', {id:projectId})}}" class="btn btn-primary btn-sm ml-5 add">Nouvelle tâche</a>
     </div>
 </div>
-<div id="plannings" class="m-5">
-    Chargement...
-</div>
+<svg id="gantt" class=""></svg>
 <script>
     setTimeout(function() {
         const tab = document.getElementsByClassName('alert')    
         if (tab.length) tab[0].remove()
-    },3000)    
-      
-    setTimeout(function() {
-        tasks = getTasks();        
-        google.charts.load('current', {'packages':['gantt']});
-        google.charts.setOnLoadCallback(drawChart);
-    },1000)    
-
-    function daysToMilliseconds(days) {
-      return days * 24 * 60 * 60 * 1000;
-    }
+    },3000)         
     
-    function getTasks() {        
+    tasks = getTasks();         
+    
+    gantt = new Gantt("#gantt", tasks, {      
+        custom_popup_html: function(task) {            
+            const start_date = String(task._start.getDate()).padStart(2, '0') + '/' + String(task._start.getMonth() + 1).padStart(2, '0') + '/' + task._start.getFullYear();
+            const end_date = String(task._end.getDate()).padStart(2, '0') + '/' + String(task._end.getMonth() + 1).padStart(2, '0') + '/' + task._end.getFullYear();
+            return `
+                <div class="details-container">
+                <h3>${task.name}</h3>
+                <p>Du ${start_date} au ${end_date}</p>
+                <p>Effectué à ${task.progress} %</p>
+                <p>Modifié le ${task.updatedAt} par ${task.username}</p>
+                <button class="btn btn-sm btn-blue text-center" onclick="editTask(${task.id});return false;">Editer</button>
+                </div>
+            `;
+        },
+        on_date_change: function(task, start, end) {
+            let dd, mm, yyyy;
+
+            dd = String(start.getDate()).padStart(2, '0');
+            mm = String(start.getMonth() + 1).padStart(2, '0');
+            yyyy = start.getFullYear();
+            start = yyyy + '-' + mm + '-' + dd;   
+
+            dd = String(end.getDate()).padStart(2, '0');
+            mm = String(end.getMonth() + 1).padStart(2, '0');
+            yyyy = end.getFullYear();
+            end = yyyy + '-' + mm + '-' + dd;   
+          
+            updateTaskDates(task.id, start, end);
+        },
+        on_progress_change: function(task, progress) {         
+            updateTaskProgress(task.id, progress);
+        }
+       
+    });
+
+    gantt.change_view_mode('Day');       
+    
+    setTimeout(function() {
+        scrollToToday();       
+    }, 1000);
+
+    /************************************/
+   
+    // réception des tâches en json du controleur
+    function getTasks() {  
+        let tasks;       
         $.ajax({
             async: false,
             url: "{{path('planning_list_json',{id:projectId})}}",
             type: 'GET',
+            dataType: 'text',
+            success: function (data) {                  
+                tasks = JSON.parse(data); 
+                tasks.forEach((element, index) => {
+                    element.id =  element.id.toString();
+                    tasks[index] = element;                   
+                });              
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur chargement des tâches')
+            }
+        })               
+        return tasks;
+    }
+
+    function updateTaskDates(taskId, start, end) {
+        let url = "{{path('planning_update_dates',{id:projectId, taskId:0})}}";
+        url = url.replace('/0', '/'+taskId)
+        $.ajax({            
+            async: false,
+            url: url,
+            type: 'POST', 
             dataType: 'json',
-            success: function (result) {         
-                tasks = result;
+            data: 'start=' + start + '&end='+end,     
+            success: function (data) {        
+                //console.log(data);
             },
             error: function(jqXHR, textStatus, errorThrown ) {
                 console.log(jqXHR, textStatus, errorThrown)
                 alert('Erreur chargement des tâches')
             }
         })    
-        return tasks;
     }
-    
-    function drawChart() {                
-        var data = new google.visualization.DataTable();
 
-        //console.log(tasks) 
-
-        data.addColumn('string', 'Task ID');
-        data.addColumn('string', 'Task Name');
-        data.addColumn('string', 'Resource');
-        data.addColumn('date', 'Start Date');
-        data.addColumn('date', 'End Date');
-        data.addColumn('number', 'Duration');
-        data.addColumn('number', 'Percent Complete');
-        data.addColumn('string', 'Dependencies');
-        
-        if (tasks !== undefined) {
-            tasks.forEach(element => {
-                data.addRows([
-                    [element.name, element.name, null, new Date(element.startDate), new Date(element.endDate), null, element.percentDone, element.dependency]
-                ]);
-            });        
-        }
-
-        var options = {
-            height: 500,
-            gantt: {
-                /*trackHeight: 30*/
-                criticalPathEnabled: false, // Critical path arrows will be the same as other arrows.
-                arrow: {
-                    angle: 100,
-                    width: 5,
-                    color: 'green',
-                    radius: 0
-                }
+    function updateTaskProgress(taskId, progress) {
+        let url = "{{path('planning_update_progress',{id:projectId, taskId:0})}}";
+        url = url.replace('/0', '/'+taskId)
+        $.ajax({
+            async: false,
+            url: url,
+            type: 'POST', 
+            data: 'progress=' + progress,
+            success: function (data) {        
+                //console.log(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur chargement des tâches')
             }
-        };
+        })    
+    }
 
-        var chart = new google.visualization.Gantt(document.getElementById('plannings'));
+    function editTask(taskId) {
+        let url = "{{path('planning_edit',{id:projectId, taskId:0})}}";
+        url = url.replace('/0', '/'+ taskId)
+        document.location.href = url;
+    }  
 
-        chart.draw(data, options);
-    }       
+    function scrollToToday() {   
+        let date = new Date();
+        let dd = String(date.getDate()).padStart(2, '0');
+        let mm = String(date.getMonth() + 1).padStart(2, '0');
+        let date_w = 'date_' + dd + '-' + mm;
+        //console.log(date_w);
+        let obj = document.getElementById(date_w);
+        $('#'+date_w).addClass('gantt-today');
+        let x = obj.getAttribute('x');
+        if (x === undefined || x == null) return;	        
+        $('.gantt-container').scrollLeft(x);
+    }
 </script>

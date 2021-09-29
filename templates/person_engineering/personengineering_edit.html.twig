@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col">
+        {{ form_start(form, {'attr' : {'autocomplete' : 'off'}}) }}
+            <h1 class="text-center">Ingénieur externe</h1>
+            <div class="mb-3">
+                {{ form_label(form.firstname, 'Prénom', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.firstname) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.firstname) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.firstname, {'attr': {'class': 'form-control'}}) }}    
+            </div>    
+
+            <div class="mb-3">
+                {{ form_label(form.lastname, 'Nom', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.lastname) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.lastname) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.lastname, {'attr': {'class': 'form-control'}}) }}    
+            </div>   
+
+            <div class="mb-3">
+                {{ form_label(form.language, 'Langue', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.language) %}
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.language) }}
+                    </div>
+                {% endif %}
+                {{ form_widget(form.language, {'attr': {'class': 'form-control'}}) }}       
+            </div>  
+
+            <div class="mb-3">
+                {{ form_label(form.role, 'Fonction', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.role) %}
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.role) }}
+                    </div>
+                {% endif %}
+                {{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}       
+            </div>            
+
+            <div class="mb-3">
+                {{ form_label(form.engineeringOffice, 'Bureau d\'étude', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.engineeringOffice) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.engineeringOffice) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.engineeringOffice, {'attr': {'class': 'form-control'}}) }}    
+            </div>             
+
+            {#<div class="mb-3">
+                {{ form_label(form.address, 'Adresse', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.address) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.address) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.address, {'attr': {'class': 'form-control'}}) }}    
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.zipcode, 'Code postal', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.zipcode) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.zipcode) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.zipcode, {'attr': {'class': 'form-control'}}) }}    
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.location, 'Localité', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.location) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.location) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.location, {'attr': {'class': 'form-control'}}) }}    
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.country, 'Pays', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.country) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.country) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.country, {'attr': {'class': 'form-control'}}) }}    
+            </div>#}
+
+            <div class="mb-3">
+                {{ form_label(form.phone, 'Téléphone', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.phone) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.phone) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}    
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.gsm, 'gsm', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.gsm) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.gsm) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.gsm, {'attr': {'class': 'form-control'}}) }}    
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.email, 'Email', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.email) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.email) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}    
+            </div>
+
+            <div class="my-2">
+                <button type="submit" class="btn btn-primary">Ok</button>     
+                {% if form.vars.value.id %}           
+                    <a href="#" class="btn btn-danger ml-3" onClick="deletePersonengineering()">Supprimer</a>
+                {% endif %}
+                <a href="{{path('personengineering_list')}}" class="btn btn-secondary ml-3">Retour</a>
+            </div>            
+        {{ form_end(form) }}
+    </div>    
+</div>
+<script>
+    document.getElementById("person_engineering_firstname").focus()    
+
+    function deletePersonengineering() {
+        if (confirm('Confirmer la suppression ?')) {                    
+            $.ajax({
+                url: '{{path("personengineering_delete",{id:id})}}',
+                type: 'DELETE',
+                dataType: 'text',
+                success: function (result) {                    
+                    document.location.href = '{{path("personengineering_list")}}?message=Personne supprimée'
+                },
+                error: function(jqXHR, textStatus, errorThrown ) {
+                    console.log(jqXHR, textStatus, errorThrown)
+                    alert('Erreur lors de la suppression')                    
+                }
+            })            
+        }        
+    }
+</script>
+{% endblock %}

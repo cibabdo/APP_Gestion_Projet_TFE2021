@@ -55,7 +55,7 @@ class LocationController extends AbstractController
         // form submit
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {           
-            // save
+            // instanciation DB de l'utilisateur
             $em = $managerRegistry->getManager();
             $em->persist($location);
             $em->flush();
@@ -82,7 +82,7 @@ class LocationController extends AbstractController
         // form submit
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {           
-            // save
+            // instanciation DB de l'utilisateur
             $em = $managerRegistry->getManager();
             $em->persist($location);
             $em->flush();

@@ -7,98 +7,53 @@ SDK Visual Studio Code
 
 ========================
 
-### SERVICE
-
-- PDF :arrow_right: dompdf :arrow_right: https://github.com/dompdf/dompdf<br/>
-   
-- Mailer :arrow_right: Symfony Bundle
-
-
 ### WWW - CLOUD
 
-# OBSOLOTE
+Version en ligne chez OVH
 
-# Version en ligne chez LWS
-# => la loose => erreur 500 depuis dimanche :'(
 
-# http://www.abiusodtfe2021.be/
+http://www.chipinbox.be
 
-# Accès lws -> Voir mail Mr Beck
+Code d'accès fournit à Mr Beck
 
-Dépot chez ovh
-http://www.chipinbox.be/
-
-Accès phpmyadmin -> https://phpmyadmin.cluster021.hosting.ovh.net/index.php 
-Login: chipinbomr782
-Pass: 11wsT673
-
-Accès FTP -> ftp://chipinbomr@ftp.cluster021.hosting.ovh.net:21/ 
-Login : chipinbomr
-Pass: 11wsT673
-
-Version sur serveur privé
-http://tfe2021abiusod.dyndns-web.com:8000 
-
-Pas d'accès externe :)
 
 Code source sur Github
 https://github.com/cibabdo/APP_Gestion_Projet_TFE2021
 
 
-<h3 id="TODO">0. TODO List </h3>
+<h3 id="TODO">0. TFE 2me Session - TODO LIST </h3>
 <table>
-<tr>
-<th>To Do</th><th>Etat</th>
-</tr>
-<tr><td>Contact admin</td><td>:x:</td></tr>
-<tr><td>Password perdu ou erroné</td><td>:x:</td></tr>
-<tr><td>Créer compte via API Google Mail</td><td>:x:</td></tr>
-<tr><td>Edition Planning</td><td>:x:</td></tr>
-<tr><td>Permission sur champ suivant Type de compte utilisateur</td><td>:x:</td></tr>
+<tr><td>v rendre template plus agréable</td></tr>
+<tr><td>v importer entrée dans DB</td></tr>
+<tr><td>v date picker comme sur chrome (input type="date")</td></tr>
+<tr><td>v gérer mot de passe oublié</td></tr>
+<tr><td>v créer une table personnes techniques (ingénieur, supervisor, sécurité, architecte, ...), c'est la table person_engineering</td></tr>
+<tr><td>v créer une table project_person qui lie les personnes de contact et les personnes techniques à un projet</td></tr>
+
+<tr><td>v planning</td></tr>
+    <tr><td>v scroller sur le jour d'aujourd'hui</td></tr>
+    <tr><td>v éditer la tâche</td></tr>
+    <tr><td>v Montrer la personne qui a édité en dernier la tâche !!!</td></tr>
+    <tr><td>v Déplacer tâche enfant si fin de la tâche bouge !!!</td></tr>
+    <tr><td>v Couleur des tâches => style="fill: ${task.color} !important;"</td></tr>
+    <tr><td>:x: Commantaire suite à édition</td></tr>
+
+<tr><td>permission d'encodage sur des parties du projet</td></tr>
+    <tr><td>v choisir les bureaux d'étude</td></tr>
+    <tr><td>v personnes externes (ingénieurs)</td></tr>
+    <tr><td>v travaux => proposer l'activité selon l'entreprise choisie</td></tr>
+    <tr><td>v si on change d'entreprise ou bureau d'études, revoir les listes et faire des contrôles croisés</td></tr>
+    <tr><td>v montrer les personnes de contact pour les entreprises et les bureaux d'étude</td></tr>
+    <tr><td>v les externes ne peuvent qu'ajouter des documents et commentaires !!!</td></tr>
+    <tr><td>v les internes peuvent tout faire sauf l'admin !!!</td></tr>
+
+<tr><td>gérer les erreurs formulaires côté client </td></tr>
+    <tr><td>v natif html, c'est ok car required et type via l'entity</td></tr>
+    <tr><td>v cohérence dates via javascript !!!</td></tr>
 </table>
-<h3 id="user">1. Utilisateur </h3>
 <table>
-<tr>
-<th>Utilisateur admin</th>
-</tr>
-<tr><td>Lors de la mise en ligne pas d'utilisateur "admin" un route "url/test" existe pour créer un "admin". :no_entry: A bloquer une fois le compte créer (problème de sécurité)</td>
-<td>Modifier /src/Controller/InvitationController.php et la fonction test en ligne 169 et 170</td>
-<td>Login : prof@isl.be Password : test1234 Role: Admin</td>
-<td>Login : prof2@isl.be Password : test1234 Role: Interne</td></tr>
-</table>
-<h3 id="etat">2. Fonction:</h3>
-<table>
-    <tr><th>Administration</th><th>Etat</th><th>Remarques</th></tr>
-    <tr><td>Gestion sites</td><td>:white_check_mark:</td></tr>
-    <tr><td>Gestion activitésentreprises</td><td>:white_check_mark:</td></tr>
-    <tr><td>Gestion entreprises</td><td>:white_check_mark:</td></tr>
-    <tr><td>Gestion type bureaux études</td><td>:white_check_mark:</td></tr>
-    <tr><td>Gestion bureaux études</td><td>:white_check_mark:</td></tr>
-    <tr><td>Gestion personnes externes</td><td>:white_check_mark:</td></tr>
-    <tr><td>Gestion travaux</td><td>:white_check_mark:</td></tr>
-    <tr><td>Gestion utilisateurs</td><td>:white_check_mark:</td></tr>
-    <br/>
-    <tr><th>Projet</th><th>Etat</th><th>Remarques</th></tr>
-    <tr><td>Gestion des chantier</td><td>:white_check_mark:</td></td></tr>
-    <tr><td>Gestion Création Planning</td><td>:white_check_mark:</td><td>Sauf edit / couleur</td></tr>
-    <tr><td>Gestion Invitation user externe</td><td>:white_check_mark:</td><tr>
-    <tr><td>Validité token + Effacement token</td><td>:white_check_mark:</td><tr>
-    <tr><td>Gestion documents</td><td>:white_check_mark:</td><tr>
-    <tr><td>Gestion Requêtes</td><td>:white_check_mark:</td><tr>
-    <tr><td>Gestion pdf des Requêtes</td><td>:white_check_mark:</td><tr>
-    <tr><td>Gestion Statistiques</td><td>:white_check_mark:</td><tr>
-    <tr><td>Gestion backup</td><td>:x:</td><td>En cours</td><tr>
-    <br/>
-</table>
-
-
-## Rapport
-
-Dans répertoire TFE_Rapport -> racine du répo
-
-<table>
-    <tr><th>Raport</th><th>Etat</th><th>Remarques</th></tr>
-    <tr><td>Gestion Chantier Final.docx</td><td>:white_check_mark:</td></tr>
+<tr><td>Login : prof1@isl.be Password : test1234 Role: Admin</td></tr>
+<tr><td>Login : prof2@isl.be Password : test1234 Role: Interne</td></tr>
 </table>
  
 

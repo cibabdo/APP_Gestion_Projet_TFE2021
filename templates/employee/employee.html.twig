@@ -12,13 +12,14 @@
                 {{ message }}              
             </div>
         {% endfor %}
-        <h2>Employé</h2>
+        <h2>Employés</h2>
         <div class="form-group inline">
             <input type="text" class="form-control" id="search" value="" data-url="{{path('employee_search')}}" data-target="#employees" placeholder="Nom de l'employé" autofocus>        
         </div>   
         &nbsp;<a href="{{path('employee_new')}}" class="btn btn-primary btn-sm ml-5 add">Ajouter</a>
     </div>
 </div>
+<br/>
 <div class="row">
     <div class="col">
         <div id="employees" class="d-flex flex-row  justify-content-center" style="flex-wrap: wrap;">

@@ -17,14 +17,14 @@ class PlanningType extends AbstractType
     {        
         $builder
             ->add('name')
-            ->add('startDate', DateType::class, ['format' => 'dd-MM-yyyy'])
-            ->add('endDate', DateType::class, ['format' => 'dd-MM-yyyy'])
+            ->add('startDate', DateType::class, ['widget' => 'single_text' ])
+            ->add('endDate', DateType::class, ['widget' => 'single_text' ])
             ->add('percentDone', RangeType::class, [                
                 'attr' => [                          
                     'min' => 0,
                     'max' => 100
                 ]])
-            ->add('color', ColorType::class)     
+            ->add('color', ColorType::class)
             ->add('dependency', ChoiceType::class, [
                 'choices'  => $builder->getData()->getDependencies(),
                 'required' => false

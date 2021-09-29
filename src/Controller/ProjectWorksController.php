@@ -64,11 +64,15 @@ class ProjectWorksController extends AbstractController
         // form submit
         $form->handleRequest($request);        
         if ($form->isSubmitted() && $form->isValid()) {                        
-            // documents            
+            // envoi de documents attachés aux travaux
             $documents = $form->get('documents')->getData();
-            foreach($documents as $documentFile){                
-                $originalFilename = pathinfo($documentFile->getClientOriginalName(), PATHINFO_FILENAME);               
+            foreach($documents as $documentFile){     
+                //on garde le path d'origine           
+                $originalFilename = pathinfo($documentFile->getClientOriginalName(), PATHINFO_FILENAME);      
+                //créer un slug ??   
                 $safeFilename = $slugger->slug($originalFilename);
+                //on lui donne un nom unique
+                //amélioration possible vers le versionning
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$documentFile->guessExtension();              
                 try {
                     $documentFile->move(
@@ -76,7 +80,7 @@ class ProjectWorksController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
+                    // todo la gestion des erreurs
                 }
                 $document = new Document();
                 $document->setProject($project);        
@@ -87,13 +91,14 @@ class ProjectWorksController extends AbstractController
                 $work->addDocument($document);
             }
 
-            // save work
+            // instanciation de la DB
             $em = $managerRegistry->getManager();
             $em->persist($work);
             $em->flush();
 
             // message            
             $this->addFlash('message', 'Poste enregistrée');
+            
             // redirect
             //return $this->redirectToRoute('project_works_list', ['projectId' => $projectId]);
             return $this->redirectToRoute('project_edit', ['id' => $projectId, 'onglet' => 'work']);
@@ -117,7 +122,7 @@ class ProjectWorksController extends AbstractController
     {
         $project = $projectRepository->find($projectId);
 
-        $work = $projectWorkRepository->findOneBy(['id' => $workId]);      
+        $work = $projectWorkRepository->findOneBy(['id' => $workId]);           
         $form = $this->createForm(ProjectWorkType::class, $work);
 
         // form submit
@@ -135,18 +140,18 @@ class ProjectWorksController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
+                    // todo la gestion des erreurs
                 }
                 $document = new Document();
                 $document->setProject($project);        
                 $document->setProjectWork($work);
                 $document->setPath($this->getParameter('documents_directory'));
                 $document->setFilename($newFilename);
-                // add document               
+                // ajout document               
                 $work->addDocument($document);
             }
 
-            // save
+            // instanciation de la DB
             $em = $managerRegistry->getManager();
             $em->persist($work);
             $em->flush();
@@ -178,7 +183,7 @@ class ProjectWorksController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($work);
         $entityManager->flush();       
-        // delete documents on files disk
+        // delete les fichiers 
         $documents = $work->getDocument();
         foreach($documents as $document) {
             $file = $document->getPath().'/'.$document->getFilename();

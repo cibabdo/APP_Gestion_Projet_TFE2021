@@ -57,18 +57,18 @@
                     </div>     
                 {% endif %}
                 {{ form_widget(form.percentDone, {'attr': {'class': 'form-control'}}) }}    
-            </div>    
-
+            </div>   
+            
             <div class="mb-3">                    
-                {{ form_label(form.color, 'Couleur', {'label_attr': { class: 'form-label' }}) }}
+                {{ form_label(form.color, 'Pourcentage effecutée', {'label_attr': { class: 'form-label' }}) }}
                 {% if form_errors(form.color) %}                            
                     <div class="form-error text-danger">
                         <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.color) }}
                     </div>     
                 {% endif %}
                 {{ form_widget(form.color, {'attr': {'class': 'form-control'}}) }}    
-            </div>    
-
+            </div> 
+         
             <div class="my-2">
                 <button type="submit" class="btn btn-primary">Ok</button>     
                 {% if form.vars.value.id %}           
@@ -81,8 +81,8 @@
 </div>
 <script>
     document.getElementById("planning_name").focus()  
-    
-    $('#planning_percentDone').on('input', function () {
+        
+        $('#planning_percentDone').on('input', function () {
         const val = $(this).val()
         $('#val').html(val + ' %')
     })
@@ -94,7 +94,7 @@
                 type: 'DELETE',
                 dataType: 'text',
                 success: function (result) {                    
-                    document.location.href = '{{path("planning_list", {id:projectId})}}?message=Tâche supprimée'
+                    document.location.href = '{{path("project_edit",{id:projectId, onglet:"planning"})}}&message=Tâche supprimée'                    
                 },
                 error: function(jqXHR, textStatus, errorThrown ) {
                     console.log(jqXHR, textStatus, errorThrown)

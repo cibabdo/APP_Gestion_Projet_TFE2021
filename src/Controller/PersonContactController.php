@@ -56,7 +56,7 @@ class PersonContactController extends AbstractController
         // form submit
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {           
-            // save
+            // instanciation DB de l'utilisateur
             $em = $managerRegistry->getManager();
             $em->persist($personcontact);
             $em->flush();
@@ -83,11 +83,11 @@ class PersonContactController extends AbstractController
         // form submit
         $form->handleRequest($request);        
         if ($form->isSubmitted() && $personcontact->getCompany() != null && $personcontact->getEngineeringOffice() != null) {
-            // company or engineering office, not both
+            // Compagnie ou bureau d'étude pas les deux
             $form->get('company')->addError(new FormError("Choisir une entreprise ou un bureau d'étude"));            
         }            
         if ($form->isSubmitted() && $form->isValid()) {           
-            // save
+            // instanciation DB de l'utilisateur
             $em = $managerRegistry->getManager();
             $em->persist($personcontact);
             $em->flush();
@@ -108,7 +108,7 @@ class PersonContactController extends AbstractController
      */
     public function delete($id, PersonContactRepository $personcontactRepository): Response
     {      
-        // find                 
+        // cherche                 
         $personcontact = $personcontactRepository->findOneBy(['id' => $id]);        
         // delete       
         $entityManager = $this->getDoctrine()->getManager();

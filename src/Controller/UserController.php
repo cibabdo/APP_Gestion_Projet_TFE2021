@@ -61,7 +61,7 @@ class UserController extends AbstractController
             // crypt password
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);            
-            // save
+            // instanciation de la DB
             $em = $managerRegistry->getManager();
             $em->persist($user);
             $em->flush();
@@ -102,7 +102,7 @@ class UserController extends AbstractController
             // crypt password
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
-            // save
+            // instanciation de la DB
             $em = $managerRegistry->getManager();
             $em->persist($user);
             $em->flush();

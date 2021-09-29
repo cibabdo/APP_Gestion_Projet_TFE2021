@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Planning
  *
- * @ORM\Table(name="planning", indexes={@ORM\Index(name="fk_project3_idx", columns={"project_id"})})
+ * @ORM\Table(name="planning", indexes={@ORM\Index(name="fk_project3_idx", columns={"project_id"}), @ORM\Index(name="fk_user3_idx", columns={"user_id"})})
  * @ORM\Entity(repositoryClass="App\Repository\PlanningRepository")
  * @UniqueEntity(
  *  fields={"name", "project"},
@@ -44,6 +45,7 @@ class Planning
      * @var \DateTime|null
      *
      * @ORM\Column(name="end_date", type="date", nullable=false)
+     * @Assert\GreaterThan(propertyPath="startDate", message="La date doit être postérieure à la date de début")
      */
     private $endDate;
 
@@ -83,6 +85,23 @@ class Planning
      * })
      */
     private $project;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * })
+     */
+    private $user;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)     
+     */
+    private $updatedAt;
 
     public function getId(): ?int
     {
@@ -185,5 +204,28 @@ class Planning
         return $this;
     }
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
 
 }

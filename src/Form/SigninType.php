@@ -8,20 +8,21 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class SigninType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email')
+            ->add('email', EmailType::class)
             ->add('username')
             ->add('password', PasswordType::class)
             ->add('password_confirm', PasswordType::class)           
             ->add('language', ChoiceType::class, [
                 'choices'  => [
                     'Francais' => 'FR',                    
-                    'Anglais' => 'EN'
+                    'English' => 'EN'
                 ],
             ])
             /*

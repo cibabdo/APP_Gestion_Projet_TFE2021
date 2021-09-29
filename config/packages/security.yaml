@@ -42,10 +42,13 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:        
-        - { path: ^/connexion, roles: PUBLIC_ACCESS }
+        - { path: ^/connexion, roles: PUBLIC_ACCESS }        
         - { path: ^/deconnexion, roles: PUBLIC_ACCESS }        
         - { path: ^/invitation/inscription, roles: PUBLIC_ACCESS }       
         - { path: ^/test, roles: PUBLIC_ACCESS }
+        - { path: ^/init_motdepasse, roles: PUBLIC_ACCESS }
+        - { path: ^/changer_motdepasse, roles: PUBLIC_ACCESS }
+        - { path: ^/annuler_motdepasse, roles: PUBLIC_ACCESS }
 
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/, roles: ROLE_USER }

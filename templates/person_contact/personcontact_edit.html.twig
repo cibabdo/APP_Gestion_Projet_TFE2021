@@ -8,7 +8,7 @@
 <div class="row mt-5">
     <div class="col">
         {{ form_start(form, {'attr' : {'autocomplete' : 'off'}}) }}
-            <h1 class="text-center">Personne externe</h1>
+            <h1 class="text-center">Personne de contact</h1>
             <div class="mb-3">
                 {{ form_label(form.firstname, 'Prénom', {'label_attr': { class: 'form-label' }}) }}
                 {% if form_errors(form.firstname) %}            
@@ -69,7 +69,7 @@
                 {{ form_widget(form.engineeringOffice, {'attr': {'class': 'form-control'}}) }}    
             </div>             
 
-            <div class="mb-3">
+            {#<div class="mb-3">
                 {{ form_label(form.address, 'Adresse', {'label_attr': { class: 'form-label' }}) }}
                 {% if form_errors(form.address) %}            
                     <div class="form-error text-danger">
@@ -107,7 +107,7 @@
                     </div>            
                 {% endif %}
                 {{ form_widget(form.country, {'attr': {'class': 'form-control'}}) }}    
-            </div>
+            </div>#}
 
             <div class="mb-3">
                 {{ form_label(form.phone, 'Téléphone', {'label_attr': { class: 'form-label' }}) }}
@@ -120,13 +120,13 @@
             </div>
 
             <div class="mb-3">
-                {{ form_label(form.fax, 'Fax', {'label_attr': { class: 'form-label' }}) }}
-                {% if form_errors(form.fax) %}            
+                {{ form_label(form.gsm, 'gsm', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.gsm) %}            
                     <div class="form-error text-danger">
-                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.fax) }}
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.gsm) }}
                     </div>            
                 {% endif %}
-                {{ form_widget(form.fax, {'attr': {'class': 'form-control'}}) }}    
+                {{ form_widget(form.gsm, {'attr': {'class': 'form-control'}}) }}    
             </div>
 
             <div class="mb-3">

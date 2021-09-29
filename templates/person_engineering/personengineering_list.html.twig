@@ -1,0 +1,32 @@
+<div class="table-responsive-md">
+    <table class="table table-sm table-hover">
+        <thead>
+            <tr class="table-success">
+                <th scope="col" style="text-align: center;">Prénom</th> 
+                <th scope="col" style="text-align: center;">Nom</th> 
+                <th scope="col" style="text-align: center;">Fonction</th>                 
+                <th scope="col" style="text-align: center; font-size: 13px;">Bureau d'étude</th>                 
+                <th scope="col" style="text-align: center;">Téléphone</th>   
+                <th scope="col" style="text-align: center;">Gsm</th>  
+                <th scope="col" style="text-align: center;">Email</th>   
+            </tr>
+        </thead>
+        <tbody>                       
+            {% for personengineering in personengineerings %}             
+                {% if not personengineering.engineeringOffice %}
+                <tr class="choice table-info " onclick="document.location.href='{{path("personengineering_edit",{id:personengineering.id})}}';">
+                {% else %}
+                <tr class="choice table-primary " onclick="document.location.href='{{path("personengineering_edit",{id:personengineering.id})}}';">
+                {% endif %}
+                    <td style="text-align: left;">{{personengineering.firstname}}</td>
+                    <td style="text-align: left;">{{personengineering.lastname}}</td>
+                    <td style="text-align: left;">{{personengineering.role.name}}</td>                    
+                    <td style="text-align: left; font-size: 13px;">{{personengineering.engineeringoffice.name | default('')}}</td>
+                    <td style="text-align: left; font-size: 13px;">{{personengineering.phone}}</td>
+                    <td style="text-align: left; font-size: 13px;">{{personengineering.gsm}}</td>
+                    <td style="text-align: left;">{{personengineering.email}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>          
+    </table>
+</div>

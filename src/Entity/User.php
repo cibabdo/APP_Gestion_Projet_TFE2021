@@ -132,6 +132,18 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
+    public function getPasswordConfirm(): ?string
+    {
+        return $this->password_confirm;
+    }
+
+    public function setPasswordConfirm(?string $password_confirm): self
+    {
+        $this->password_confirm = $password_confirm;
+
+        return $this;
+    }
+
     public function getPasswordOld(): ?string
     {
         return $this->passwordOld;

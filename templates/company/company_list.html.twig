@@ -1,22 +1,26 @@
-    <table class="table">
-        <thead>
-            <tr>
-                <th style="text-align: center;">Désignation</th> 
-                <th style="text-align: center;">Activité</th> 
-                <th style="text-align: center;">Localité</th>   
-                <th style="text-align: center;">Téléphone</th>   
-                <th style="text-align: center;">Email</th>   
-            </tr>
-        </thead>
-        <tbody>           
-            {% for company in companies %}             
-                <tr class="choice" onclick="document.location.href='{{path("company_edit",{id:company.id})}}';">
-                    <td style="text-align: center;">{{company.name}}</td>
-                    <td style="text-align: center;">{{company.activity.name}}</td>
-                    <td style="text-align: center;">{{company.location}}</td>                    
-                    <td style="text-align: center;">{{company.phone}}</td>
-                    <td style="text-align: center;">{{company.email}}</td>
+    <div class="table-responsive-md">
+        <table class="table table-sm">
+            <thead>
+                <tr class="table-success"> 
+                    <th scope="col" style="text-align: center;">Désignation</th> 
+                    <th scope="col" style="text-align: center;">Activité</th> 
+                    <th scope="col" style="text-align: center;">Localité</th>   
+                    <th scope="col" style="text-align: center;">CP</th>   
+                    <th scope="col" style="text-align: center;">Téléphone</th>   
+                    <th scope="col" style="text-align: center;">Email</th>   
                 </tr>
-            {% endfor %}
-        </tbody>        
-    </table>   
+            </thead>
+            <tbody>           
+                {% for company in companies %}
+                    <tr class="choice" onclick="document.location.href='{{path("company_edit",{id:company.id})}}';">
+                        <td style="text-align: left;">{{company.name}}</td>
+                        <td style="text-align: left;">{{company.activity.name}}</td>
+                        <td style="text-align: left; font-size: 13px;">{{company.location}}</td>
+                        <td style="text-align: left; font-size: 13px;">{{company.zipcode}}</td>
+                        <td style="text-align: left;">{{company.phone}}</td>
+                        <td style="text-align: left;">{{company.email}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>        
+        </table>   
+    </div>

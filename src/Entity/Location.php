@@ -30,13 +30,6 @@ class Location
     /**
      * @var string|null
      *
-     * @ORM\Column(name="country", type="string", length=255, nullable=false)
-     */
-    private $country;
-
-    /**
-     * @var string|null
-     *
      * @ORM\Column(name="zipcode", type="string", length=255, nullable=false)
      */
     private $zipcode;
@@ -47,6 +40,13 @@ class Location
      * @ORM\Column(name="location", type="string", length=255, nullable=false)
      */
     private $location;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="country", type="string", length=255, nullable=false)
+     */
+    private $country;
 
     public function getId(): ?int
     {

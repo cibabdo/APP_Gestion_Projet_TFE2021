@@ -1,22 +1,24 @@
-    <table class="table">
+<div class="table-responsive-md">
+    <table class="table table-sm table-hover">
         <thead>
-            <tr>
-                <th style="text-align: center;">Désignation</th> 
-                <th style="text-align: center;">Type</th> 
-                <th style="text-align: center;">Localité</th>   
-                <th style="text-align: center;">Téléphone</th>   
-                <th style="text-align: center;">Email</th>   
+            <tr class="table-success">
+                <th scope="col" style="text-align: center;">Désignation</th>
+                <th scope="col" style="text-align: center;">Type</th> 
+                <th scope="col" style="text-align: center;">Localité</th>   
+                <th scope="col" style="text-align: center;">Téléphone</th>   
+                <th scope="col" style="text-align: center;">Email</th>   
             </tr>
         </thead>
         <tbody>           
             {% for engineeringoffice in engineeringoffices %}             
                 <tr class="choice" onclick="document.location.href='{{path("engineeringoffice_edit",{id:engineeringoffice.id})}}';">
-                    <td style="text-align: center;">{{engineeringoffice.name}}</td>
-                    <td style="text-align: center;">{{engineeringoffice.sort.name}}</td>
-                    <td style="text-align: center;">{{engineeringoffice.location}}</td>                    
-                    <td style="text-align: center;">{{engineeringoffice.phone}}</td>
+                    <td style="text-align: left; font-size: 13px;">{{engineeringoffice.name}}</td>
+                    <td style="text-align: center; ">{{engineeringoffice.sort.name}}</td>
+                    <td style="text-align: center; font-size: 13px;">{{engineeringoffice.location}}</td>                    
+                    <td style="text-align: center; font-size: 13px;">{{engineeringoffice.phone}}</td>
                     <td style="text-align: center;">{{engineeringoffice.email}}</td>
                 </tr>
             {% endfor %}
         </tbody>        
-    </table>   
+    </table>
+</div>

@@ -50,7 +50,7 @@ class ProjectCommentsController extends AbstractController
         // form submit
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {            
-            // save
+            // instanciation DB de l'utilisateur
             $em = $managerRegistry->getManager();
             $em->persist($projectComment);
             $em->flush();
@@ -75,7 +75,8 @@ class ProjectCommentsController extends AbstractController
     public function update(Request $request, $id, $commentId, ManagerRegistry $managerRegistry, 
                                                               ProjectRepository $projectRepository, 
                                                               ProjectCommentRepository $projectCommentRepository): Response
-    {                
+    {         
+        // Vérification accès       
         if (($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_INTERNAL')) == false) 
             throw new AccessDeniedException('Vous ne pouvez plus modifier le commentaire');
 
@@ -86,13 +87,13 @@ class ProjectCommentsController extends AbstractController
         // form submit
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {           
-            // save
+           // instanciation DB de l'utilisateur
             $em = $managerRegistry->getManager();
             $em->persist($projectComment);
             $em->flush();
             // message            
             $this->addFlash('message', 'Projet modifié');
-            // redirect
+            // redirection sur le projet edit et onglet commentaires
             //return $this->redirectToRoute('project_comments', ['id' => $id]);
             return $this->redirectToRoute('project_edit', ['id' => $id, 'onglet' => 'comment']);
         }
@@ -110,7 +111,7 @@ class ProjectCommentsController extends AbstractController
      */
     public function delete($id, $commentId, ProjectCommentRepository $projectCommentRepository): Response
     {      
-        // find                 
+        // cherche                 
         $projectComment = $projectCommentRepository->findOneBy(['id' => $commentId]);        
         // delete       
         $entityManager = $this->getDoctrine()->getManager();

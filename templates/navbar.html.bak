@@ -1,0 +1,76 @@
+<header class="bg-dark text-white">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                <img src="{{asset('image/CHUlogo.png')}}" alt="Logo chu" height=10% width=10%/>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                    <li>
+                    <a href="{{path('project_list')}}" class="nav-link text-white"><!--text-secondary si selection-->
+                        <img src="{{asset('image/dossier.svg')}}" class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#projets"></use></img>
+                        Projets
+                    </a>
+                    </li>
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_INTERNAL') %}
+                        <li>
+                            <a href="{{path('request')}}" class="nav-link text-white">
+                                <img src="{{asset('image/chercher.svg')}}" class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#requetes"></use></img>
+                                Requêtes
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{path('stat')}}" class="nav-link text-white">
+                                <img src="{{asset('image/graphique.png')}}" class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#statistiques"></use></img>
+                                Statistiques
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="dropdown text-end">
+                            <a href="#" class="nav-link text-white d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{asset('image/administrateur.png')}}" class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#Administration"></use></img>
+                                Admin
+                            </a>
+                            <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+                                <li><a class="dropdown-item" href="{{path('user_list')}}"><i class="bi bi-person-bounding-box"></i> Utilisateurs</a></li>
+                                <li><a class="dropdown-item" href="{{path('personcontact_list')}}"><i class="bi bi-person-lines-fill"></i> Personnes de contact</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{path('site_list')}}"></i><i class="bi bi-house-door"></i> Sites</a></li>                                    
+                                <li><a class="dropdown-item" href="{{path('department_list')}}">Département</a></li>
+                                <li><a class="dropdown-item" href="{{path('role_list')}}">Fonctions</a></li>
+                                <li><a class="dropdown-item" href="{{path('employee_list')}}"><i class="bi bi-people-fill"></i> Employés</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{path('activity_list')}}"><i class="bi bi-tools"></i> Secteur des entreprises</a></li>
+                                <li><a class="dropdown-item" href="{{path('company_list')}}"><i class="bi bi-building"></i> Entreprises</a></li>                  
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{path('engineeringofficesort_list')}}">Types de bureaux d'études</a></li>                  
+                                <li><a class="dropdown-item" href="{{path('engineeringoffice_list')}}">Bureaux d'études</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{path('work_list')}}">Travaux</a></li>
+                                <li><hr class="dropdown-divider"></li>       
+                                <li><a class="dropdown-item" href="{{path('location_list')}}"><i class="bi bi-geo-alt"></i>Localités</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                        <li class="dropdown text-end">
+                            <a href="#" class="nav-link d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{asset('image/compte-test.png')}}" alt="mdo" class="rounded-circle" width="50" height="50"><!--mettre photos si géré en db-->
+                            </a>
+                            <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+                                <li><a class="dropdown-item" href="#">{{app.user.username}}</a></li>
+                                <li><a class="dropdown-item" href="#"><img src="{{asset('image/user.png')}}" class="bi mx-auto mb-1" width="20" height="20"><span>Profile</span></a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{path('security_logout')}}"><img src="{{asset('image/deconnexion.png')}}" class="bi mx-auto mb-1" width="20" height="20"><span>Déconnexion<span></a></li>
+                            </ul>
+                        </li>
+                </ul>
+            </div>
+        </div>
+      </div>
+    </nav>
+  </header>

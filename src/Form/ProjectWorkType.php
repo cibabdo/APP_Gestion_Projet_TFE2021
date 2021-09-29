@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Work;
 use App\Entity\Company;
 use App\Entity\ProjectWork;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\All;
@@ -19,12 +20,19 @@ class ProjectWorkType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        //$work = $builder->getData();
         $builder
             ->add('comment', TextareaType::class)
-            ->add('provisionalReceptionDate', DateType::class, ['format' => 'dd-MM-yyyy', 'required' => false])
-            ->add('finalDeliveryDate', DateType::class, ['format' => 'dd-MM-yyyy', 'required' => false])
-            ->add('vincotteReceptionDate', DateType::class, ['format' => 'dd-MM-yyyy', 'required' => false])
-            ->add('company', EntityType::class, [
+            ->add('provisionalReceptionDate', DateType::class, ['widget' => 'single_text', 'required' => false])
+            ->add('finalDeliveryDate', DateType::class, ['widget' => 'single_text', 'required' => false])
+            ->add('vincotteReceptionDate', DateType::class, ['widget' => 'single_text', 'required' => false])
+            ->add('company', EntityType::class, [       
+                /*        
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.project_id = ' . $work->getProjectId());
+                },                  
+                */
                 'class' => Company::class,
                 'choice_label' => "name"              
             ])          

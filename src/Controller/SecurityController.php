@@ -4,12 +4,16 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\SigninType;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\UserRepository;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\UserSigninSecurityRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -22,32 +26,29 @@ class SecurityController extends AbstractController
     * }, name="security_signin")
      */
     public function signin(Request $request, ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $encoder)
-    {
-        $message = '';
-
+    {        
         $user = new User();
         $form = $this->createForm(SigninType::class, $user);
-
+                
         // form submit
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // crypt password
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
-            // save
+            // instanciation de la DB
             $em = $managerRegistry->getManager();
             $em->persist($user);
             $em->flush();
             // message
-            $message = 'Utilisateur enregistré';
+            $this->addFlash('message', 'Utilisateur enregistré');            
             // redirect
             return $this->redirectToRoute('security_login');
         }
 
         //render
         return $this->render('security/signin.html.twig', [
-            'form' => $form->createView(),
-            'message' => $message
+            'form' => $form->createView()
         ]);
     } 
 
@@ -60,7 +61,9 @@ class SecurityController extends AbstractController
     function login(AuthenticationUtils $authenticationUtils, TranslatorInterface $translator) {      
         // errors
         $error = $authenticationUtils->getLastAuthenticationError();        
-        $lastUsername = $authenticationUtils->getLastUsername();     
+        $lastUsername = $authenticationUtils->getLastUsername(); 
+        // message
+        if ($error) $this->addFlash('error', 'Email et/ou mot de passe erroné(s)'); 
         // render
         return $this->render('/security/login.html.twig', [
             'title' => $translator->trans('login.title'),

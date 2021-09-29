@@ -95,7 +95,7 @@
                             <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.workStartDate) }}
                         </div>            
                     {% endif %}
-                    {{ form_widget(form.workStartDate, {'attr': {'class': 'form-control'}}) }}    
+                    {{ form_widget(form.workStartDate, {'attr': {'class': 'form-control'}}) }}
 
                     {{ form_label(form.startSituation, 'Etat des lieux', {'label_attr': { class: 'form-label' }}) }}
                     {% if form_errors(form.startSituation) %}            
@@ -145,11 +145,22 @@
                             <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.company) }}
                         </div>            
                     {% endif %}
-                    {{ form_widget(form.company, {'attr': {'class': 'form-control select2', 'style':'width:200px;'}}) }}    
+                    {{ form_widget(form.company, {'attr': {'class': 'form-control select2', 'style':'width:100%;border-color:rgb(206, 212, 218);color:rgb(206, 212, 218) !important;'}}) }}    
                 </div>
 
+                <div class="mb-3">
+                    {{ form_label(form.engineeringOffice, 'Bureaux d\'étude', {'label_attr': { class: 'form-label' }}) }}
+                    {% if form_errors(form.engineeringOffice) %}            
+                        <div class="form-error text-danger">
+                            <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.engineeringOffice) }}
+                        </div>            
+                    {% endif %}
+                    {{ form_widget(form.engineeringOffice, {'attr': {'class': 'form-control select2', 'style':'width:100%;border-color:rgb(206, 212, 218);color:rgb(206, 212, 218) !important;'}}) }}    
+                </div>              
+
                 <fieldset class="form-group">
-                    <legend>Personnes internes</legend>
+                    <legend>Personnes internes</legend> 
+
                     <div class="mb-3">
                         {{ form_label(form.architect, 'Architecte', {'label_attr': { class: 'form-label' }}) }}
                         {% if form_errors(form.architect) %}            
@@ -157,7 +168,7 @@
                                 <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.architect) }}
                             </div>            
                         {% endif %}
-                        {{ form_widget(form.architect, {'attr': {'class': 'form-control'}}) }}    
+                        {{ form_widget(form.architect, {'attr': {'class': 'form-control '}}) }}    
                     </div>
 
                     <div class="mb-3">
@@ -229,12 +240,19 @@
                         {% endif %}
                         {{ form_widget(form.supervisor, {'attr': {'class': 'form-control'}}) }}    
                     </div>
+
                 </fieldset>
 
                 <fieldset class="form-group">
                     <legend>Personnes externes</legend>
+                    
                     <div class="mb-3">
                         {{ form_label(form.externalArchitectureOffice, 'Architecte externe', {'label_attr': { class: 'form-label' }}) }}
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_INTERNAL') %}
+                            {% if form.vars.value.externalArchitectureOffice is not null %}
+                                <a href="{{path('invitation', {id:id,personId:form.vars.value.externalArchitectureOffice.id})}}" class="btn btn-sm btn-info ml-3">Inviter</a>
+                            {% endif %}
+                        {% endif %} 
                         {% if form_errors(form.externalArchitectureOffice) %}            
                             <div class="form-error text-danger">
                                 <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.externalArchitectureOffice) }}
@@ -245,6 +263,11 @@
 
                     <div class="mb-3">
                         {{ form_label(form.safetyCoordinator, 'Coordinateur sécurité externe', {'label_attr': { class: 'form-label' }}) }}
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_INTERNAL') %}
+                            {% if form.vars.value.safetyCoordinator is not null %}
+                                <a href="{{path('invitation', {id:id,personId:form.vars.value.safetyCoordinator.id})}}" class="btn btn-sm btn-info ml-3">Inviter</a>
+                            {% endif %}
+                        {% endif %} 
                         {% if form_errors(form.safetyCoordinator) %}            
                             <div class="form-error text-danger">
                                 <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.safetyCoordinator) }}
@@ -287,6 +310,11 @@
 </div>
 <script>
     document.getElementById("project_title").focus()    
+
+    setTimeout(function() {
+        const tab = document.getElementsByClassName('alert')    
+        if (tab.length) tab[0].remove()
+    },3000)    
 
     function deleteProject() {
         if (confirm('Confirmer la suppression ?')) {                    
@@ -345,5 +373,52 @@
     }
 
     $('.select2').select2()
+
+    /*
+    const project_externalArchitectureOffice = $('#project_externalArchitectureOffice').val();  
+    $('#project_externalArchitectureOffice').on('change', function(ev) {
+        const id = $(this).val();    
+        const element = $(this).prev();
+        //console.log(element)
+        if (element.html() != 'Inviter') return;
+        if (id != project_externalArchitectureOffice) {
+            //console.log($(this).prev());
+            element.addClass('disabled-link');
+        }
+        else {
+            element.removeClass('disabled-link')           
+        }
+    })    
+
+    const project_safetyCoordinator = $('#project_safetyCoordinator').val();  
+    $('#project_safetyCoordinator').on('change', function(ev) {
+        const id = $(this).val();    
+        const element = $(this).prev();
+        //console.log(element)
+        if (element.html() != 'Inviter') return;
+        if (id != project_safetyCoordinator) {
+            //console.log($(this).prev());
+            element.addClass('disabled-link');
+        }
+        else {
+            element.removeClass('disabled-link')           
+        }
+    })    
+
+    const project_externalEngineer = $('#project_externalEngineer').val();  
+    $('#project_externalEngineer').on('change', function(ev) {
+        const id = $(this).val();    
+        const element = $(this).prev();
+        //console.log(element)
+        if (element.html() != 'Inviter') return;
+        if (id != project_externalEngineer) {
+            //console.log($(this).prev());
+            element.addClass('disabled-link');
+        }
+        else {
+            element.removeClass('disabled-link')           
+        }
+    })    
+    */
 </script>
 {% endblock %}

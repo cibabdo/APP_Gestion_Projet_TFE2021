@@ -45,6 +45,8 @@ class RequestController extends AbstractController
      /**
      * @Route("/request/pdf", name="request_pdf")
      */
+
+     //Création d'un pdf sur base du resultat de la requête
     public function pdf(Request $request, ProjectRepository $projectRepository): Response
     {   
         // Configure Dompdf according to your needs

@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * Project
  *
- * @ORM\Table(name="project", indexes={@ORM\Index(name="pk_architect_idx", columns={"architect_id"}), @ORM\Index(name="pk_external_office_idx", columns={"external_architecture_office_id"}), @ORM\Index(name="pk_safety_coordinator_idx", columns={"safety_coordinator_id"}), @ORM\Index(name="pk_low_voltage_idx", columns={"low_voltage_engineer_id"}), @ORM\Index(name="pk_hvac_engineer_idx", columns={"hvac_engineer_id"}), @ORM\Index(name="pk_medical_idx", columns={"medical_fluid_engineer_id"}), @ORM\Index(name="pk_second_architect_idx", columns={"second_architect_id"}), @ORM\Index(name="pk_external_engineer_idx", columns={"external_engineer_id"}), @ORM\Index(name="pk_supervisor_idx", columns={"supervisor_id"}), @ORM\Index(name="pk_strong_voltage_idx", columns={"strong_voltage_engineer_id"}), @ORM\Index(name="pk_site_idx", columns={"site_id"}), @ORM\Index(name="pk_sanitary_idx", columns={"sanitary_engineer_id"})})
+ * @ORM\Table(name="project", indexes={@ORM\Index(name="pk_site_idx", columns={"site_id"})})
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
  * @UniqueEntity(
  *  fields={"title"},
@@ -108,98 +108,8 @@ class Project
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
-
-    /**
-     * @var \Employee
-     *
-     * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="architect_id", referencedColumnName="id")
-     * })
-     */
-    private $architect;
-
-    /**
-     * @var \PersonContact
-     *
-     * @ORM\ManyToOne(targetEntity="PersonContact")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="external_engineer_id", referencedColumnName="id")
-     * })
-     */
-    private $externalEngineer;
-
-    /**
-     * @var \EngineeringOffice
-     *
-     * @ORM\ManyToOne(targetEntity="EngineeringOffice")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="external_architecture_office_id", referencedColumnName="id")
-     * })
-     */
-    private $externalArchitectureOffice;
-
-    /**
-     * @var \Employee
-     *
-     * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="hvac_engineer_id", referencedColumnName="id")
-     * })
-     */
-    private $hvacEngineer;
-
-    /**
-     * @var \Employee
-     *
-     * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="low_voltage_engineer_id", referencedColumnName="id")
-     * })
-     */
-    private $lowVoltageEngineer;
-
-    /**
-     * @var \Employee
-     *
-     * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="medical_fluid_engineer_id", referencedColumnName="id")
-     * })
-     */
-    private $medicalFluidEngineer;
-
-    /**
-     * @var \PersonContact
-     *
-     * @ORM\ManyToOne(targetEntity="PersonContact")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="safety_coordinator_id", referencedColumnName="id")
-     * })
-     */
-    private $safetyCoordinator;
-
-    /**
-     * @var \Employee
-     *
-     * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sanitary_engineer_id", referencedColumnName="id")
-     * })
-     */
-    private $sanitaryEngineer;
-
-    /**
-     * @var \Employee
-     *
-     * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="second_architect_id", referencedColumnName="id")
-     * })
-     */
-    private $secondArchitect;
-
+    private $updatedAt;    
+   
     /**
      * @var \Site
      *
@@ -208,27 +118,7 @@ class Project
      *   @ORM\JoinColumn(name="site_id", referencedColumnName="id")
      * })
      */
-    private $site;
-
-    /**
-     * @var \Employee
-     *
-     * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="strong_voltage_engineer_id", referencedColumnName="id")
-     * })
-     */
-    private $strongVoltageEngineer;
-
-    /**
-     * @var \Employee
-     *
-     * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="supervisor_id", referencedColumnName="id")
-     * })
-     */
-    private $supervisor;
+    private $site;    
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -246,72 +136,118 @@ class Project
     private $company;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="projectWork",cascade={"persist"})
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="EngineeringOffice", inversedBy="project")
+     * @ORM\JoinTable(name="project_engineering",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="engineering_id", referencedColumnName="id")
+     *   }
+     * )
      */
-    private $documents;
+    private $engineeringOffice;
+  
 
     /**
-     * @var \PersonContact
-     *     
+     * @var \Employee
+     * 
      */
-    private $engineers;
+    private $architect;
 
-    public function getEngineers(): ?array
+    /**
+     * @var \Employee
+     * 
+     */
+    private $hvacEngineer;
+
+    /**
+     * @var \Employee
+     * 
+     */
+    private $lowVoltageEngineer;
+
+    /**
+     * @var \Employee
+     * 
+     */
+    private $medicalFluidEngineer;
+
+    /**
+     * @var \Employee
+     * 
+     */
+    private $secondArchitect;
+
+    /**
+     * @var \Employee
+     * 
+     */
+    private $strongVoltageEngineer;
+
+    /**
+     * @var \Employee
+     * 
+     */
+    private $supervisor;
+
+    /**
+     * @var \Employee
+     * 
+     */
+    private $sanitaryEngineer;
+
+    /**
+     * @var \Employee
+     * 
+     */
+    private $externalArchitectureOffice;
+
+    /**
+     * @var \Employee
+     * 
+     */
+    private $externalEngineer;
+
+    /**
+     * @var \Employee
+     * 
+     */
+    private $safetyCoordinator;
+
+    /**
+     * @var \Employee
+     * 
+     */
+    private $test;
+
+    public function getTest(): ?Employee
     {
-        return $this->engineers;
+        return $this->test;
     }
 
-    public function setEngineers(?array $engineers): self
+    public function setTest(?Employee $test): self
     {
-        $this->engineers = $engineers;
+        $this->test = $test;
 
         return $this;
     }
 
     /**
-     * @var \PersonContact
-     *     
+     * @ORM\OneToMany(targetEntity="App\Entity\ProjectPerson", mappedBy="project",cascade={"persist"})
      */
-    private $architects;
-
-    public function getArchitects(): ?array
-    {
-        return $this->architects;
-    }
-
-    public function setArchitects(?array $architects): self
-    {
-        $this->architects = $architects;        
-        return $this;
-    }
-
-    /**
-     * @var \PersonContact
-     *     
-     */
-    private $coordinators;
-
-    public function getCoordinators(): ?array
-    {
-        return $this->coordinators;
-    }
-
-    public function setCoordinators(?array $coordinators): self
-    {
-        $this->coordinators = $coordinators;
-
-        return $this;
-    }
+    private $persons;
 
     /**
      * Constructor
      */
     public function __construct()
     {
+        $this->persons = new \Doctrine\Common\Collections\ArrayCollection();
         $this->company = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->documents = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->architects = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->coordinators = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->engineeringOffice = new \Doctrine\Common\Collections\ArrayCollection();        
     }
 
     public function getId(): ?int
@@ -451,38 +387,26 @@ class Project
         return $this;
     }
 
+    public function getSite(): ?Site
+    {
+        return $this->site;
+    }
+
+    public function setSite(?Site $site): self
+    {
+        $this->site = $site;
+
+        return $this;
+    }     
+   
     public function getArchitect(): ?Employee
     {
         return $this->architect;
     }
 
     public function setArchitect(?Employee $architect): self
-    {
+    {        
         $this->architect = $architect;
-
-        return $this;
-    }
-
-    public function getExternalEngineer(): ?PersonContact
-    {
-        return $this->externalEngineer;
-    }
-
-    public function setExternalEngineer(?PersonContact $externalEngineer): self
-    {
-        $this->externalEngineer = $externalEngineer;
-
-        return $this;
-    }
-
-    public function getExternalArchitectureOffice(): ?EngineeringOffice
-    {
-        return $this->externalArchitectureOffice;
-    }
-
-    public function setExternalArchitectureOffice(?EngineeringOffice $externalArchitectureOffice): self
-    {
-        $this->externalArchitectureOffice = $externalArchitectureOffice;
 
         return $this;
     }
@@ -493,7 +417,7 @@ class Project
     }
 
     public function setHvacEngineer(?Employee $hvacEngineer): self
-    {
+    {        
         $this->hvacEngineer = $hvacEngineer;
 
         return $this;
@@ -505,7 +429,7 @@ class Project
     }
 
     public function setLowVoltageEngineer(?Employee $lowVoltageEngineer): self
-    {
+    {        
         $this->lowVoltageEngineer = $lowVoltageEngineer;
 
         return $this;
@@ -517,32 +441,8 @@ class Project
     }
 
     public function setMedicalFluidEngineer(?Employee $medicalFluidEngineer): self
-    {
+    {        
         $this->medicalFluidEngineer = $medicalFluidEngineer;
-
-        return $this;
-    }
-
-    public function getSafetyCoordinator(): ?PersonContact
-    {
-        return $this->safetyCoordinator;
-    }
-
-    public function setSafetyCoordinator(?PersonContact $safetyCoordinator): self
-    {
-        $this->safetyCoordinator = $safetyCoordinator;
-
-        return $this;
-    }
-
-    public function getSanitaryEngineer(): ?Employee
-    {
-        return $this->sanitaryEngineer;
-    }
-
-    public function setSanitaryEngineer(?Employee $sanitaryEngineer): self
-    {
-        $this->sanitaryEngineer = $sanitaryEngineer;
 
         return $this;
     }
@@ -553,20 +453,8 @@ class Project
     }
 
     public function setSecondArchitect(?Employee $secondArchitect): self
-    {
+    {        
         $this->secondArchitect = $secondArchitect;
-
-        return $this;
-    }
-
-    public function getSite(): ?Site
-    {
-        return $this->site;
-    }
-
-    public function setSite(?Site $site): self
-    {
-        $this->site = $site;
 
         return $this;
     }
@@ -577,24 +465,72 @@ class Project
     }
 
     public function setStrongVoltageEngineer(?Employee $strongVoltageEngineer): self
-    {
+    {        
         $this->strongVoltageEngineer = $strongVoltageEngineer;
 
         return $this;
     }
 
-    public function getSupervisor(): ?Employee
+    public function getsupervisor(): ?Employee
     {
         return $this->supervisor;
     }
 
     public function setSupervisor(?Employee $supervisor): self
-    {
+    {        
         $this->supervisor = $supervisor;
 
         return $this;
     }
 
+    public function getSanitaryEngineer(): ?Employee
+    {
+        return $this->sanitaryEngineer;
+    }
+
+    public function setSanitaryEngineer(?Employee $sanitaryEngineer): self
+    {        
+        $this->sanitaryEngineer = $sanitaryEngineer;
+
+        return $this;
+    }
+
+    public function getExternalArchitectureOffice(): ?PersonEngineering
+    {
+        return $this->externalArchitectureOffice;
+    }
+
+    public function setExternalArchitectureOffice(?PersonEngineering $externalArchitectureOffice): self
+    {        
+        $this->externalArchitectureOffice = $externalArchitectureOffice;
+
+        return $this;
+    }
+
+    public function getExternalEngineer(): ?PersonEngineering
+    {
+        return $this->externalEngineer;
+    }
+
+    public function setExternalEngineer(?PersonEngineering $externalEngineer): self
+    {        
+        $this->externalEngineer = $externalEngineer;
+
+        return $this;
+    }
+
+    public function getSafetyCoordinator(): ?PersonEngineering
+    {
+        return $this->safetyCoordinator;
+    }
+
+    public function setSafetyCoordinator(?PersonEngineering $safetyCoordinator): self
+    {        
+        $this->safetyCoordinator = $safetyCoordinator;
+
+        return $this;
+    }
+ 
     /**
      * @return Collection|Company[]
      */
@@ -617,34 +553,60 @@ class Project
         $this->company->removeElement($company);
 
         return $this;
-    }
+    } 
 
     /**
-     * @return Collection|Document[]
+     * @return Collection|EngineeringOffice[]
      */
-    public function getDocument(): Collection
+    public function getEngineeringOffice(): Collection
     {
-        return $this->documents;
+        return $this->engineeringOffice;
     }
 
-    public function addDocument(Document $document): self
+    public function addEngineeringOffice(EngineeringOffice $engineeringOffice): self
     {
-        if (!$this->documents->contains($document)) {
-            $this->documents[] = $document;
-            $document->setProject($this);
+        if (!$this->engineeringOffice->contains($engineeringOffice)) {
+            $this->engineeringOffice[] = $engineeringOffice;
         }
 
         return $this;
     }
 
-    public function removeDocument(Document $document): self
+    public function removeEngineeringOffice(EngineeringOffice $engineeringOffice): self
     {
-        if ($this->documents->contains($document)) {
-            $this->documents->removeElement($document);
+        $this->engineeringOffice->removeElement($engineeringOffice);
+
+        return $this;
+    }  
+
+     /**
+     * @return Collection|ProjectPerson[]
+     */
+    public function getPersons(): Collection
+    {
+        return $this->persons;
+    }   
+
+    public function addPerson(ProjectPerson $person): self
+    {
+        if (!$this->persons->contains($person)) {
+            $this->persons[] = $person;
+            $person->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removePerson(ProjectPerson $person): self
+    {
+        if ($this->persons->contains($person)) {
+            $this->persons->removeElement($person);
             // set the owning side to null (unless already changed)
-            if ($document->getProject() === $this) {
-                $document->setProject(null);
+            /*
+            if ($person->getProject() === $this) {
+                $person->setProject(null);
             }
+            */
         }
 
         return $this;

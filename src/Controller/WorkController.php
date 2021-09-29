@@ -55,7 +55,7 @@ class WorkController extends AbstractController
         // form submit
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {           
-            // save
+            // instanciation de la DB
             $em = $managerRegistry->getManager();
             $em->persist($work);
             $em->flush();
@@ -82,7 +82,7 @@ class WorkController extends AbstractController
         // form submit
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {           
-            // save
+            // instanciation de la DB
             $em = $managerRegistry->getManager();
             $em->persist($work);
             $em->flush();

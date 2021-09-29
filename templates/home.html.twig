@@ -7,7 +7,12 @@
 {% block content %}
     <div class="row mt-5">
         <div class="col">
+            {% if is_granted('ROLE_ADMIN') %}
+            <h2>Bienvenue sur votre dashboard administrateur</h2>
+            {% endif %}
+            {% if is_granted('ROLE_EXTERNAL') or is_granted('ROLE_INTERNAL') %}
             <h2>Bienvenue dans notre application web vous permettant de gérer et suivre vos projets</h2>
+            {% endif %}
         </div>    
     </div>
 {% endblock %}

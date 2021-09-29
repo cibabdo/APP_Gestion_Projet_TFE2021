@@ -20,15 +20,28 @@ class StatController extends AbstractController
     /**
      * @Route("/stat", name="stat")
      */
-    public function index(): Response
+    public function index(ProjectRepository $projectRepository): Response
     {       
+        //Récupération de l'année en cours
         $today = new \DateTime();
         $year = $today->format('Y');
 
+        //Recherche en DB Année la plus petite et la plus grande
+        $result = $projectRepository->findMinMaxYear();
+        $min = $result[0]['min'];
+        $max = $result[0]['max'];
+        $years = [];
+
+        //Boucle pour créer toutes les années entre - et +
+        for ($i=$min; $i<=$max; $i++) {
+            array_push($years, $i);
+        }      
+
+        //retour de vers la page pour le select
         return $this->render('stat/stat.html.twig', [
             'stat' => [
                 'year' => $year,
-                'years' => $this->getYears()
+                'years' => $years /*$this->getYears()*/
             ]
         ]);
     }
@@ -54,6 +67,8 @@ class StatController extends AbstractController
     }
 
     /****************************************/
+    
+    //Création de la stat
     
     private function getYears () {
         $start = 2021;

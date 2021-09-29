@@ -71,6 +71,17 @@ class ProjectRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     } 
+
+      /**
+    * @return Project[] Returns an array of Project objects
+    */    
+    public function findMinMaxYear()
+    {                
+        return $this->createQueryBuilder('c')
+            ->select("min(c.year) as min, max(c.year) as max")                       
+            ->getQuery()
+            ->getResult();
+    } 
      
     // /**
     //  * @return Project[] Returns an array of Project objects

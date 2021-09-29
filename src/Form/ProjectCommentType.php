@@ -15,7 +15,8 @@ class ProjectCommentType extends AbstractType
     {
         $builder            
             ->add('date', DateTimeType::class, [              
-                'input_format' => 'dd-MM-yyyy H:i'                
+                /*'input_format' => 'dd-MM-yyyy H:i'*/
+                'widget' => 'single_text'
             ])
             ->add('comment', TextareaType::class)
         ;

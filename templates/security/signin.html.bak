@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
+    <div class="card card0 border-0">
+        <div class="row d-flex">
+            <div class="col-lg-6">
+                <div class="card1 bg-light pb-5">
+                    <div class="card1 pb-5">
+                    <div class="row"> <img src="{{asset('image/CHULogo.png')}}" class="logo"> </div>
+                    <div class="row px-3 justify-content-center mt-4 mb-5 border-line"> <img src="{{asset('image/picture_login.png')}}" class="image"> </div>
+                </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card2 card border-0 px-4 py-5">
+                    {{ form_start(form, {'attr' : {'autocomplete' : 'off'}}) }}
+                    <h3 class="mb-1">Créer votre compte</h3>
+                    <p class="mb-4 text-sm">Vous avez déjà un compte? <a class="text-primary login" href="{{path('site_list')}}">Connexion</a></a></p>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label class="mb-0">
+                                <h6 class="mb-0 text-sm">Nom</h6>
+                            </label> <input type="text" class="form-control" name="fname">
+                        </div>
+                        <div class="col-md-6">
+                            <!--<label class="mb-0">
+                                    <h6 class="mb-0 text-sm">Prénom</h6>
+                                </label>
+                                <input type="text" name="lname">-->
+                            {{ form_label(form.username, 'Prénom', {'label_attr': { class: ' text-sm' }}) }}
+                                {% if form_errors(form.username) %}           
+                                    <div class="form-error text-danger">
+                                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.username) }}
+                                    </div>
+                                {% endif %}
+                                {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+                        </div>  
+                    </div>
+                    <div class="row px-3">
+                        {{ form_label(form.email, 'Email', {'label_attr': { class: 'text-sm' }}) }}
+                            {% if form_errors(form.email) %}           
+                                <div class="form-error text-danger">
+                                    <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.email) }}
+                                </div>
+                            {% endif %}
+                        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                        <!--<label class="mb-0">
+                            <h6 class="mb-0 text-sm">Adresse Email</h6>
+                        </label>
+                        <input type="text" name="email">-->
+                    </div>
+                    <div class="row px-3">
+                        <!--<label class="mb-0">
+                            <h6 class="mb-0 text-sm">Password</h6>
+                        </label>
+                        <input type="password" name="password">-->
+                        {{ form_label(form.password, 'Mot de passe', {'label_attr': { class: 'text-sm' }}) }}
+                            {% if form_errors(form.password) %}
+                                <div class="form-error text-danger">
+                                    <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.password) }}
+                                </div>            
+                            {% endif %}
+                        {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="row px-3">
+                        <!--<label class="mb-0">
+                            <h6 class="mb-0 text-sm">Répéter Password</h6>
+                        </label>
+                        <input type="password" name="passwordbis">-->
+                        {{ form_label(form.password_confirm, 'Confirmation du mot de passe', {'label_attr': { class: 'text-sm' }}) }}
+                            {% if form_errors(form.password_confirm) %}
+                                <div class="form-error text-danger">
+                                    <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.password_confirm) }}
+                                </div>            
+                            {% endif %}
+                        {{ form_widget(form.password_confirm, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <hr/>
+                     <div class="row mb-4 px-3">
+                        <!--<select class="form-select" name="select1" id="select1" onchange="change(this)">
+                            <option value="fr" selected="selected">Français</option>
+                            <option value="en">English</option>
+                        </select>
+                        <span><img src="{{asset('image/fr.png')}}" id="show" alt="" /></span>-->
+                        {{ form_label(form.language, 'Langue', {'label_attr': { class: 'text-sm' }}) }}
+                            {% if form_errors(form.language) %}
+                                <div class="form-error text-danger">
+                                    <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.language) }}
+                                </div>
+                            {% endif %}
+                        {{ form_widget(form.language, {'attr': {'class': 'form-control', onchange:'change(this)'}}) }}
+                        <span><img src="{{asset('/image/fr.png')}}" id="show" alt="" /></span>
+                    </div>
+                    <div class="row mb-4">
+                        <p></p>
+                        <div class="col-md-5"> <button class="btn btn-blue text-center mb-1"><strong>Créer compte</strong></button> </div>
+                        
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        <div class="bg-blue py-4">
+            <small class="ml-4 ml-sm-5 mb-2">Un problème avec votre compte ? <a href="#" class="link-dark">contactez notre support</a></small>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("signin_username").focus()
+</script>
+{% endblock %}

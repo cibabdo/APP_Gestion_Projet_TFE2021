@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Role;
 use App\Entity\Company;
 use App\Entity\PersonContact;
 use App\Entity\EngineeringOffice;
@@ -18,26 +19,15 @@ class PersonContactType extends AbstractType
         $builder
             ->add('firstname')
             ->add('lastname')
-            ->add('address')
-            ->add('zipcode')
-            ->add('location')
-            ->add('country')
             ->add('phone')
-            ->add('fax')
+            ->add('gsm')
             ->add('email')
             ->add('language', ChoiceType::class, [
                 'choices'  => [
                     'Francais' => 'FR',                    
                     'Anglais' => 'EN'
                 ],
-            ])
-            ->add('role', ChoiceType::class, [
-                'choices'  => [
-                    'Architecte' => '1',                    
-                    'Ingénieur' => '2',
-                    'Coordinateur' => '3'
-                ],
-            ])
+            ])           
             ->add('company', EntityType::class, [
                 'class' => Company::class,
                 'choice_label' => "name",

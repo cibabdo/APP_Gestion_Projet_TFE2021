@@ -5,27 +5,47 @@
 {% endblock %}
 
 {% block content %}
-<div class="row align-items-center justify-content-center mt-5">
-    <div class="col text-center ">
-        <h2>Statistiques</h2> 
-        <div class="col">
-            <div class="row align-items-center justify-content-center ">
-                <div class="col col-1">Année</div>
-                <div class="col col-2">                    
-                    <select name="year" id="year" class="form-control">
-                        {% for year in stat.years %}             
-                            <option value="{{year}}" {{ year == stat.year ? 'selected' : ''}}>{{year}}</option>
-                        {% endfor %}                
-                    </select>
+
+<!--<div class="row align-items-center justify-content-center mt-5">
+        <div class="col text-center ">
+            <h2>Statistiques</h2> 
+            <div class="col">
+                <div class="row align-items-center justify-content-center ">
+                    <div class="col col-1">Année</div>
+                    <div class="col col-2">                    
+                        <select name="year" id="year" class="form-control">
+                            {% for year in stat.years %}             
+                                <option value="{{year}}" {{ year == stat.year ? 'selected' : ''}}>{{year}}</option>
+                            {% endfor %}                
+                        </select>
+                    </div>           
                 </div>           
-            </div>           
-            <div class="row lign-items-center justify-content-center mt-2">
-                <div class="col col-1"><div id='1' class='span_choice'>Projets</div></div>
-                <div class="col col-1"><div id='2' class='span_choice'>Etat projets</div></div>  
-            </div> 
-        </div>                
-    </div>
+                <div class="row lign-items-center justify-content-center mt-2">
+                    <div class="col col-1"><div id='1' class='span_choice'>Projets</div></div>
+                    <div class="col col-1"><div id='3' class='span_choice'>Etat projets (todo)</div></div>  
+                    <div class="col col-1"><div id='4' class='span_choice'>Plein d'autres (todo)</div></div>  
+                </div> 
+            </div>                
+        </div>
+    </div>-->
+<div class="col text-center ">
+<h2>Statistiques</h2> 
+<div class="row ">
+    <div class="col col-1">Année</div>
+    <div class="col col-2">                    
+        <select name="year" id="year" class="form-control">
+        {% for year in stat.years %}             
+            <option value="{{year}}" {{ year == stat.year ? 'selected' : ''}}>{{year}}</option>
+        {% endfor %}                
+        </select>
+    </div>           
 </div>
+<div class="row  mt-2"  >
+      <div class="col themed-grid-col"><div id='1' class='span_choice'>Projets</div></div>
+      <div class="col themed-grid-col"><div id='3' class='span_choice'>Etat projets (todo)</div></div>
+      <div class="col themed-grid-col"><div id='4' class='span_choice'>Plein d'autres (todo)</div></div>
+</div>
+
 <div>     
     <canvas id="myChart" class="hidden"></canvas>   
 </div>
