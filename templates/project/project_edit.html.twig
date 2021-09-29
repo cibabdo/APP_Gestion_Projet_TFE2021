@@ -374,6 +374,19 @@
 
     $('.select2').select2()
 
+    $('form').on('submit', function() {
+        // valider cohérence des dates
+        const project_workStartDate = parseInt($('#project_workStartDate').val().replaceAll('-',''));
+        const project_workEndDate = parseInt($('#project_workEndDate').val().replaceAll('-',''));
+        //console.log(project_workStartDate, project_workEndDate);        
+        if (project_workEndDate <= project_workStartDate) {
+            $('#project_workEndDate').focus();
+            alert('La date de fin doit être postérieure à la date de début');
+            return false;
+        }
+        return true;
+    });
+
     /*
     const project_externalArchitectureOffice = $('#project_externalArchitectureOffice').val();  
     $('#project_externalArchitectureOffice').on('change', function(ev) {

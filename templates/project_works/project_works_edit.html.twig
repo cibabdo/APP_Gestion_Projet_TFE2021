@@ -156,5 +156,40 @@
         }  
         return false;
     })
+
+    $('form').on('submit', function() {
+        // valider cohérence des dates       
+        let project_work_provisionalReceptionDate = $('#project_work_provisionalReceptionDate').val().replaceAll('-','');
+        if (project_work_provisionalReceptionDate != '') 
+            project_work_provisionalReceptionDate = parseInt(project_work_provisionalReceptionDate);
+        else 
+            project_work_provisionalReceptionDate = 0;
+
+        let project_work_finalDeliveryDate = $('#project_work_finalDeliveryDate').val().replaceAll('-','');
+        if (project_work_finalDeliveryDate != '') 
+            project_work_finalDeliveryDate = parseInt(project_work_finalDeliveryDate);
+        else 
+            project_work_finalDeliveryDate = 0;
+
+        let project_work_vincotteReceptionDate = $('#project_work_vincotteReceptionDate').val().replaceAll('-','');
+        if (project_work_vincotteReceptionDate != '') 
+            project_work_vincotteReceptionDate = parseInt(project_work_vincotteReceptionDate);
+        else 
+            project_work_vincotteReceptionDate = 0;
+
+        //console.log(project_work_provisionalReceptionDate, project_work_finalDeliveryDate, project_work_vincotteReceptionDate);        
+
+        if (project_work_finalDeliveryDate != 0 && project_work_finalDeliveryDate <= project_work_provisionalReceptionDate) {
+            $('#project_work_finalDeliveryDate').focus();
+            alert('La date doit être postérieure à la date provisoire');
+            return false;
+        }
+        if (project_work_vincotteReceptionDate != 0 && project_work_vincotteReceptionDate <= project_work_finalDeliveryDate) {
+            $('#project_work_vincotteReceptionDate').focus();
+            alert('La date doit être postérieure à la date définitive');
+            return false;
+        }
+        return true;
+    });
 </script>
 {% endblock %}

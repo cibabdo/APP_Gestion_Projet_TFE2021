@@ -80,6 +80,19 @@
     </div>    
 </div>
 <script>
+    $('form').on('submit', function() {
+        // valider cohérence des dates
+        const planning_startDate = parseInt($('#planning_startDate').val().replaceAll('-',''));
+        const planning_endDate = parseInt($('#planning_endDate').val().replaceAll('-',''));
+        //console.log(planning_startDate, planning_endDate);        
+        if (planning_endDate <= planning_startDate) {
+            $('#planning_endDate').focus();
+            alert('La date de fin doit être postérieure à la date de début');
+            return false;
+        }
+        return true;
+    });
+
     document.getElementById("planning_name").focus()  
         
         $('#planning_percentDone').on('input', function () {

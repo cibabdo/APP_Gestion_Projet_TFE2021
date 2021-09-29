@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\ProjectCommentRepository;
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,12 +45,15 @@ class ProjectCommentsController extends AbstractController
         $projectComment->setProject($project);
         
         $user = $userRepository->find($this->getUser()->getId());        
-        $projectComment->setUser($user);
+        $projectComment->setUser($user);        
+
         $form = $this->createForm(ProjectCommentType::class, $projectComment);       
         
         // form submit
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {            
+        if ($form->isSubmitted() && $form->isValid()) {    
+            // date et heure
+            $projectComment->setDate(new DateTime());
             // instanciation DB de l'utilisateur
             $em = $managerRegistry->getManager();
             $em->persist($projectComment);
@@ -82,12 +86,15 @@ class ProjectCommentsController extends AbstractController
 
         $project = $projectRepository->find($id);
         $projectComment = $projectCommentRepository->findOneBy(['id' => $commentId]);
+        $projectComment->setDate(new DateTime());
         $form = $this->createForm(ProjectCommentType::class, $projectComment);
 
         // form submit
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {           
-           // instanciation DB de l'utilisateur
+        if ($form->isSubmitted() && $form->isValid()) { 
+            // date et heure
+            $projectComment->setDate(new DateTime());          
+            // instanciation DB de l'utilisateur
             $em = $managerRegistry->getManager();
             $em->persist($projectComment);
             $em->flush();
