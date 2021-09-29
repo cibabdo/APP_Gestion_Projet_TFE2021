@@ -36,20 +36,20 @@ https://github.com/cibabdo/APP_Gestion_Projet_TFE2021
     <tr><td>v Montrer la personne qui a édité en dernier la tâche !!!</td></tr>
     <tr><td>v Déplacer tâche enfant si fin de la tâche bouge !!!</td></tr>
     <tr><td>v Couleur des tâches => style="fill: ${task.color} !important;"</td></tr>
-    <tr><td>:x: Commantaire suite à édition</td></tr>
+    <tr><td>Encours | ok pour le 03/10/2021 | Commantaire suite à édition</td></tr>
 
 <tr><td>permission d'encodage sur des parties du projet</td></tr>
     <tr><td>v choisir les bureaux d'étude</td></tr>
     <tr><td>v personnes externes (ingénieurs)</td></tr>
     <tr><td>v travaux => proposer l'activité selon l'entreprise choisie</td></tr>
     <tr><td>v si on change d'entreprise ou bureau d'études, revoir les listes et faire des contrôles croisés</td></tr>
-    <tr><td>v montrer les personnes de contact pour les entreprises et les bureaux d'étude</td></tr>
-    <tr><td>v les externes ne peuvent qu'ajouter des documents et commentaires !!!</td></tr>
-    <tr><td>v les internes peuvent tout faire sauf l'admin !!!</td></tr>
+    <tr><td>Encours | ok pour le 03/10/2021 | montrer les personnes de contact pour les entreprises et les bureaux d'étude</td></tr>
+    <tr><td>Encours | ok pour le 03/10/2021 | les externes ne peuvent qu'ajouter des documents et commentaires !!!</td></tr>
+    <tr><td>Encours | ok pour le 03/10/2021 | les internes peuvent tout faire sauf l'admin !!!</td></tr>
 
 <tr><td>gérer les erreurs formulaires côté client </td></tr>
     <tr><td>v natif html, c'est ok car required et type via l'entity</td></tr>
-    <tr><td>v cohérence dates via javascript !!!</td></tr>
+    <tr><td>Encours | ok pour le 03/10/2021 | cohérence dates via javascript !!!</td></tr>
 </table>
 <table>
 <tr><td>Login : prof1@isl.be Password : test1234 Role: Admin</td></tr>
