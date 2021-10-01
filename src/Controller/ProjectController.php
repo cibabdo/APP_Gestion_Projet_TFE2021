@@ -337,7 +337,7 @@ class ProjectController extends AbstractController {
             // add new persons (external)
             $person = $this->getPerson('externalArchitectureOffice', $project->getPersons());
             if (isset($person)) {
-                $person->setEmployee($project->getExternalArchitectureOffice());
+                $person->setPersonEngineering($project->getExternalArchitectureOffice());
                 $project->addPerson($person);            
             }
             else {
@@ -346,7 +346,7 @@ class ProjectController extends AbstractController {
 
             $person = $this->getPerson('externalEngineer', $project->getPersons());
             if (isset($person)) {
-                $person->setEmployee($project->getExternalEngineer());
+                $person->setPersonEngineering($project->getExternalEngineer());
                 $project->addPerson($person);            
             }
             else {
@@ -355,7 +355,7 @@ class ProjectController extends AbstractController {
 
             $person = $this->getPerson('safetyCoordinator', $project->getPersons());
             if (isset($person)) {
-                $person->setEmployee($project->getSafetyCoordinator());
+                $person->setPersonEngineering($project->getSafetyCoordinator());
                 $project->addPerson($person);            
             }
             else {
