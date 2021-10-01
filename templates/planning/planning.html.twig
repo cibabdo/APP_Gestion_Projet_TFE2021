@@ -82,7 +82,7 @@
         })               
         return tasks;
     }
-
+    //Mise à jour date des tâches en backend
     function updateTaskDates(taskId, start, end) {
         let url = "{{path('planning_update_dates',{id:projectId, taskId:0})}}";
         url = url.replace('/0', '/'+taskId)
@@ -101,7 +101,7 @@
             }
         })    
     }
-
+    //Mise à jour progress des tâches en backend
     function updateTaskProgress(taskId, progress) {
         let url = "{{path('planning_update_progress',{id:projectId, taskId:0})}}";
         url = url.replace('/0', '/'+taskId)
