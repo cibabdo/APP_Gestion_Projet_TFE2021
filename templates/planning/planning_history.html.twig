@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+<div class="row mt-2">
+    <div class="col text-center mt-5">
+        {% for message in app.flashes('message') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}              
+            </div>
+        {% endfor %}       
+        <h2>Commentaires de la tâche {{ name }}</h2> 
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div id="project_comments" class="d-flex flex-row  justify-content-center" style="flex-wrap: wrap;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;" width="15%">Date</th>                 
+                        <th style="text-align: center;" width="25%">Personne</th>                 
+                        <th style="text-align: center;" width="60%">Commentaire</th>                 
+                    </tr>
+                </thead>
+                <tbody>                       
+                    {% for comment in comments %}             
+                        <tr>
+                            <td style="text-align: center;">{{comment.date|date("d/m/Y H:i:s")}}</td>                    
+                            <td style="text-align: center;">{{comment.user.username}}</td>
+                            <td style="text-align: center;">{{comment.comment}}</td>                    
+                        </tr>
+                    {% endfor %}
+                </tbody>        
+            </table> 
+            <a href="{{path('project_edit', {id:projectId, onglet:'planning'})}}" class="btn btn-secondary ml-3">Retour</a>
+        </div> 
+    </div>
+</div>
+<script>
+    setTimeout(function() {
+        const tab = document.getElementsByClassName('alert')    
+        if (tab.length) tab[0].remove()
+    },3000)      
+</script>
+{% endblock %}
+      

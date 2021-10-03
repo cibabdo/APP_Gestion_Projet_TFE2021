@@ -163,7 +163,7 @@ var date_utils = {
         return date_string + (with_time ? ' ' + time_string : '');
     },
 
-    format(date, format_string = 'YYYY-MM-DD HH:mm:ss.SSS', lang = 'fr') {
+    format(date, format_string = 'YYYY-MM-DD HH:mm:ss.SSS', lang = 'en') {
         const values = this.get_date_values(date).map(d => padStart(d, 2, 0));
         const format_map = {
             YYYY: values[0],
@@ -475,7 +475,7 @@ class Bar {
         this.task = task;
     }
 
-    prepare() {
+    prepare() {        
         this.prepare_values();
         this.prepare_helpers();
     }
@@ -501,7 +501,7 @@ class Bar {
         this.bar_group = createSVG('g', {
             class: 'bar-group',
             append_to: this.group
-        });
+        });        
         this.handle_group = createSVG('g', {
             class: 'handle-group',
             append_to: this.group
@@ -565,7 +565,7 @@ class Bar {
             ry: this.corner_radius,
             class: 'bar-progress',
             append_to: this.bar_group,
-            style: "fill: " + this.task.color + ' !important' /* ajout afin de gérer les couleurs % */
+            style: "fill: " + this.task.color + ' !important' /* DONATO 28/09/2021 */
         });
 
         if (navigator.userAgent.indexOf("Firefox") === -1) {
@@ -587,6 +587,7 @@ class Bar {
 
     draw_resize_handles() {
         if (this.invalid) return;
+        if (this.gantt.options.is_readonly) return; /* DONATO 28/09/2021 */
 
         const bar = this.$bar;
         const handle_width = 8;
@@ -706,7 +707,7 @@ class Bar {
         this.update_arrow_position();
     }
 
-    date_changed() {
+    date_changed(parent_bar_id) {
         let changed = false;
         const { new_start_date, new_end_date } = this.compute_start_end_date();
 
@@ -721,6 +722,12 @@ class Bar {
         }
 
         if (!changed) return;
+
+        /* DONATO 21/09/2021 */
+        if (this.task.id == parent_bar_id) 
+            this.task.isParent = true; 
+        else 
+            this.task.isParent = false;        
 
         this.gantt.trigger_event('date_change', [
             this.task,
@@ -1032,6 +1039,8 @@ class Popup {
 
     hide() {
         this.parent.style.opacity = 0;
+        this.parent.style.top = 0; /* DONATO 28/09/2021 */
+        this.parent.style.left = 0; /* DONATO 28/09/2021 */
     }
 }
 
@@ -1115,9 +1124,11 @@ class Gantt {
             date_format: 'YYYY-MM-DD',
             popup_trigger: 'click',
             custom_popup_html: null,
-            language: 'fr'
+            language: 'en',
+            is_readonly: false /* DONATO 28/09/2021 */
         };
         this.options = Object.assign({}, default_options, options);
+        //console.log('this.options', this.options);
     }
 
     setup_tasks(tasks) {
@@ -1728,6 +1739,7 @@ class Gantt {
 
         $.on(this.$svg, 'mousemove', e => {
             if (!action_in_progress()) return;
+            if (this.options.is_readonly) return; /* DONATO 28/09/2021 */
             /*
             const dx = e.offsetX - x_on_start;
             const dy = e.offsetY - y_on_start;  
@@ -1757,15 +1769,15 @@ class Gantt {
                         parent_width = $bar.owidth + $bar.finaldx;
                         bar.update_bar_position({
                             width: $bar.owidth + $bar.finaldx
-                        });
+                        });                     
                     } else {
-                        /* DONATO 27/09/2021 */                                   
+                        /* DONATO 27/09/2021 */
                         if (parent_width && parent_width >= bar.gantt.options.column_width) {                           
                             bar.update_bar_position({
                                 x: $bar.ox + $bar.finaldx
                             });                                           
-                        }
-                    }
+                        }                        
+                    }                    
                 } else if (is_dragging) {
                     bar.update_bar_position({ x: $bar.ox + $bar.finaldx });
                 }
@@ -1787,7 +1799,7 @@ class Gantt {
             bars.forEach(bar => {
                 const $bar = bar.$bar;
                 if (!$bar.finaldx) return;
-                bar.date_changed();
+                bar.date_changed(parent_bar_id);
                 bar.set_action_completed();
             });
         });

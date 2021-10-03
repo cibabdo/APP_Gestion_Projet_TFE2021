@@ -103,6 +103,8 @@ class Planning
      */
     private $updatedAt;
 
+    public $comment;
+
     public function getId(): ?int
     {
         return $this->id;

@@ -370,7 +370,7 @@ CREATE TABLE `planning` (
   KEY `fk_user3_idx` (`user_id`),
   CONSTRAINT `fk_project3` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_user3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -379,8 +379,41 @@ CREATE TABLE `planning` (
 
 LOCK TABLES `planning` WRITE;
 /*!40000 ALTER TABLE `planning` DISABLE KEYS */;
-INSERT INTO `planning` VALUES (1,4,'test','2021-09-24','2021-10-30',67,'#8b2727',NULL,12,'2021-09-28 17:06:55'),(2,4,'test 2','2021-10-28','2021-11-13',0,'#000',1,12,'2021-09-28 17:06:56'),(3,4,'test 3','2021-10-28','2021-11-03',51,'#803838',NULL,12,'2021-09-28 17:05:57'),(4,4,'Test4','2021-09-28','2021-09-30',12,'#000000',NULL,12,'2021-09-28 17:05:09');
+INSERT INTO `planning` VALUES (1,4,'test','2021-10-05','2021-11-25',58,'#8b2727',NULL,13,'2021-10-03 18:57:15'),(2,4,'test 2','2021-11-12','2021-12-13',0,'#35a790',1,13,'2021-10-03 18:57:15'),(3,4,'test 3','2021-10-10','2021-11-27',81,'#7b8038',NULL,13,'2021-10-03 19:10:45'),(4,4,'Test4','2021-09-28','2021-10-26',45,'#000000',NULL,12,'2021-10-03 17:34:40'),(5,4,'Test 5','2021-09-15','2021-11-26',72,'#2490ef',NULL,12,'2021-09-29 14:27:28'),(6,4,'t','2021-10-02','2021-10-22',75,'#2490ef',NULL,12,'2021-09-29 23:05:27');
 /*!40000 ALTER TABLE `planning` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `planning_history`
+--
+
+DROP TABLE IF EXISTS `planning_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `planning_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `planning_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `date` datetime DEFAULT NULL,
+  `comment` longtext,
+  PRIMARY KEY (`id`),
+  KEY `fk_project_idx` (`project_id`),
+  KEY `fk_user_idx` (`user_id`),
+  KEY `fk_planning10_idx` (`planning_id`),
+  CONSTRAINT `fk_planning10` FOREIGN KEY (`planning_id`) REFERENCES `planning` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_project10` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user10` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `planning_history`
+--
+
+LOCK TABLES `planning_history` WRITE;
+/*!40000 ALTER TABLE `planning_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `planning_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -437,7 +470,7 @@ CREATE TABLE `project_access` (
   KEY `fk_project4_idx` (`project_id`),
   CONSTRAINT `fk_project4` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -446,6 +479,7 @@ CREATE TABLE `project_access` (
 
 LOCK TABLES `project_access` WRITE;
 /*!40000 ALTER TABLE `project_access` DISABLE KEYS */;
+INSERT INTO `project_access` VALUES (1,4,12,'CRUD');
 /*!40000 ALTER TABLE `project_access` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -467,7 +501,7 @@ CREATE TABLE `project_comment` (
   KEY `fk_user_idx` (`user_id`),
   CONSTRAINT `fk_project7` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_user2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -476,6 +510,7 @@ CREATE TABLE `project_comment` (
 
 LOCK TABLES `project_comment` WRITE;
 /*!40000 ALTER TABLE `project_comment` DISABLE KEYS */;
+INSERT INTO `project_comment` VALUES (1,4,12,'2021-09-29 14:57:12','test 2'),(2,4,12,'2021-10-03 18:47:08','Test 3');
 /*!40000 ALTER TABLE `project_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -600,7 +635,7 @@ CREATE TABLE `project_work` (
 
 LOCK TABLES `project_work` WRITE;
 /*!40000 ALTER TABLE `project_work` DISABLE KEYS */;
-INSERT INTO `project_work` VALUES (1,4,1,408,'test',NULL,NULL,NULL);
+INSERT INTO `project_work` VALUES (1,4,1,408,'test','2021-09-29','2021-09-30','2021-10-01');
 /*!40000 ALTER TABLE `project_work` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -679,7 +714,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (12,'[\"ROLE_ADMIN\"]','donato.abiuso@gmail.com','Donato','$2y$13$NVpCj/91Jv6KOW.k7ez5suZzFFyu4zvtEPxaH5OW88zPbbAgpVOKi',NULL,'FR',NULL,NULL),(13,'[\"ROLE_ADMIN\"]','luigi_abiuso@hotmail.com','Luigi','$2y$13$NVpCj/91Jv6KOW.k7ez5suZzFFyu4zvtEPxaH5OW88zPbbAgpVOKi',NULL,'FR',NULL,NULL);
+INSERT INTO `user` VALUES (12,'[\"ROLE_EXTERNAL\"]','donato.abiuso@gmail.com','Donato','$2y$13$NVpCj/91Jv6KOW.k7ez5suZzFFyu4zvtEPxaH5OW88zPbbAgpVOKi',NULL,'FR',NULL,NULL),(13,'[\"ROLE_ADMIN\"]','luigi_abiuso@hotmail.com','Luigi','$2y$13$NVpCj/91Jv6KOW.k7ez5suZzFFyu4zvtEPxaH5OW88zPbbAgpVOKi',NULL,'FR',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -766,4 +801,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-09-28 17:07:45
+-- Dump completed on 2021-10-03 19:14:34

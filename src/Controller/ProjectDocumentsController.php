@@ -9,24 +9,39 @@ use Symfony\Component\Form\FormError;
 use App\Repository\DocumentRepository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\ProjectAccessRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
+
 use Symfony\Component\Routing\Annotation\Route;
-
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ProjectDocumentsController extends AbstractController
 {
     /**
      * @Route("/project/{id}/document", name="document_list")
      */
-    public function index(Request $request, $id, ProjectRepository $projectRepository, DocumentRepository $documentRepository): Response
+    public function index(Request $request, $id, ProjectRepository $projectRepository, DocumentRepository $documentRepository, ProjectAccessRepository $projectAccessRepository): Response
     {
+        // pour personne externe, voir projets si accès              
+        if ($this->isGranted('ROLE_EXTERNAL')) {
+            $isAccess = false;            
+            $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
+            foreach($access as $a) {
+                if ($id == $a->getProject()->getId()) {
+                    $isAccess = true;
+                    break;
+                }
+            }             
+            if (!$isAccess) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
+        }
+
         if ($request->query->get('message')) $this->addFlash('message', $request->query->get('message'));        
         $project = $projectRepository->find($id);
         $documents = $documentRepository->findAllByProjectId($id);
@@ -58,10 +73,22 @@ class ProjectDocumentsController extends AbstractController
     /**
      * @Route("/project/{id}/document/view/{documentId}", name="document_view")
      */
-    public function view($documentId, DocumentRepository $documentRepository): Response
+    public function view($id, $documentId, DocumentRepository $documentRepository, ProjectAccessRepository $projectAccessRepository): Response
     {   
-        // as-tu accès à ce document ?
-        // as-tu accès à ce projet ?
+        // pour personne externe, voir projets si accès              
+        if ($this->isGranted('ROLE_EXTERNAL')) {
+            $isAccess = false;            
+            $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
+            foreach($access as $a) {
+                if ($id == $a->getProject()->getId()) {
+                    $isAccess = true;
+                    break;
+                }
+            }             
+            if (!$isAccess) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
+        }
+
+        // get docmument
         $document = $documentRepository->find($documentId);
         $file = new File($document->getPath().'/'.$document->getFilename());
         //return $this->file($file);
@@ -73,6 +100,9 @@ class ProjectDocumentsController extends AbstractController
      */
     public function add(Request $request, $id, ProjectRepository $projectRepository, SluggerInterface $slugger, ManagerRegistry $managerRegistry): Response
     {
+        // Contrôle d'accès à vérifier        
+        if ($this->isGranted('ROLE_EXTERNAL')) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
+
         //upload d'un nouveau document
         $document = new Document();
         //appelle du formulaire type
@@ -134,11 +164,8 @@ class ProjectDocumentsController extends AbstractController
      */
     public function delete($id, $documentId, DocumentRepository $documentRepository): Response
     {     
-        // security
-        /* 
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $this->denyAccessUnlessGranted('ROLE_USER_INTERNAL');
-        */
+        // Contrôle d'accès à vérifier        
+        if ($this->isGranted('ROLE_EXTERNAL')) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
 
         // find                 
         $document = $documentRepository->findOneBy(['id' => $documentId]);        

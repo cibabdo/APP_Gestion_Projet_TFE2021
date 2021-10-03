@@ -296,10 +296,12 @@
             <div id="tab_others" class="tab_body"></div>
 
             <div id="buttons" class="my-2 show">
-                <button type="submit" class="btn btn-primary">Ok</button>     
-                {% if form.vars.value.id %}           
-                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_INTERNAL') %}
-                        <a href="#" class="btn btn-danger ml-3" onClick="deleteProject()">Supprimer</a>                   
+                {% if (is_granted('ROLE_EXTERNAL') == false) %}
+                    <button type="submit" class="btn btn-primary">Ok</button>     
+                    {% if form.vars.value.id %}           
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_INTERNAL') %}
+                            <a href="#" class="btn btn-danger ml-3" onClick="deleteProject()">Supprimer</a>                   
+                        {% endif %}
                     {% endif %}
                 {% endif %}
                 <a href="{{path('project_list')}}" class="btn btn-secondary ml-3">Retour</a>                

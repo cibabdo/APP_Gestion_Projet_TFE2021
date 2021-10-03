@@ -8,21 +8,36 @@ use App\Form\ProjectWorkType;
 use App\Repository\ProjectRepository;
 use App\Repository\ProjectWorkRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\ProjectAccessRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ProjectWorksController extends AbstractController
 {
     /**
      * @Route("/project/{projectId}/work", name="project_works_list")
      */
-    public function index($projectId, Request $request, ProjectRepository $projectRepository, ProjectWorkRepository $projectWorkRepository): Response
+    public function index($projectId, Request $request, ProjectRepository $projectRepository, ProjectWorkRepository $projectWorkRepository, ProjectAccessRepository $projectAccessRepository): Response
     {
+        // pour personne externe, voir projets si accès              
+        if ($this->isGranted('ROLE_EXTERNAL')) {
+            $isAccess = false;            
+            $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
+            foreach($access as $a) {
+                if ($projectId == $a->getProject()->getId()) {
+                    $isAccess = true;
+                    break;
+                }
+            }             
+            if (!$isAccess) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
+        }
+
         if ($request->query->get('message')) $this->addFlash('message', $request->query->get('message'));
         $project = $projectRepository->find($projectId);     
         $works = $projectWorkRepository->findAllById($projectId);           
@@ -55,6 +70,9 @@ class ProjectWorksController extends AbstractController
      */
     public function add($projectId, Request $request, ProjectRepository $projectRepository, ManagerRegistry $managerRegistry, SluggerInterface $slugger): Response
     {
+        // Contrôle d'accès à vérifier        
+        if ($this->isGranted('ROLE_EXTERNAL')) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
+
         $project = $projectRepository->find($projectId);         
 
         $work = new ProjectWork(); 
@@ -127,7 +145,10 @@ class ProjectWorksController extends AbstractController
 
         // form submit
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {             
+        if ($form->isSubmitted() && $form->isValid()) {   
+            // Contrôle d'accès à vérifier        
+            if ($this->isGranted('ROLE_EXTERNAL')) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
+
             // documents
             $documents = $form->get('documents')->getData();
             foreach($documents as $documentFile){                
@@ -177,6 +198,9 @@ class ProjectWorksController extends AbstractController
      */
     public function delete($workId, ProjectWorkRepository $projectWorkRepository): Response
     {      
+        // Contrôle d'accès à vérifier        
+        if ($this->isGranted('ROLE_EXTERNAL')) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
+        
         // find                 
         $work = $projectWorkRepository->findOneBy(['id' => $workId]);        
         // delete       

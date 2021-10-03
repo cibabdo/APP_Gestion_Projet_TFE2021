@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class PlanningType extends AbstractType
 {
@@ -18,7 +19,7 @@ class PlanningType extends AbstractType
         $builder
             ->add('name')
             ->add('startDate', DateType::class, ['widget' => 'single_text' ])
-            ->add('endDate', DateType::class, ['widget' => 'single_text' ])
+            ->add('endDate', DateType::class, ['widget' => 'single_text' ])            
             ->add('percentDone', RangeType::class, [                
                 'attr' => [                          
                     'min' => 0,
@@ -29,6 +30,10 @@ class PlanningType extends AbstractType
                 'choices'  => $builder->getData()->getDependencies(),
                 'required' => false
             ])
+            ->add('comment', TextareaType::class, [
+                'required' => $options['comment_required'],
+                'mapped' => 'false'
+            ])
         ;
     }
 
@@ -36,6 +41,7 @@ class PlanningType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Planning::class,
+            'comment_required' => false           
         ]);
     }
 }

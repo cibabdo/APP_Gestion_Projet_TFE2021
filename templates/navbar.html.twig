@@ -3,7 +3,7 @@
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
-                <img src="{{asset('public/image/CHULogo.png')}}" alt="Logo chu" height=10% width=10%/>
+                <img src="{{asset('./public/image/chulogo.png')}}" alt="Logo chu" height=10% width=10%/>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -12,20 +12,20 @@
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                     <li>
                     <a href="{{path('project_list')}}" class="nav-link text-white"><!--text-secondary si selection-->
-                        <img src="{{asset('public/image/dossier.svg')}}" class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#projets"></use></img>
+                        <img src="{{asset('./public/image/dossier.svg')}}" class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#projets"></use></img>
                         Projets
                     </a>
                     </li>
                     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_INTERNAL') %}
                         <li>
                             <a href="{{path('request')}}" class="nav-link text-white">
-                                <img src="{{asset('public/image/chercher.svg')}}" class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#requetes"></use></img>
+                                <img src="{{asset('./public/image/chercher.svg')}}" class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#requetes"></use></img>
                                 Requêtes
                             </a>
                         </li>
                         <li>
                             <a href="{{path('stat')}}" class="nav-link text-white">
-                                <img src="{{asset('public/image/graphique.png')}}" class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#statistiques"></use></img>
+                                <img src="{{asset('./public/image/graphique.png')}}" class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#statistiques"></use></img>
                                 Statistiques
                             </a>
                         </li>
@@ -33,7 +33,7 @@
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="dropdown text-end">
                             <a href="#" class="nav-link text-white d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{{asset('public/image/administrateur.png')}}" class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#Administration"></use></img>
+                                <img src="{{asset('./public/image/administrateur.png')}}" class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#Administration"></use></img>
                                 Admin
                             </a>
                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
@@ -60,13 +60,13 @@
                     {% endif %}
                         <li class="dropdown text-end">
                             <a href="#" class="nav-link d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{{asset('public/image/compte-test.png')}}" alt="mdo" class="rounded-circle" width="50" height="50"><!--mettre photos si géré en db-->
+                                <img src="{{asset('./public/image/compte-test.png')}}" alt="mdo" class="rounded-circle" width="50" height="50"><!--mettre photos si géré en db-->
                             </a>
                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
                                 <li class="dropdown-item">{{app.user.username}}</li>
-                                <li><a class="dropdown-item" href="{#{{path("user_edit",{id:user.id})}}#}"><img src="{{asset('public/image/user.png')}}" class="bi mx-auto mb-1" width="20" height="20"><span>Profile</span></a></li>
+                                <li><a class="dropdown-item" href="{#{{path("user_edit",{id:user.id})}}#}"><img src="{{asset('./public/image/user.png')}}" class="bi mx-auto mb-1" width="20" height="20"><span>Profile</span></a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{path('security_logout')}}"><img src="{{asset('public/image/deconnexion.png')}}" class="bi mx-auto mb-1" width="20" height="20"><span>Déconnexion<span></a></li>
+                                <li><a class="dropdown-item" href="{{path('security_logout')}}"><img src="{{asset('./public/image/deconnexion.png')}}" class="bi mx-auto mb-1" width="20" height="20"><span>Déconnexion<span></a></li>
                             </ul>
                         </li>
                 </ul>

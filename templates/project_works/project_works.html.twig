@@ -8,7 +8,9 @@
         <div class="form-group inline">
             <input type="text" class="form-control" id="search" value="" data-url="{{path('project_works_search', {projectId:projectId})}}" data-target="#projects" placeholder="Nom du poste">        
         </div>   
-        &nbsp;<a href="{{path('project_works_new', {projectId:projectId})}}" class="btn btn-primary btn-sm ml-5 add">Ajouter</a>
+        {% if is_granted('ROLE_EXTERNAL') == false %}
+            &nbsp;<a href="{{path('project_works_new', {projectId:projectId})}}" class="btn btn-primary btn-sm ml-5 add">Ajouter</a>
+        {% endif %}
     </div>
 </div>
 <div class="row">

@@ -33,7 +33,7 @@
 
             <div class="my-2">
                 <button type="submit" class="btn btn-primary">Ok</button>     
-                {% if form.vars.value.id %}           
+                {% if (form.vars.value.id and is_granted('ROLE_EXTERNAL') == false) %}           
                     <a href="#" class="btn btn-danger ml-3" onClick="deleteProject()">Supprimer</a>                    
                 {% endif %}
                 <a href="{{path('project_edit',{id:projectId, onglet:'comment'})}}" class="btn btn-secondary ml-3">Retour</a>

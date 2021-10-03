@@ -5,6 +5,7 @@ use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Entity\PersonContact;
 use App\Entity\ProjectPerson;
+use App\Repository\DocumentRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\PersonContactRepository;
@@ -23,7 +24,8 @@ class ProjectController extends AbstractController {
     {
         if ($request->query->get('message')) $this->addFlash('message', $request->query->get('message'));    
         
-        // pour personne externe, voir projets si accès        
+        // pour personne externe, voir projets si accès  
+        $projects = [];      
         if ($this->isGranted('ROLE_EXTERNAL')) {
             $projects_w = [];
             $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
@@ -409,7 +411,7 @@ class ProjectController extends AbstractController {
     /**
      * @Route("/project/{id}", methods={"DELETE"}, name="project_delete")
      */
-    public function delete($id, ProjectRepository $projectRepository): Response
+    public function delete($id, ProjectRepository $projectRepository, DocumentRepository $documentRepository): Response
     {      
         // security
         if ($this->isGranted('ROLE_EXTERNAL')) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
@@ -421,7 +423,7 @@ class ProjectController extends AbstractController {
         $entityManager->remove($project);
         $entityManager->flush();  
         // delete documents on files disk        
-        $documents = $project->getDocument();
+        $documents = $documentRepository->getDocument();
         foreach($documents as $document) {
             unlink($document->getPath().'/'.$document->getFilename());
         }     

@@ -10,7 +10,12 @@ class HomeController extends AbstractController {
     /**
     * @Route("/", name="home", methods={"GET"})
     */
-    function index(Request $request): Response {       
-       return $this->render('/home.html.twig');
-    }    
+    function index(Request $request): Response {     
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->render('/home.html.twig');
+        }
+        else {
+            return $this->redirectToRoute('project_list');
+        } 
+    }   
 }

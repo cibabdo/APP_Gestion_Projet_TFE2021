@@ -68,11 +68,23 @@
                 {% endif %}
                 {{ form_widget(form.color, {'attr': {'class': 'form-control'}}) }}    
             </div> 
+
+            <div class="mb-3">
+                {{ form_label(form.comment, 'Commentaire', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.comment) %}            
+                    <div class="form-error text-danger">
+                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.comment) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.comment, {'attr': {'class': 'form-control'}}) }}    
+            </div>     
          
             <div class="my-2">
-                <button type="submit" class="btn btn-primary">Ok</button>     
-                {% if form.vars.value.id %}           
-                    <a href="#" class="btn btn-danger ml-3" onClick="deletePlanning()">Supprimer</a>
+                {% if (is_granted('ROLE_EXTERNAL') == false) %}
+                    <button type="submit" class="btn btn-primary">Ok</button>     
+                    {% if form.vars.value.id %}           
+                        <a href="#" class="btn btn-danger ml-3" onClick="deletePlanning()">Supprimer</a>
+                    {% endif %}
                 {% endif %}
                 <a href="{{path('project_edit', {id:projectId, onglet:'planning'})}}" class="btn btn-secondary ml-3">Retour</a>
             </div>            
@@ -80,6 +92,8 @@
     </div>    
 </div>
 <script>
+    const id = '{{id}}';
+
     $('form').on('submit', function() {
         // valider cohérence des dates
         const planning_startDate = parseInt($('#planning_startDate').val().replaceAll('-',''));
@@ -89,7 +103,14 @@
             $('#planning_endDate').focus();
             alert('La date de fin doit être postérieure à la date de début');
             return false;
+        }        
+
+        if (id != '0' && $('#planning_comment').val().trim() == '') {
+            $('#planning_comment').focus();
+            alert('Veuillez encoder un commentaire');
+            return false;
         }
+
         return true;
     });
 

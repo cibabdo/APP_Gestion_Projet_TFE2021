@@ -51,7 +51,9 @@
                             <h5 class="card-title"><i class="bi bi-file-earmark"></i> {{document.filename}}</h5>
                             <p class="card-text">{{document.comment}}</p>
                             <a href="{{path('document_view',{id:projectId, documentId:document.id})}}" class="btn btn-primary btn-sm view">Voir</a>
-                            <a href="{{path('document_delete',{id:projectId, documentId:document.id})}}" class="btn btn-danger btn-sm delete">Supprimer</a>
+                            {% if is_granted('ROLE_EXTERNAL') == false %}
+                                <a href="{{path('document_delete',{id:projectId, documentId:document.id})}}" class="btn btn-danger btn-sm delete">Supprimer</a>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}    
@@ -101,9 +103,11 @@
         </div>
 
         <div class="my-2">
-            <button type="submit" class="btn btn-primary">Ok</button>     
-            {% if form.vars.value.id %}           
-                <a href="#" class="btn btn-danger ml-3" onClick="deleteProject()">Supprimer</a>                   
+            {% if is_granted('ROLE_EXTERNAL') == false %}
+                <button type="submit" class="btn btn-primary">Ok</button>     
+                {% if form.vars.value.id %}           
+                    <a href="#" class="btn btn-danger ml-3" onClick="deleteProject()">Supprimer</a>                   
+                {% endif %}
             {% endif %}
             <a href="{{path('project_edit',{id:projectId,onglet:'work'})}}" class="btn btn-secondary ml-3">Retour</a>                
         </div>      

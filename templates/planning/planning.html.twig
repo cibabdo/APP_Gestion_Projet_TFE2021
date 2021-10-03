@@ -4,12 +4,32 @@
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ message }}              
             </div>
-        {% endfor %}      
-        <a href="{{path('planning_new', {id:projectId})}}" class="btn btn-primary btn-sm ml-5 add">Nouvelle tâche</a>
+        {% endfor %}     
+        {% if (is_granted('ROLE_EXTERNAL') == false) %} 
+            <a href="{{path('planning_new', {id:projectId})}}" class="btn btn-primary btn-sm ml-5 add">Nouvelle tâche</a>
+        {% endif %}
     </div>
 </div>
 <svg id="gantt" class="m-5"></svg>
+<div id="showPopup" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Commentaire sur la tâche</h5>          
+        </div>
+        <div class="modal-body">
+          <textarea name="comment" id="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="modal-footer">
+          <!--<button type="button" id="showPopup_close" class="btn btn-secondary" data-dismiss="modal">Fermer</button>-->
+          <button type="button" id="showPopup_save" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+</div>
 <script>
+    const is_external = {{is_external}};
+
     setTimeout(function() {
         const tab = document.getElementsByClassName('alert')    
         if (tab.length) tab[0].remove()
@@ -17,21 +37,38 @@
     
     tasks = getTasks();         
     
-    gantt = new Gantt("#gantt", tasks, {      
+    gantt = new Gantt("#gantt", tasks, { 
+        is_readonly: is_external ? true : false,
         custom_popup_html: function(task) {            
             const start_date = String(task._start.getDate()).padStart(2, '0') + '/' + String(task._start.getMonth() + 1).padStart(2, '0') + '/' + task._start.getFullYear();
             const end_date = String(task._end.getDate()).padStart(2, '0') + '/' + String(task._end.getMonth() + 1).padStart(2, '0') + '/' + task._end.getFullYear();
-            return `
+            if (is_external) {
+                return `
+                <div class="details-container">
+                <h3>${task.name}</h3>
+                <p>Du ${start_date} au ${end_date}</p>
+                <p>Effectué à ${task.progress} %</p>
+                <p>Modifié le ${task.updatedAt} par ${task.username}</p>                
+                <button class="btn btn-sm btn-info text-center" onclick="historique(${task.id});return false;">Historique</button>
+                </div>
+            `;
+            }
+            else {
+                return `
                 <div class="details-container">
                 <h3>${task.name}</h3>
                 <p>Du ${start_date} au ${end_date}</p>
                 <p>Effectué à ${task.progress} %</p>
                 <p>Modifié le ${task.updatedAt} par ${task.username}</p>
                 <button class="btn btn-sm btn-blue text-center" onclick="editTask(${task.id});return false;">Editer</button>
+                <button class="btn btn-sm btn-info text-center" onclick="historique(${task.id});return false;">Historique</button>
                 </div>
             `;
+            }           
         },
         on_date_change: function(task, start, end) {
+            if (is_external) return;
+
             let dd, mm, yyyy;
 
             dd = String(start.getDate()).padStart(2, '0');
@@ -45,8 +82,12 @@
             end = yyyy + '-' + mm + '-' + dd;   
           
             updateTaskDates(task.id, start, end);
+
+            if (task.isParent) showComment(task.id);
         },
+
         on_progress_change: function(task, progress) {         
+            if (is_external) return;
             updateTaskProgress(task.id, progress);
         }
        
@@ -82,8 +123,9 @@
         })               
         return tasks;
     }
-    //Mise à jour date des tâches en backend
+
     function updateTaskDates(taskId, start, end) {
+        if (is_external) return;
         let url = "{{path('planning_update_dates',{id:projectId, taskId:0})}}";
         url = url.replace('/0', '/'+taskId)
         $.ajax({            
@@ -101,8 +143,9 @@
             }
         })    
     }
-    //Mise à jour progress des tâches en backend
+
     function updateTaskProgress(taskId, progress) {
+        if (is_external) return;
         let url = "{{path('planning_update_progress',{id:projectId, taskId:0})}}";
         url = url.replace('/0', '/'+taskId)
         $.ajax({
@@ -120,12 +163,38 @@
         })    
     }
 
+    function addComment(taskId, comment) {       
+        let url = "{{path('planning_add_comment',{id:projectId, taskId:0})}}";
+        url = url.replace('/0', '/'+taskId)
+        $.ajax({
+            async: true,
+            url: url,
+            type: 'POST', 
+            data: 'comment=' + comment,
+            success: function (data) {        
+                //console.log(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur chargement des tâches')
+            }
+        })    
+    }
+
     function editTask(taskId) {
+        if (is_external) return;
         let url = "{{path('planning_edit',{id:projectId, taskId:0})}}";
         url = url.replace('/0', '/'+ taskId)
         document.location.href = url;
     }  
-    //aller à la tâche
+    
+    function historique(taskId) {
+        if (is_external) return;
+        let url = "{{path('planning_history',{id:projectId, taskId:0})}}";
+        url = url.replace('/0', '/'+ taskId)
+        document.location.href = url;
+    }  
+
     function scrollToToday() {   
         let date = new Date();
         let dd = String(date.getDate()).padStart(2, '0');
@@ -139,4 +208,29 @@
         if (x === undefined || x == null) return;	        
         $('.gantt-container').scrollLeft(x);
     }
+
+    let taskId = 0;
+    function showComment(id) {        
+        taskId = id;
+        $('#showPopup').toggle();
+        setTimeout(function() {
+            $('#comment').focus();            
+        }, 250);
+    }
+
+    $('body').on('click', '#showPopup_close', function(ev) {      
+        $('#showPopup').toggle();
+        return true;
+    });
+
+    $('body').on('click', '#showPopup_save', function(ev) {  
+        if ($('#comment').val().trim() == '') {
+            $('#comment').focus();
+            return false;            
+        }
+        addComment(taskId, $('#comment').val());
+        $('#comment').val('');
+        $('#showPopup').toggle();
+        return true;
+    });
 </script>

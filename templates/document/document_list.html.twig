@@ -11,7 +11,9 @@
                             <p class="card-text">{{document.projectWork.company.name}} - {{document.projectWork.work.name}}</p>
                         {% endif %}
                         <a href="{{path('document_view',{id:projectId, documentId:document.id})}}" class="btn btn-primary btn-sm view">Voir</a>
-                        <a href="{{path('document_delete',{id:projectId, documentId:document.id})}}" class="btn btn-danger btn-sm delete">Supprimer</a>
+                        {% if (is_granted('ROLE_EXTERNAL') == false) %}
+                            <a href="{{path('document_delete',{id:projectId, documentId:document.id})}}" class="btn btn-danger btn-sm delete">Supprimer</a>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}    

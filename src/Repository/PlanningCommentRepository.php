@@ -2,30 +2,30 @@
 
 namespace App\Repository;
 
-use App\Entity\ProjectComment;
+use App\Entity\PlanningComment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method ProjectComment|null find($id, $lockMode = null, $lockVersion = null)
- * @method ProjectComment|null findOneBy(array $criteria, array $orderBy = null)
- * @method ProjectComment[]    findAll()
- * @method ProjectComment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method PlanningComment|null find($id, $lockMode = null, $lockVersion = null)
+ * @method PlanningComment|null findOneBy(array $criteria, array $orderBy = null)
+ * @method PlanningComment[]    findAll()
+ * @method PlanningComment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProjectCommentRepository extends ServiceEntityRepository
+class PlanningCommentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ProjectComment::class);
+        parent::__construct($registry, PlanningComment::class);
     }
 
       /**
-    * @return ProjectComment[] Returns an array of ProjectComment objects
+    * @return PlanningComment[] Returns an array of PlanningComment objects
     */    
     public function findAllById($id)
     {        
         return $this->createQueryBuilder('c')
-            ->where('c.project = :id')
+            ->where('c.planning = :id')
             ->setParameter('id', $id)           
             ->orderBy('c.date', 'DESC') 
             ->getQuery()
@@ -33,7 +33,7 @@ class ProjectCommentRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return ProjectComment[] Returns an array of ProjectComment objects
+    //  * @return PlanningComment[] Returns an array of PlanningComment objects
     //  */
     /*
     public function findByExampleField($value)
@@ -50,7 +50,7 @@ class ProjectCommentRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ProjectComment
+    public function findOneBySomeField($value): ?PlanningComment
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')

@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\ProjectComment;
 use App\Form\ProjectCommentType;
 use App\Repository\UserRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\ProjectAccessRepository;
 use App\Repository\ProjectCommentRepository;
-use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,8 +21,21 @@ class ProjectCommentsController extends AbstractController
     /**
      * @Route("/project/{id}/comments", name="project_comments")
      */
-    public function index(Request $request, $id, ProjectRepository $projectRepository, ProjectCommentRepository $projectCommentRepository): Response
+    public function index(Request $request, $id, ProjectRepository $projectRepository, ProjectCommentRepository $projectCommentRepository, ProjectAccessRepository $projectAccessRepository): Response
     {
+        // pour personne externe, voir projets si accès              
+        if ($this->isGranted('ROLE_EXTERNAL')) {
+            $isAccess = false;            
+            $access = $projectAccessRepository->findAllWithAccess($this->getUser()->getId());  
+            foreach($access as $a) {
+                if ($id == $a->getProject()->getId()) {
+                    $isAccess = true;
+                    break;
+                }
+            }             
+            if (!$isAccess) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
+        }
+
         if ($request->query->get('message')) $this->addFlash('message', $request->query->get('message'));        
         $project = $projectRepository->find($id);
         $comments = $projectCommentRepository->findAllById($id);
@@ -36,8 +50,8 @@ class ProjectCommentsController extends AbstractController
     /**
      * @Route("/project/{id}/comments/new", name="project_comments_new")
      */
-    public function add(Request $request, $id, ProjectRepository $projectRepository, UserRepository $userRepository, ManagerRegistry $managerRegistry): Response
-    {
+    public function add(Request $request, $id, ProjectRepository $projectRepository, UserRepository $userRepository, ManagerRegistry $managerRegistry, ProjectAccessRepository $projectAccessRepository): Response
+    {    
         $project = $projectRepository->find($id);
 
         $projectComment = new ProjectComment();    
@@ -78,14 +92,15 @@ class ProjectCommentsController extends AbstractController
      */
     public function update(Request $request, $id, $commentId, ManagerRegistry $managerRegistry, 
                                                               ProjectRepository $projectRepository, 
-                                                              ProjectCommentRepository $projectCommentRepository): Response
-    {         
-        // Vérification accès       
-        if (($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_INTERNAL')) == false) 
-            throw new AccessDeniedException('Vous ne pouvez plus modifier le commentaire');
-
+                                                              ProjectCommentRepository $projectCommentRepository, 
+                                                              UserRepository $userRepository): Response
+    {           
         $project = $projectRepository->find($id);
         $projectComment = $projectCommentRepository->findOneBy(['id' => $commentId]);
+
+        $user = $userRepository->find($this->getUser()->getId());        
+        if ($projectComment->getUser()->getId() != $user->getId()) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
+
         $projectComment->setDate(new DateTime());
         $form = $this->createForm(ProjectCommentType::class, $projectComment);
 
@@ -118,6 +133,10 @@ class ProjectCommentsController extends AbstractController
      */
     public function delete($id, $commentId, ProjectCommentRepository $projectCommentRepository): Response
     {      
+        // Vérification accès       
+        if (($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_INTERNAL')) == false) 
+            throw new AccessDeniedException('Vous ne pouvez plus modifier le commentaire');
+
         // cherche                 
         $projectComment = $projectCommentRepository->findOneBy(['id' => $commentId]);        
         // delete       
