@@ -1124,7 +1124,7 @@ class Gantt {
             date_format: 'YYYY-MM-DD',
             popup_trigger: 'click',
             custom_popup_html: null,
-            language: 'en',
+            language: 'fr',
             is_readonly: false /* DONATO 28/09/2021 */
         };
         this.options = Object.assign({}, default_options, options);
