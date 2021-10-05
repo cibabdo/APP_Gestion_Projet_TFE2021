@@ -12,7 +12,7 @@ use App\Repository\ProjectRepository;
 use Symfony\Component\Form\FormError;
 
 use Doctrine\Persistence\ManagerRegistry;
-use App\Repository\PersonContactRepository;
+use App\Repository\PersonEngineeringRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +28,7 @@ class InvitationController extends AbstractController
     /**
      * @Route("/project/{id}/invitation/{personId}", name="invitation")
      */
-    public function index($id, $personId, Request $request, MailerInterface $mailer, UserRepository $userRepository, ProjectRepository $projectRepository, PersonContactRepository $personContactRepository, 
+    public function index($id, $personId, Request $request, MailerInterface $mailer, UserRepository $userRepository, ProjectRepository $projectRepository, PersonEngineeringRepository $personEngineeringRepository, 
                                                                                      ManagerRegistry $managerRegistry,
                                                                                      KernelInterface $kernel): Response
     {   
@@ -37,7 +37,7 @@ class InvitationController extends AbstractController
             throw new AccessDeniedException('Vous n\'êtes pas autorisé');                
                
         // récupération id de la personne à inviter
-        $person = $personContactRepository->find($personId);
+        $person = $personEngineeringRepository->find($personId);
        
         // récupération email
         $user = $userRepository->findByEmail($person->getEmail()); 
@@ -107,7 +107,7 @@ class InvitationController extends AbstractController
     /**
      * @Route("/invitation/inscription", name="invitation_inscription")
      */
-    public function inscription(Request $request, ProjectRepository $projectRepository, PersonContactRepository $personContactRepository, UserSigninSecurityRepository $userSigninSecurityRepository, ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $encoder)
+    public function inscription(Request $request, ProjectRepository $projectRepository, PersonEngineeringRepository $personEngineeringRepository, UserSigninSecurityRepository $userSigninSecurityRepository, ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $encoder)
     {   
         // vérification nonce   
         if ($request->query->get('nonce') == null) throw new AccessDeniedException('Vous n\'êtes pas autorisé');
@@ -121,7 +121,7 @@ class InvitationController extends AbstractController
         if ($today > $invit->getExpiredat()) throw new AccessDeniedException('Vous n\'êtes pas autorisé'); 
 
         // récupération de la personne invité
-        $person = $personContactRepository->find($invit->getPerson());
+        $person = $personEngineeringRepository->find($invit->getPerson());
 
         // inscription - formulaire
         $message = '';

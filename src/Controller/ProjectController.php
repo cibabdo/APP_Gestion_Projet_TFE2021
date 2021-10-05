@@ -384,7 +384,7 @@ class ProjectController extends AbstractController {
         ]);
     }
 
-    private function getPerson(String $input, \Doctrine\ORM\PersistentCollection $persons) {
+    private function getPerson(String $input, \Doctrine\Common\Collections\Collection $persons) {
         // \Doctrine\Common\Collections\ArrayCollection
         $GLOBALS['input'] = $input;
         $tab = $persons->filter(function($element) {
@@ -396,13 +396,13 @@ class ProjectController extends AbstractController {
             return null;
     }
 
-    private function getPersonEmployee(String $input, \Doctrine\ORM\PersistentCollection $persons) {
+    private function getPersonEmployee(String $input, \Doctrine\Common\Collections\Collection $persons) {
         $person = $this->getPerson($input, $persons);
         if (isset($person)) return $person->getEmployee();
         return null;
     }
 
-    private function getPersonEngineer(String $input, \Doctrine\ORM\PersistentCollection $persons) {
+    private function getPersonEngineer(String $input, \Doctrine\Common\Collections\Collection $persons) {
         $person = $this->getPerson($input, $persons);
         if (isset($person)) return $person->getPersonEngineering();
         return null;
