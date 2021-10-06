@@ -64,7 +64,7 @@ class ProjectWork
      *
      * @ORM\ManyToOne(targetEntity="Company")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="company_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="company_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $company;
@@ -74,7 +74,7 @@ class ProjectWork
      *
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $project;
@@ -84,7 +84,7 @@ class ProjectWork
      *
      * @ORM\ManyToOne(targetEntity="Work")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="work_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="work_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $work;

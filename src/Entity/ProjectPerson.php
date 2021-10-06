@@ -34,7 +34,7 @@ class ProjectPerson
      *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="persons")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $project;
@@ -44,7 +44,7 @@ class ProjectPerson
      *
      * @ORM\ManyToOne(targetEntity="Employee")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="employee_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $employee;
@@ -54,7 +54,7 @@ class ProjectPerson
      *
      * @ORM\ManyToOne(targetEntity="PersonEngineering")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="person_engineering_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="person_engineering_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $person_engineering;

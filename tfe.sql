@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 05 oct. 2021 à 23:53
--- Version du serveur :  10.4.18-MariaDB
--- Version de PHP : 8.0.3
+-- Généré le : mer. 06 oct. 2021 à 11:44
+-- Version du serveur : 10.4.19-MariaDB
+-- Version de PHP : 8.0.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -3563,7 +3563,8 @@ CREATE TABLE `planning` (
 INSERT INTO `planning` (`id`, `project_id`, `name`, `start_date`, `end_date`, `percent_done`, `color`, `dependency`, `user_id`, `updated_at`) VALUES
 (1, 4, 'test', '2021-10-20', '2021-11-30', 58, '#8b2727', NULL, 12, '2021-10-04 22:45:34'),
 (2, 4, 'test 2', '2021-11-23', '2021-12-16', 0, '#35a790', 1, 12, '2021-10-04 22:45:45'),
-(7, 4, 'test3', '2021-12-15', '2021-12-17', 25, '#2490ef', 2, 12, '2021-10-04 22:45:45');
+(7, 4, 'test3', '2021-12-15', '2021-12-17', 25, '#2490ef', 2, 12, '2021-10-04 22:45:45'),
+(11, 5, 'essai cron', '2021-10-23', '2021-11-06', 35, '#4ec592', NULL, 12, '2021-10-06 11:01:38');
 
 -- --------------------------------------------------------
 
@@ -3600,7 +3601,8 @@ INSERT INTO `planning_history` (`id`, `project_id`, `planning_id`, `user_id`, `d
 (15, 4, 1, 12, '2021-10-04 22:45:26', 'ssss'),
 (16, 4, 2, 12, '2021-10-04 22:45:30', 'sss'),
 (17, 4, 1, 12, '2021-10-04 22:45:39', 'sssss'),
-(18, 4, 2, 12, '2021-10-04 22:45:48', 'ssss');
+(18, 4, 2, 12, '2021-10-04 22:45:48', 'ssss'),
+(28, 5, 11, 12, '2021-10-06 11:01:45', 'essai cron\n');
 
 -- --------------------------------------------------------
 
@@ -4227,13 +4229,13 @@ ALTER TABLE `person_engineering`
 -- AUTO_INCREMENT pour la table `planning`
 --
 ALTER TABLE `planning`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT pour la table `planning_history`
 --
 ALTER TABLE `planning_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT pour la table `project`
@@ -4304,8 +4306,8 @@ ALTER TABLE `ati`
 -- Contraintes pour la table `document`
 --
 ALTER TABLE `document`
-  ADD CONSTRAINT `fk_project2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_project_work` FOREIGN KEY (`project_work_id`) REFERENCES `project_work` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_project2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_project_work` FOREIGN KEY (`project_work_id`) REFERENCES `project_work` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `employee`
@@ -4337,8 +4339,8 @@ ALTER TABLE `person_engineering`
 -- Contraintes pour la table `planning`
 --
 ALTER TABLE `planning`
-  ADD CONSTRAINT `fk_project3` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_user3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_project3` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_user3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `planning_history`
@@ -4358,15 +4360,15 @@ ALTER TABLE `project`
 -- Contraintes pour la table `project_access`
 --
 ALTER TABLE `project_access`
-  ADD CONSTRAINT `fk_project4` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_project4` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `project_comment`
 --
 ALTER TABLE `project_comment`
-  ADD CONSTRAINT `fk_project7` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_user2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_project7` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_user2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `project_company`
@@ -4379,24 +4381,24 @@ ALTER TABLE `project_company`
 -- Contraintes pour la table `project_engineering`
 --
 ALTER TABLE `project_engineering`
-  ADD CONSTRAINT `fk_engineering` FOREIGN KEY (`engineering_id`) REFERENCES `engineering_office` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_project9` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_engineering` FOREIGN KEY (`engineering_id`) REFERENCES `engineering_office` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_project9` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `project_person`
 --
 ALTER TABLE `project_person`
-  ADD CONSTRAINT `fk_employee3` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_person_engineering` FOREIGN KEY (`person_engineering_id`) REFERENCES `person_engineering` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_employee3` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_person_engineering` FOREIGN KEY (`person_engineering_id`) REFERENCES `person_engineering` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_project8` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `project_work`
 --
 ALTER TABLE `project_work`
-  ADD CONSTRAINT `fk_company2` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_project5` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_work` FOREIGN KEY (`work_id`) REFERENCES `work` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_company2` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_project5` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_work` FOREIGN KEY (`work_id`) REFERENCES `work` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

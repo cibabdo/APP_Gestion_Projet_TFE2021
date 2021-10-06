@@ -422,8 +422,8 @@ class ProjectController extends AbstractController {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($project);
         $entityManager->flush();  
-        // delete documents on files disk        
-        $documents = $documentRepository->getDocument();
+        // delete documents on files disk           
+        $documents = $documentRepository->findAllByProjectId($id);
         foreach($documents as $document) {
             unlink($document->getPath().'/'.$document->getFilename());
         }     

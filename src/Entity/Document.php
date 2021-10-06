@@ -49,7 +49,7 @@ class Document
      *
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $project;
@@ -59,7 +59,7 @@ class Document
      *
      * @ORM\ManyToOne(targetEntity="ProjectWork", inversedBy="documents")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_work_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="project_work_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $projectWork;
