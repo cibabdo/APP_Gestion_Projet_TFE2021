@@ -60,92 +60,265 @@ class __TwigTemplate_ec5ad6c785586acd20c5ad654b704fabc65b1770e8f62416304b09ae6f9
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['message'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
         // line 7
-        echo "      
-        <a href=\"";
+        echo "     
+        ";
         // line 8
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_new", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 8, $this->source); })())]), "html", null, true);
-        echo "\" class=\"btn btn-primary btn-sm ml-5 add\">Nouvelle tâche</a>
+        if (($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_EXTERNAL") == false)) {
+            echo " 
+            <a href=\"";
+            // line 9
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_new", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 9, $this->source); })())]), "html", null, true);
+            echo "\" class=\"btn btn-primary btn-sm ml-5 add\">Nouvelle tâche</a>
+        ";
+        }
+        // line 11
+        echo "    </div>
+</div>
+<!-- Ajout d'un popup modal pour le commentaire en cas de modif sur tâche -->
+<svg id=\"gantt\" class=\"m-5\"></svg>
+<div id=\"showPopup\" class=\"modal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\">
+    <div class=\"modal-dialog\" role=\"document\">
+      <div class=\"modal-content\">
+        <div class=\"modal-header\">
+          <h5 class=\"modal-title\">Commentaire sur la tâche</h5>          
+        </div>
+        <div class=\"modal-body\">
+          <textarea name=\"comment\" id=\"comment\" class=\"form-control\" id=\"exampleFormControlTextarea1\" rows=\"3\"></textarea>
+        </div>
+        <div class=\"modal-footer\">
+          <!--<button type=\"button\" id=\"showPopup_close\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Fermer</button>-->
+          <button type=\"button\" id=\"showPopup_save\" class=\"btn btn-primary\">Enregistrer</button>
+        </div>
+      </div>
     </div>
 </div>
-<div id=\"plannings\" class=\"m-5\">
-    Chargement...
-</div>
 <script>
+    const is_external = ";
+        // line 32
+        echo twig_escape_filter($this->env, (isset($context["is_external"]) || array_key_exists("is_external", $context) ? $context["is_external"] : (function () { throw new RuntimeError('Variable "is_external" does not exist.', 32, $this->source); })()), "html", null, true);
+        echo ";
+
     setTimeout(function() {
         const tab = document.getElementsByClassName('alert')    
         if (tab.length) tab[0].remove()
-    },3000)    
-      
-    setTimeout(function() {
-        tasks = getTasks();        
-        google.charts.load('current', {'packages':['gantt']});
-        google.charts.setOnLoadCallback(drawChart);
-    },1000)    
-
-    function daysToMilliseconds(days) {
-      return days * 24 * 60 * 60 * 1000;
-    }
+    },3000)         
     
-    function getTasks() {        
+    tasks = getTasks();         
+    
+    gantt = new Gantt(\"#gantt\", tasks, { 
+        is_readonly: is_external ? true : false,
+        custom_popup_html: function(task) {            
+            const start_date = String(task._start.getDate()).padStart(2, '0') + '/' + String(task._start.getMonth() + 1).padStart(2, '0') + '/' + task._start.getFullYear();
+            const end_date = String(task._end.getDate()).padStart(2, '0') + '/' + String(task._end.getMonth() + 1).padStart(2, '0') + '/' + task._end.getFullYear();
+            if (is_external) {
+                return `
+                <div class=\"details-container\">
+                <h3>\${task.name}</h3>
+                <p>Du \${start_date} au \${end_date}</p>
+                <p>Effectué à \${task.progress} %</p>
+                <p>Modifié le \${task.updatedAt} par \${task.username}</p>                
+                <button class=\"btn btn-sm btn-info text-center\" onclick=\"historique(\${task.id});return false;\">Historique</button>
+                </div>
+            `;
+            }
+            else {
+                return `
+                <div class=\"details-container\">
+                <h3>\${task.name}</h3>
+                <p>Du \${start_date} au \${end_date}</p>
+                <p>Effectué à \${task.progress} %</p>
+                <p>Modifié le \${task.updatedAt} par \${task.username}</p>
+                <button class=\"btn btn-sm btn-blue text-center\" onclick=\"editTask(\${task.id});return false;\">Editer</button>
+                <button class=\"btn btn-sm btn-info text-center\" onclick=\"historique(\${task.id});return false;\">Historique</button>
+                </div>
+            `;
+            }           
+        },
+        on_date_change: function(task, start, end) {
+            if (is_external) return;
+
+            let dd, mm, yyyy;
+
+            dd = String(start.getDate()).padStart(2, '0');
+            mm = String(start.getMonth() + 1).padStart(2, '0');
+            yyyy = start.getFullYear();
+            start = yyyy + '-' + mm + '-' + dd;   
+
+            dd = String(end.getDate()).padStart(2, '0');
+            mm = String(end.getMonth() + 1).padStart(2, '0');
+            yyyy = end.getFullYear();
+            end = yyyy + '-' + mm + '-' + dd;   
+          
+            updateTaskDates(task.id, start, end);
+
+            if (task.isParent) showComment(task.id);
+        },
+
+        on_progress_change: function(task, progress) {         
+            if (is_external) return;
+            updateTaskProgress(task.id, progress);
+        }
+       
+    });
+
+    gantt.change_view_mode('Week');       
+    
+    setTimeout(function() {
+        scrollToToday();       
+    }, 1000);
+
+    /************************************/
+   
+    // réception des tâches en json du controleur
+    function getTasks() {  
+        let tasks;       
         \$.ajax({
             async: false,
             url: \"";
-        // line 33
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_list_json", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 33, $this->source); })())]), "html", null, true);
+        // line 110
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_list_json", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 110, $this->source); })())]), "html", null, true);
         echo "\",
             type: 'GET',
+            dataType: 'text',
+            success: function (data) {                  
+                tasks = JSON.parse(data); 
+                tasks.forEach((element, index) => {
+                    element.id =  element.id.toString();
+                    tasks[index] = element;                   
+                });              
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur chargement des tâches')
+            }
+        })               
+        return tasks;
+    }
+
+    function updateTaskDates(taskId, start, end) {
+        if (is_external) return;
+        let url = \"";
+        // line 130
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_update_dates", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 130, $this->source); })()), "taskId" => 0]), "html", null, true);
+        echo "\";
+        url = url.replace('/0', '/'+taskId)
+        \$.ajax({            
+            async: true,
+            url: url,
+            type: 'POST', 
             dataType: 'json',
-            success: function (result) {         
-                tasks = result;
+            data: 'start=' + start + '&end='+end,     
+            success: function (data) {        
+                //console.log(data);
             },
             error: function(jqXHR, textStatus, errorThrown ) {
                 console.log(jqXHR, textStatus, errorThrown)
                 alert('Erreur chargement des tâches')
             }
         })    
-        return tasks;
     }
-    
-    function drawChart() {                
-        var data = new google.visualization.DataTable();
 
-        //console.log(tasks) 
-
-        data.addColumn('string', 'Task ID');
-        data.addColumn('string', 'Task Name');
-        data.addColumn('string', 'Resource');
-        data.addColumn('date', 'Start Date');
-        data.addColumn('date', 'End Date');
-        data.addColumn('number', 'Duration');
-        data.addColumn('number', 'Percent Complete');
-        data.addColumn('string', 'Dependencies');
-        
-        if (tasks !== undefined) {
-            tasks.forEach(element => {
-                data.addRows([
-                    [element.name, element.name, null, new Date(element.startDate), new Date(element.endDate), null, element.percentDone, element.dependency]
-                ]);
-            });        
-        }
-
-        var options = {
-            height: 500,
-            gantt: {
-                /*trackHeight: 30*/
-                criticalPathEnabled: false, // Critical path arrows will be the same as other arrows.
-                arrow: {
-                    angle: 100,
-                    width: 5,
-                    color: 'green',
-                    radius: 0
-                }
+    function updateTaskProgress(taskId, progress) {
+        if (is_external) return;
+        let url = \"";
+        // line 150
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_update_progress", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 150, $this->source); })()), "taskId" => 0]), "html", null, true);
+        echo "\";
+        url = url.replace('/0', '/'+taskId)
+        \$.ajax({
+            async: true,
+            url: url,
+            type: 'POST', 
+            data: 'progress=' + progress,
+            success: function (data) {        
+                //console.log(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur chargement des tâches')
             }
-        };
+        })    
+    }
 
-        var chart = new google.visualization.Gantt(document.getElementById('plannings'));
+    function addComment(taskId, comment) {       
+        let url = \"";
+        // line 168
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_add_comment", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 168, $this->source); })()), "taskId" => 0]), "html", null, true);
+        echo "\";
+        url = url.replace('/0', '/'+taskId)
+        \$.ajax({
+            async: true,
+            url: url,
+            type: 'POST', 
+            data: 'comment=' + comment,
+            success: function (data) {        
+                //console.log(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur chargement des tâches')
+            }
+        })    
+    }
 
-        chart.draw(data, options);
-    }       
+    function editTask(taskId) {
+        if (is_external) return;
+        let url = \"";
+        // line 187
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_edit", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 187, $this->source); })()), "taskId" => 0]), "html", null, true);
+        echo "\";
+        url = url.replace('/0', '/'+ taskId)
+        document.location.href = url;
+    }  
+    
+    function historique(taskId) {
+        if (is_external) return;
+        let url = \"";
+        // line 194
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_history", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 194, $this->source); })()), "taskId" => 0]), "html", null, true);
+        echo "\";
+        url = url.replace('/0', '/'+ taskId)
+        document.location.href = url;
+    }  
+
+    function scrollToToday() {   
+        let date = new Date();
+        let dd = String(date.getDate()).padStart(2, '0');
+        let mm = String(date.getMonth() + 1).padStart(2, '0');
+        let date_w = 'date_' + dd + '-' + mm;
+        //console.log(date_w);
+        let obj = document.getElementById(date_w);
+        if (obj === undefined || obj == null) return;\t        
+        \$('#'+date_w).addClass('gantt-today');
+        let x = obj.getAttribute('x');
+        if (x === undefined || x == null) return;\t        
+        \$('.gantt-container').scrollLeft(x);
+    }
+
+    let taskId = 0;
+    function showComment(id) {        
+        taskId = id;
+        \$('#showPopup').toggle();
+        setTimeout(function() {
+            \$('#comment').focus();            
+        }, 250);
+    }
+
+    \$('body').on('click', '#showPopup_close', function(ev) {      
+        \$('#showPopup').toggle();
+        return true;
+    });
+
+    \$('body').on('click', '#showPopup_save', function(ev) {  
+        if (\$('#comment').val().trim() == '') {
+            \$('#comment').focus();
+            return false;            
+        }
+        addComment(taskId, \$('#comment').val());
+        \$('#comment').val('');
+        \$('#showPopup').toggle();
+        return true;
+    });
 </script>
 ";
         
@@ -168,7 +341,7 @@ class __TwigTemplate_ec5ad6c785586acd20c5ad654b704fabc65b1770e8f62416304b09ae6f9
 
     public function getDebugInfo()
     {
-        return array (  94 => 33,  66 => 8,  63 => 7,  54 => 5,  51 => 4,  47 => 3,  43 => 1,);
+        return array (  278 => 194,  268 => 187,  246 => 168,  225 => 150,  202 => 130,  179 => 110,  98 => 32,  75 => 11,  70 => 9,  66 => 8,  63 => 7,  54 => 5,  51 => 4,  47 => 3,  43 => 1,);
     }
 
     public function getSourceContext()
@@ -179,87 +352,237 @@ class __TwigTemplate_ec5ad6c785586acd20c5ad654b704fabc65b1770e8f62416304b09ae6f9
             <div class=\"alert alert-success alert-dismissible fade show\" role=\"alert\">
                 {{ message }}              
             </div>
-        {% endfor %}      
-        <a href=\"{{path('planning_new', {id:projectId})}}\" class=\"btn btn-primary btn-sm ml-5 add\">Nouvelle tâche</a>
+        {% endfor %}     
+        {% if (is_granted('ROLE_EXTERNAL') == false) %} 
+            <a href=\"{{path('planning_new', {id:projectId})}}\" class=\"btn btn-primary btn-sm ml-5 add\">Nouvelle tâche</a>
+        {% endif %}
     </div>
 </div>
-<div id=\"plannings\" class=\"m-5\">
-    Chargement...
+<!-- Ajout d'un popup modal pour le commentaire en cas de modif sur tâche -->
+<svg id=\"gantt\" class=\"m-5\"></svg>
+<div id=\"showPopup\" class=\"modal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\">
+    <div class=\"modal-dialog\" role=\"document\">
+      <div class=\"modal-content\">
+        <div class=\"modal-header\">
+          <h5 class=\"modal-title\">Commentaire sur la tâche</h5>          
+        </div>
+        <div class=\"modal-body\">
+          <textarea name=\"comment\" id=\"comment\" class=\"form-control\" id=\"exampleFormControlTextarea1\" rows=\"3\"></textarea>
+        </div>
+        <div class=\"modal-footer\">
+          <!--<button type=\"button\" id=\"showPopup_close\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Fermer</button>-->
+          <button type=\"button\" id=\"showPopup_save\" class=\"btn btn-primary\">Enregistrer</button>
+        </div>
+      </div>
+    </div>
 </div>
 <script>
+    const is_external = {{is_external}};
+
     setTimeout(function() {
         const tab = document.getElementsByClassName('alert')    
         if (tab.length) tab[0].remove()
-    },3000)    
-      
-    setTimeout(function() {
-        tasks = getTasks();        
-        google.charts.load('current', {'packages':['gantt']});
-        google.charts.setOnLoadCallback(drawChart);
-    },1000)    
-
-    function daysToMilliseconds(days) {
-      return days * 24 * 60 * 60 * 1000;
-    }
+    },3000)         
     
-    function getTasks() {        
+    tasks = getTasks();         
+    
+    gantt = new Gantt(\"#gantt\", tasks, { 
+        is_readonly: is_external ? true : false,
+        custom_popup_html: function(task) {            
+            const start_date = String(task._start.getDate()).padStart(2, '0') + '/' + String(task._start.getMonth() + 1).padStart(2, '0') + '/' + task._start.getFullYear();
+            const end_date = String(task._end.getDate()).padStart(2, '0') + '/' + String(task._end.getMonth() + 1).padStart(2, '0') + '/' + task._end.getFullYear();
+            if (is_external) {
+                return `
+                <div class=\"details-container\">
+                <h3>\${task.name}</h3>
+                <p>Du \${start_date} au \${end_date}</p>
+                <p>Effectué à \${task.progress} %</p>
+                <p>Modifié le \${task.updatedAt} par \${task.username}</p>                
+                <button class=\"btn btn-sm btn-info text-center\" onclick=\"historique(\${task.id});return false;\">Historique</button>
+                </div>
+            `;
+            }
+            else {
+                return `
+                <div class=\"details-container\">
+                <h3>\${task.name}</h3>
+                <p>Du \${start_date} au \${end_date}</p>
+                <p>Effectué à \${task.progress} %</p>
+                <p>Modifié le \${task.updatedAt} par \${task.username}</p>
+                <button class=\"btn btn-sm btn-blue text-center\" onclick=\"editTask(\${task.id});return false;\">Editer</button>
+                <button class=\"btn btn-sm btn-info text-center\" onclick=\"historique(\${task.id});return false;\">Historique</button>
+                </div>
+            `;
+            }           
+        },
+        on_date_change: function(task, start, end) {
+            if (is_external) return;
+
+            let dd, mm, yyyy;
+
+            dd = String(start.getDate()).padStart(2, '0');
+            mm = String(start.getMonth() + 1).padStart(2, '0');
+            yyyy = start.getFullYear();
+            start = yyyy + '-' + mm + '-' + dd;   
+
+            dd = String(end.getDate()).padStart(2, '0');
+            mm = String(end.getMonth() + 1).padStart(2, '0');
+            yyyy = end.getFullYear();
+            end = yyyy + '-' + mm + '-' + dd;   
+          
+            updateTaskDates(task.id, start, end);
+
+            if (task.isParent) showComment(task.id);
+        },
+
+        on_progress_change: function(task, progress) {         
+            if (is_external) return;
+            updateTaskProgress(task.id, progress);
+        }
+       
+    });
+
+    gantt.change_view_mode('Week');       
+    
+    setTimeout(function() {
+        scrollToToday();       
+    }, 1000);
+
+    /************************************/
+   
+    // réception des tâches en json du controleur
+    function getTasks() {  
+        let tasks;       
         \$.ajax({
             async: false,
             url: \"{{path('planning_list_json',{id:projectId})}}\",
             type: 'GET',
+            dataType: 'text',
+            success: function (data) {                  
+                tasks = JSON.parse(data); 
+                tasks.forEach((element, index) => {
+                    element.id =  element.id.toString();
+                    tasks[index] = element;                   
+                });              
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur chargement des tâches')
+            }
+        })               
+        return tasks;
+    }
+
+    function updateTaskDates(taskId, start, end) {
+        if (is_external) return;
+        let url = \"{{path('planning_update_dates',{id:projectId, taskId:0})}}\";
+        url = url.replace('/0', '/'+taskId)
+        \$.ajax({            
+            async: true,
+            url: url,
+            type: 'POST', 
             dataType: 'json',
-            success: function (result) {         
-                tasks = result;
+            data: 'start=' + start + '&end='+end,     
+            success: function (data) {        
+                //console.log(data);
             },
             error: function(jqXHR, textStatus, errorThrown ) {
                 console.log(jqXHR, textStatus, errorThrown)
                 alert('Erreur chargement des tâches')
             }
         })    
-        return tasks;
     }
-    
-    function drawChart() {                
-        var data = new google.visualization.DataTable();
 
-        //console.log(tasks) 
-
-        data.addColumn('string', 'Task ID');
-        data.addColumn('string', 'Task Name');
-        data.addColumn('string', 'Resource');
-        data.addColumn('date', 'Start Date');
-        data.addColumn('date', 'End Date');
-        data.addColumn('number', 'Duration');
-        data.addColumn('number', 'Percent Complete');
-        data.addColumn('string', 'Dependencies');
-        
-        if (tasks !== undefined) {
-            tasks.forEach(element => {
-                data.addRows([
-                    [element.name, element.name, null, new Date(element.startDate), new Date(element.endDate), null, element.percentDone, element.dependency]
-                ]);
-            });        
-        }
-
-        var options = {
-            height: 500,
-            gantt: {
-                /*trackHeight: 30*/
-                criticalPathEnabled: false, // Critical path arrows will be the same as other arrows.
-                arrow: {
-                    angle: 100,
-                    width: 5,
-                    color: 'green',
-                    radius: 0
-                }
+    function updateTaskProgress(taskId, progress) {
+        if (is_external) return;
+        let url = \"{{path('planning_update_progress',{id:projectId, taskId:0})}}\";
+        url = url.replace('/0', '/'+taskId)
+        \$.ajax({
+            async: true,
+            url: url,
+            type: 'POST', 
+            data: 'progress=' + progress,
+            success: function (data) {        
+                //console.log(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur chargement des tâches')
             }
-        };
+        })    
+    }
 
-        var chart = new google.visualization.Gantt(document.getElementById('plannings'));
+    function addComment(taskId, comment) {       
+        let url = \"{{path('planning_add_comment',{id:projectId, taskId:0})}}\";
+        url = url.replace('/0', '/'+taskId)
+        \$.ajax({
+            async: true,
+            url: url,
+            type: 'POST', 
+            data: 'comment=' + comment,
+            success: function (data) {        
+                //console.log(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur chargement des tâches')
+            }
+        })    
+    }
 
-        chart.draw(data, options);
-    }       
+    function editTask(taskId) {
+        if (is_external) return;
+        let url = \"{{path('planning_edit',{id:projectId, taskId:0})}}\";
+        url = url.replace('/0', '/'+ taskId)
+        document.location.href = url;
+    }  
+    
+    function historique(taskId) {
+        if (is_external) return;
+        let url = \"{{path('planning_history',{id:projectId, taskId:0})}}\";
+        url = url.replace('/0', '/'+ taskId)
+        document.location.href = url;
+    }  
+
+    function scrollToToday() {   
+        let date = new Date();
+        let dd = String(date.getDate()).padStart(2, '0');
+        let mm = String(date.getMonth() + 1).padStart(2, '0');
+        let date_w = 'date_' + dd + '-' + mm;
+        //console.log(date_w);
+        let obj = document.getElementById(date_w);
+        if (obj === undefined || obj == null) return;\t        
+        \$('#'+date_w).addClass('gantt-today');
+        let x = obj.getAttribute('x');
+        if (x === undefined || x == null) return;\t        
+        \$('.gantt-container').scrollLeft(x);
+    }
+
+    let taskId = 0;
+    function showComment(id) {        
+        taskId = id;
+        \$('#showPopup').toggle();
+        setTimeout(function() {
+            \$('#comment').focus();            
+        }, 250);
+    }
+
+    \$('body').on('click', '#showPopup_close', function(ev) {      
+        \$('#showPopup').toggle();
+        return true;
+    });
+
+    \$('body').on('click', '#showPopup_save', function(ev) {  
+        if (\$('#comment').val().trim() == '') {
+            \$('#comment').focus();
+            return false;            
+        }
+        addComment(taskId, \$('#comment').val());
+        \$('#comment').val('');
+        \$('#showPopup').toggle();
+        return true;
+    });
 </script>
-", "planning/planning.html.twig", "C:\\xampp803\\htdocs\\symfony\\templates\\planning\\planning.html.twig");
+", "planning/planning.html.twig", "C:\\Users\\utilisateur\\Videos\\APP_Gestion_Projet\\templates\\planning\\planning.html.twig");
     }
 }

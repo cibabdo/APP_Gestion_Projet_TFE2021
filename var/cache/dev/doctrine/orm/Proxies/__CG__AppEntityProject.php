@@ -66,10 +66,10 @@ class Project extends \App\Entity\Project implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'reference', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'title', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'year', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'description', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'workStartDate', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'workEndDate', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'startSituation', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'endSituation', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'state', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'createdAt', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'architect', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'externalEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'externalArchitectureOffice', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'hvacEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'lowVoltageEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'medicalFluidEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'safetyCoordinator', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'sanitaryEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'secondArchitect', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'site', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'strongVoltageEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'supervisor', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'company', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'documents', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'engineers', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'architects', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'coordinators'];
+            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'reference', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'title', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'year', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'description', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'workStartDate', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'workEndDate', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'startSituation', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'endSituation', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'state', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'createdAt', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'site', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'company', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'engineeringOffice', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'architect', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'hvacEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'lowVoltageEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'medicalFluidEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'secondArchitect', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'strongVoltageEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'supervisor', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'sanitaryEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'externalArchitectureOffice', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'externalEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'safetyCoordinator', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'test', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'persons'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'reference', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'title', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'year', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'description', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'workStartDate', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'workEndDate', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'startSituation', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'endSituation', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'state', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'createdAt', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'architect', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'externalEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'externalArchitectureOffice', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'hvacEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'lowVoltageEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'medicalFluidEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'safetyCoordinator', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'sanitaryEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'secondArchitect', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'site', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'strongVoltageEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'supervisor', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'company', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'documents', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'engineers', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'architects', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'coordinators'];
+        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'reference', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'title', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'year', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'description', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'workStartDate', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'workEndDate', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'startSituation', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'endSituation', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'state', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'createdAt', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'site', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'company', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'engineeringOffice', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'architect', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'hvacEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'lowVoltageEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'medicalFluidEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'secondArchitect', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'strongVoltageEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'supervisor', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'sanitaryEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'externalArchitectureOffice', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'externalEngineer', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'safetyCoordinator', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'test', '' . "\0" . 'App\\Entity\\Project' . "\0" . 'persons'];
     }
 
     /**
@@ -179,67 +179,23 @@ class Project extends \App\Entity\Project implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getEngineers(): ?array
+    public function getTest(): ?\App\Entity\Employee
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEngineers', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTest', []);
 
-        return parent::getEngineers();
+        return parent::getTest();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setEngineers(?array $engineers): \App\Entity\Project
+    public function setTest(?\App\Entity\Employee $test): \App\Entity\Project
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEngineers', [$engineers]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTest', [$test]);
 
-        return parent::setEngineers($engineers);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getArchitects(): ?array
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArchitects', []);
-
-        return parent::getArchitects();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setArchitects(?array $architects): \App\Entity\Project
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setArchitects', [$architects]);
-
-        return parent::setArchitects($architects);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getCoordinators(): ?array
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCoordinators', []);
-
-        return parent::getCoordinators();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setCoordinators(?array $coordinators): \App\Entity\Project
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCoordinators', [$coordinators]);
-
-        return parent::setCoordinators($coordinators);
+        return parent::setTest($test);
     }
 
     /**
@@ -502,6 +458,28 @@ class Project extends \App\Entity\Project implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getSite(): ?\App\Entity\Site
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSite', []);
+
+        return parent::getSite();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSite(?\App\Entity\Site $site): \App\Entity\Project
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSite', [$site]);
+
+        return parent::setSite($site);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getArchitect(): ?\App\Entity\Employee
     {
 
@@ -519,50 +497,6 @@ class Project extends \App\Entity\Project implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setArchitect', [$architect]);
 
         return parent::setArchitect($architect);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getExternalEngineer(): ?\App\Entity\PersonContact
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getExternalEngineer', []);
-
-        return parent::getExternalEngineer();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setExternalEngineer(?\App\Entity\PersonContact $externalEngineer): \App\Entity\Project
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setExternalEngineer', [$externalEngineer]);
-
-        return parent::setExternalEngineer($externalEngineer);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getExternalArchitectureOffice(): ?\App\Entity\EngineeringOffice
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getExternalArchitectureOffice', []);
-
-        return parent::getExternalArchitectureOffice();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setExternalArchitectureOffice(?\App\Entity\EngineeringOffice $externalArchitectureOffice): \App\Entity\Project
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setExternalArchitectureOffice', [$externalArchitectureOffice]);
-
-        return parent::setExternalArchitectureOffice($externalArchitectureOffice);
     }
 
     /**
@@ -634,50 +568,6 @@ class Project extends \App\Entity\Project implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getSafetyCoordinator(): ?\App\Entity\PersonContact
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSafetyCoordinator', []);
-
-        return parent::getSafetyCoordinator();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setSafetyCoordinator(?\App\Entity\PersonContact $safetyCoordinator): \App\Entity\Project
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSafetyCoordinator', [$safetyCoordinator]);
-
-        return parent::setSafetyCoordinator($safetyCoordinator);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSanitaryEngineer(): ?\App\Entity\Employee
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSanitaryEngineer', []);
-
-        return parent::getSanitaryEngineer();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setSanitaryEngineer(?\App\Entity\Employee $sanitaryEngineer): \App\Entity\Project
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSanitaryEngineer', [$sanitaryEngineer]);
-
-        return parent::setSanitaryEngineer($sanitaryEngineer);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getSecondArchitect(): ?\App\Entity\Employee
     {
 
@@ -695,28 +585,6 @@ class Project extends \App\Entity\Project implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSecondArchitect', [$secondArchitect]);
 
         return parent::setSecondArchitect($secondArchitect);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSite(): ?\App\Entity\Site
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSite', []);
-
-        return parent::getSite();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setSite(?\App\Entity\Site $site): \App\Entity\Project
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSite', [$site]);
-
-        return parent::setSite($site);
     }
 
     /**
@@ -744,12 +612,12 @@ class Project extends \App\Entity\Project implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getSupervisor(): ?\App\Entity\Employee
+    public function getsupervisor(): ?\App\Entity\Employee
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSupervisor', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getsupervisor', []);
 
-        return parent::getSupervisor();
+        return parent::getsupervisor();
     }
 
     /**
@@ -761,6 +629,94 @@ class Project extends \App\Entity\Project implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSupervisor', [$supervisor]);
 
         return parent::setSupervisor($supervisor);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSanitaryEngineer(): ?\App\Entity\Employee
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSanitaryEngineer', []);
+
+        return parent::getSanitaryEngineer();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSanitaryEngineer(?\App\Entity\Employee $sanitaryEngineer): \App\Entity\Project
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSanitaryEngineer', [$sanitaryEngineer]);
+
+        return parent::setSanitaryEngineer($sanitaryEngineer);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getExternalArchitectureOffice(): ?\App\Entity\PersonEngineering
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getExternalArchitectureOffice', []);
+
+        return parent::getExternalArchitectureOffice();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setExternalArchitectureOffice(?\App\Entity\PersonEngineering $externalArchitectureOffice): \App\Entity\Project
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setExternalArchitectureOffice', [$externalArchitectureOffice]);
+
+        return parent::setExternalArchitectureOffice($externalArchitectureOffice);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getExternalEngineer(): ?\App\Entity\PersonEngineering
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getExternalEngineer', []);
+
+        return parent::getExternalEngineer();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setExternalEngineer(?\App\Entity\PersonEngineering $externalEngineer): \App\Entity\Project
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setExternalEngineer', [$externalEngineer]);
+
+        return parent::setExternalEngineer($externalEngineer);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSafetyCoordinator(): ?\App\Entity\PersonEngineering
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSafetyCoordinator', []);
+
+        return parent::getSafetyCoordinator();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSafetyCoordinator(?\App\Entity\PersonEngineering $safetyCoordinator): \App\Entity\Project
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSafetyCoordinator', [$safetyCoordinator]);
+
+        return parent::setSafetyCoordinator($safetyCoordinator);
     }
 
     /**
@@ -799,34 +755,67 @@ class Project extends \App\Entity\Project implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getDocument(): \Doctrine\Common\Collections\Collection
+    public function getEngineeringOffice(): \Doctrine\Common\Collections\Collection
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDocument', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEngineeringOffice', []);
 
-        return parent::getDocument();
+        return parent::getEngineeringOffice();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function addDocument(\App\Entity\Document $document): \App\Entity\Project
+    public function addEngineeringOffice(\App\Entity\EngineeringOffice $engineeringOffice): \App\Entity\Project
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addDocument', [$document]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addEngineeringOffice', [$engineeringOffice]);
 
-        return parent::addDocument($document);
+        return parent::addEngineeringOffice($engineeringOffice);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function removeDocument(\App\Entity\Document $document): \App\Entity\Project
+    public function removeEngineeringOffice(\App\Entity\EngineeringOffice $engineeringOffice): \App\Entity\Project
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeDocument', [$document]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeEngineeringOffice', [$engineeringOffice]);
 
-        return parent::removeDocument($document);
+        return parent::removeEngineeringOffice($engineeringOffice);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPersons(): \Doctrine\Common\Collections\Collection
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPersons', []);
+
+        return parent::getPersons();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addPerson(\App\Entity\ProjectPerson $person): \App\Entity\Project
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addPerson', [$person]);
+
+        return parent::addPerson($person);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removePerson(\App\Entity\ProjectPerson $person): \App\Entity\Project
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePerson', [$person]);
+
+        return parent::removePerson($person);
     }
 
 }

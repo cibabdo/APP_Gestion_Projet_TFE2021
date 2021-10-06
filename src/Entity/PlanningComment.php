@@ -26,7 +26,7 @@ class PlanningComment
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id" onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $user; 
@@ -50,7 +50,7 @@ class PlanningComment
      *
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id" onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $project;
@@ -60,7 +60,7 @@ class PlanningComment
      *
      * @ORM\ManyToOne(targetEntity="Planning")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="planning_id", referencedColumnName="id" onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="planning_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $planning;

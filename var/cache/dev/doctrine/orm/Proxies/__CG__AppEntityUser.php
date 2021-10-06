@@ -260,6 +260,28 @@ class User extends \App\Entity\User implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getPasswordConfirm(): ?string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPasswordConfirm', []);
+
+        return parent::getPasswordConfirm();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPasswordConfirm(?string $password_confirm): \App\Entity\User
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPasswordConfirm', [$password_confirm]);
+
+        return parent::setPasswordConfirm($password_confirm);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getPasswordOld(): ?string
     {
 

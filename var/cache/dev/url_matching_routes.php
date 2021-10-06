@@ -61,12 +61,24 @@ return [
         '/en/admin/location/search' => [[['_route' => 'location_search', '_controller' => 'App\\Controller\\LocationController::search', '_locale' => 'en'], null, null, null, false, false, null]],
         '/admin/location/new' => [[['_route' => 'location_new', '_controller' => 'App\\Controller\\LocationController::add', '_locale' => 'fr'], null, null, null, false, false, null]],
         '/en/admin/location/new' => [[['_route' => 'location_new', '_controller' => 'App\\Controller\\LocationController::add', '_locale' => 'en'], null, null, null, false, false, null]],
+        '/init_motdepasse' => [[['_route' => 'init_password', '_controller' => 'App\\Controller\\PasswordController::init', '_locale' => 'fr'], null, null, null, false, false, null]],
+        '/en/init_password' => [[['_route' => 'init_password', '_controller' => 'App\\Controller\\PasswordController::init', '_locale' => 'en'], null, null, null, false, false, null]],
+        '/changer_motdepasse' => [[['_route' => 'change_password', '_controller' => 'App\\Controller\\PasswordController::changePassword', '_locale' => 'fr'], null, null, null, false, false, null]],
+        '/en/change_password' => [[['_route' => 'change_password', '_controller' => 'App\\Controller\\PasswordController::changePassword', '_locale' => 'en'], null, null, null, false, false, null]],
+        '/annuler_motdepasse' => [[['_route' => 'cancel_password', '_controller' => 'App\\Controller\\PasswordController::cancelPassword', '_locale' => 'fr'], null, null, null, false, false, null]],
+        '/en/cancel_password' => [[['_route' => 'cancel_password', '_controller' => 'App\\Controller\\PasswordController::cancelPassword', '_locale' => 'en'], null, null, null, false, false, null]],
         '/admin/personcontact' => [[['_route' => 'personcontact_list', '_controller' => 'App\\Controller\\PersonContactController::index', '_locale' => 'fr'], null, null, null, false, false, null]],
         '/en/admin/personcontact' => [[['_route' => 'personcontact_list', '_controller' => 'App\\Controller\\PersonContactController::index', '_locale' => 'en'], null, null, null, false, false, null]],
         '/admin/personcontact/search' => [[['_route' => 'personcontact_search', '_controller' => 'App\\Controller\\PersonContactController::search', '_locale' => 'fr'], null, null, null, false, false, null]],
         '/en/admin/personcontact/search' => [[['_route' => 'personcontact_search', '_controller' => 'App\\Controller\\PersonContactController::search', '_locale' => 'en'], null, null, null, false, false, null]],
         '/admin/personcontact/new' => [[['_route' => 'personcontact_new', '_controller' => 'App\\Controller\\PersonContactController::add', '_locale' => 'fr'], null, null, null, false, false, null]],
         '/en/admin/personcontact/new' => [[['_route' => 'personcontact_new', '_controller' => 'App\\Controller\\PersonContactController::add', '_locale' => 'en'], null, null, null, false, false, null]],
+        '/admin/personengineering' => [[['_route' => 'personengineering_list', '_controller' => 'App\\Controller\\PersonEngineeringController::index', '_locale' => 'fr'], null, null, null, false, false, null]],
+        '/en/admin/personengineering' => [[['_route' => 'personengineering_list', '_controller' => 'App\\Controller\\PersonEngineeringController::index', '_locale' => 'en'], null, null, null, false, false, null]],
+        '/admin/personengineering/search' => [[['_route' => 'personengineering_search', '_controller' => 'App\\Controller\\PersonEngineeringController::search', '_locale' => 'fr'], null, null, null, false, false, null]],
+        '/en/admin/personengineering/search' => [[['_route' => 'personengineering_search', '_controller' => 'App\\Controller\\PersonEngineeringController::search', '_locale' => 'en'], null, null, null, false, false, null]],
+        '/admin/personengineering/new' => [[['_route' => 'personengineering_new', '_controller' => 'App\\Controller\\PersonEngineeringController::add', '_locale' => 'fr'], null, null, null, false, false, null]],
+        '/en/admin/personengineering/new' => [[['_route' => 'personengineering_new', '_controller' => 'App\\Controller\\PersonEngineeringController::add', '_locale' => 'en'], null, null, null, false, false, null]],
         '/project' => [[['_route' => 'project_list', '_controller' => 'App\\Controller\\ProjectController::index', '_locale' => 'fr'], null, null, null, false, false, null]],
         '/en/project' => [[['_route' => 'project_list', '_controller' => 'App\\Controller\\ProjectController::index', '_locale' => 'en'], null, null, null, false, false, null]],
         '/project/search' => [[['_route' => 'project_search', '_controller' => 'App\\Controller\\ProjectController::search', '_locale' => 'fr'], null, null, null, false, false, null]],
@@ -159,157 +171,181 @@ return [
                     .'|location/([^/]++)(?'
                         .'|(*:390)'
                     .')'
-                    .'|personcontact/([^/]++)(?'
-                        .'|(*:424)'
+                    .'|person(?'
+                        .'|contact/([^/]++)(?'
+                            .'|(*:427)'
+                        .')'
+                        .'|engineering/([^/]++)(?'
+                            .'|(*:459)'
+                        .')'
                     .')'
                     .'|role/([^/]++)(?'
-                        .'|(*:449)'
+                        .'|(*:485)'
                     .')'
                     .'|site/([^/]++)(?'
-                        .'|(*:474)'
+                        .'|(*:510)'
                     .')'
                     .'|user/([^/]++)(?'
-                        .'|(*:499)'
+                        .'|(*:535)'
                     .')'
                     .'|work/([^/]++)(?'
-                        .'|(*:524)'
+                        .'|(*:560)'
                     .')'
                 .')'
                 .'|/en/(?'
                     .'|admin/(?'
                         .'|company/(?'
                             .'|activity/([^/]++)(?'
-                                .'|(*:581)'
+                                .'|(*:617)'
                             .')'
                             .'|([^/]++)(?'
-                                .'|(*:601)'
+                                .'|(*:637)'
                             .')'
                         .')'
                         .'|department/([^/]++)(?'
-                            .'|(*:633)'
+                            .'|(*:669)'
                         .')'
                         .'|e(?'
                             .'|mployee/([^/]++)(?'
-                                .'|(*:665)'
+                                .'|(*:701)'
                             .')'
                             .'|ngineeringoffice(?'
                                 .'|/([^/]++)(?'
-                                    .'|(*:705)'
+                                    .'|(*:741)'
                                 .')'
                                 .'|sort/([^/]++)(?'
-                                    .'|(*:730)'
+                                    .'|(*:766)'
                                 .')'
                             .')'
                         .')'
                         .'|location/([^/]++)(?'
-                            .'|(*:761)'
+                            .'|(*:797)'
                         .')'
-                        .'|personcontact/([^/]++)(?'
-                            .'|(*:795)'
+                        .'|person(?'
+                            .'|contact/([^/]++)(?'
+                                .'|(*:834)'
+                            .')'
+                            .'|engineering/([^/]++)(?'
+                                .'|(*:866)'
+                            .')'
                         .')'
                         .'|role/([^/]++)(?'
-                            .'|(*:820)'
+                            .'|(*:892)'
                         .')'
                         .'|site/([^/]++)(?'
-                            .'|(*:845)'
+                            .'|(*:917)'
                         .')'
                         .'|user/([^/]++)(?'
-                            .'|(*:870)'
+                            .'|(*:942)'
                         .')'
                         .'|work/([^/]++)(?'
-                            .'|(*:895)'
+                            .'|(*:967)'
                         .')'
                     .')'
                     .'|project/([^/]++)(?'
                         .'|/(?'
-                            .'|invitation/([^/]++)(*:947)'
+                            .'|invitation/([^/]++)(*:1019)'
                             .'|comments(?'
-                                .'|(*:966)'
+                                .'|(*:1039)'
                                 .'|/(?'
-                                    .'|new(*:981)'
+                                    .'|new(*:1055)'
                                     .'|([^/]++)(?'
-                                        .'|(*:1000)'
+                                        .'|(*:1075)'
                                     .')'
                                 .')'
                             .')'
                             .'|document(?'
-                                .'|(*:1023)'
+                                .'|(*:1098)'
                                 .'|/(?'
-                                    .'|search(*:1042)'
-                                    .'|view/([^/]++)(*:1064)'
-                                    .'|new(*:1076)'
-                                    .'|([^/]++)(*:1093)'
+                                    .'|search(*:1117)'
+                                    .'|view/([^/]++)(*:1139)'
+                                    .'|new(*:1151)'
+                                    .'|([^/]++)(*:1168)'
                                 .')'
                             .')'
                             .'|planning(?'
-                                .'|(*:1115)'
+                                .'|(*:1190)'
                                 .'|/(?'
-                                    .'|json(*:1132)'
-                                    .'|search(*:1147)'
-                                    .'|new(*:1159)'
+                                    .'|json(*:1207)'
+                                    .'|search(*:1222)'
+                                    .'|new(*:1234)'
                                     .'|([^/]++)(?'
-                                        .'|(*:1179)'
+                                        .'|(*:1254)'
+                                        .'|/(?'
+                                            .'|dates(*:1272)'
+                                            .'|progress(*:1289)'
+                                            .'|comment(*:1305)'
+                                            .'|history(*:1321)'
+                                        .')'
+                                        .'|(*:1331)'
                                     .')'
                                 .')'
                             .')'
                             .'|work(?'
-                                .'|(*:1198)'
+                                .'|(*:1350)'
                                 .'|/(?'
-                                    .'|search(*:1217)'
-                                    .'|new(*:1229)'
+                                    .'|search(*:1369)'
+                                    .'|new(*:1381)'
                                     .'|([^/]++)(?'
-                                        .'|(*:1249)'
+                                        .'|(*:1401)'
                                     .')'
                                 .')'
                             .')'
                         .')'
-                        .'|(*:1262)'
+                        .'|(*:1414)'
                     .')'
                 .')'
                 .'|/project/([^/]++)(?'
                     .'|/(?'
-                        .'|invitation/([^/]++)(*:1316)'
+                        .'|invitation/([^/]++)(*:1468)'
                         .'|comments(?'
-                            .'|(*:1336)'
+                            .'|(*:1488)'
                             .'|/(?'
-                                .'|new(*:1352)'
+                                .'|new(*:1504)'
                                 .'|([^/]++)(?'
-                                    .'|(*:1372)'
+                                    .'|(*:1524)'
                                 .')'
                             .')'
                         .')'
                         .'|document(?'
-                            .'|(*:1395)'
+                            .'|(*:1547)'
                             .'|/(?'
-                                .'|search(*:1414)'
-                                .'|view/([^/]++)(*:1436)'
-                                .'|new(*:1448)'
-                                .'|([^/]++)(*:1465)'
+                                .'|search(*:1566)'
+                                .'|view/([^/]++)(*:1588)'
+                                .'|new(*:1600)'
+                                .'|([^/]++)(*:1617)'
                             .')'
                         .')'
                         .'|planning(?'
-                            .'|(*:1487)'
+                            .'|(*:1639)'
                             .'|/(?'
-                                .'|json(*:1504)'
-                                .'|search(*:1519)'
-                                .'|new(*:1531)'
+                                .'|json(*:1656)'
+                                .'|search(*:1671)'
+                                .'|new(*:1683)'
                                 .'|([^/]++)(?'
-                                    .'|(*:1551)'
+                                    .'|(*:1703)'
+                                    .'|/(?'
+                                        .'|dates(*:1721)'
+                                        .'|progress(*:1738)'
+                                        .'|comment(*:1754)'
+                                        .'|history(*:1770)'
+                                    .')'
+                                    .'|(*:1780)'
                                 .')'
                             .')'
                         .')'
                         .'|work(?'
-                            .'|(*:1570)'
+                            .'|(*:1799)'
                             .'|/(?'
-                                .'|search(*:1589)'
-                                .'|new(*:1601)'
+                                .'|search(*:1818)'
+                                .'|new(*:1830)'
                                 .'|([^/]++)(?'
-                                    .'|(*:1621)'
+                                    .'|(*:1850)'
                                 .')'
                             .')'
                         .')'
                     .')'
-                    .'|(*:1634)'
+                    .'|(*:1863)'
                 .')'
             .')/?$}sDu',
     ],
@@ -349,133 +385,145 @@ return [
             [['_route' => 'location_edit', '_controller' => 'App\\Controller\\LocationController::update', '_locale' => 'fr'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'location_delete', '_controller' => 'App\\Controller\\LocationController::delete', '_locale' => 'fr'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        424 => [
+        427 => [
             [['_route' => 'personcontact_edit', '_controller' => 'App\\Controller\\PersonContactController::update', '_locale' => 'fr'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'personcontact_delete', '_controller' => 'App\\Controller\\PersonContactController::delete', '_locale' => 'fr'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        449 => [
+        459 => [
+            [['_route' => 'personengineering_edit', '_controller' => 'App\\Controller\\PersonEngineeringController::update', '_locale' => 'fr'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
+            [['_route' => 'personengineering_delete', '_controller' => 'App\\Controller\\PersonEngineeringController::delete', '_locale' => 'fr'], ['id'], ['DELETE' => 0], null, false, true, null],
+        ],
+        485 => [
             [['_route' => 'role_edit', '_controller' => 'App\\Controller\\RoleController::update', '_locale' => 'fr'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'role_delete', '_controller' => 'App\\Controller\\RoleController::delete', '_locale' => 'fr'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        474 => [
+        510 => [
             [['_route' => 'site_edit', '_controller' => 'App\\Controller\\SiteController::update', '_locale' => 'fr'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'site_delete', '_controller' => 'App\\Controller\\SiteController::delete', '_locale' => 'fr'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        499 => [
+        535 => [
             [['_route' => 'user_edit', '_controller' => 'App\\Controller\\UserController::update', '_locale' => 'fr'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'user_delete', '_controller' => 'App\\Controller\\UserController::delete', '_locale' => 'fr'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        524 => [
+        560 => [
             [['_route' => 'work_edit', '_controller' => 'App\\Controller\\WorkController::update', '_locale' => 'fr'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'work_delete', '_controller' => 'App\\Controller\\WorkController::delete', '_locale' => 'fr'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        581 => [
+        617 => [
             [['_route' => 'activity_edit', '_controller' => 'App\\Controller\\CompanyActivityController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'activity_delete', '_controller' => 'App\\Controller\\CompanyActivityController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        601 => [
+        637 => [
             [['_route' => 'company_edit', '_controller' => 'App\\Controller\\CompanyController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'company_delete', '_controller' => 'App\\Controller\\CompanyController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        633 => [
+        669 => [
             [['_route' => 'department_edit', '_controller' => 'App\\Controller\\DepartmentController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'department_delete', '_controller' => 'App\\Controller\\DepartmentController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        665 => [
+        701 => [
             [['_route' => 'employee_edit', '_controller' => 'App\\Controller\\EmployeeController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'employee_delete', '_controller' => 'App\\Controller\\EmployeeController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        705 => [
+        741 => [
             [['_route' => 'engineeringoffice_edit', '_controller' => 'App\\Controller\\EngineeringOfficeController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'engineeringoffice_delete', '_controller' => 'App\\Controller\\EngineeringOfficeController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        730 => [
+        766 => [
             [['_route' => 'engineeringofficesort_edit', '_controller' => 'App\\Controller\\EngineeringOfficeSortController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'engineeringofficesort_delete', '_controller' => 'App\\Controller\\EngineeringOfficeSortController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        761 => [
+        797 => [
             [['_route' => 'location_edit', '_controller' => 'App\\Controller\\LocationController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'location_delete', '_controller' => 'App\\Controller\\LocationController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        795 => [
+        834 => [
             [['_route' => 'personcontact_edit', '_controller' => 'App\\Controller\\PersonContactController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'personcontact_delete', '_controller' => 'App\\Controller\\PersonContactController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        820 => [
+        866 => [
+            [['_route' => 'personengineering_edit', '_controller' => 'App\\Controller\\PersonEngineeringController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
+            [['_route' => 'personengineering_delete', '_controller' => 'App\\Controller\\PersonEngineeringController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
+        ],
+        892 => [
             [['_route' => 'role_edit', '_controller' => 'App\\Controller\\RoleController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'role_delete', '_controller' => 'App\\Controller\\RoleController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        845 => [
+        917 => [
             [['_route' => 'site_edit', '_controller' => 'App\\Controller\\SiteController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'site_delete', '_controller' => 'App\\Controller\\SiteController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        870 => [
+        942 => [
             [['_route' => 'user_edit', '_controller' => 'App\\Controller\\UserController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'user_delete', '_controller' => 'App\\Controller\\UserController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        895 => [
+        967 => [
             [['_route' => 'work_edit', '_controller' => 'App\\Controller\\WorkController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'work_delete', '_controller' => 'App\\Controller\\WorkController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        947 => [[['_route' => 'invitation', '_controller' => 'App\\Controller\\InvitationController::index', '_locale' => 'en'], ['id', 'personId'], null, null, false, true, null]],
-        966 => [[['_route' => 'project_comments', '_controller' => 'App\\Controller\\ProjectCommentsController::index', '_locale' => 'en'], ['id'], null, null, false, false, null]],
-        981 => [[['_route' => 'project_comments_new', '_controller' => 'App\\Controller\\ProjectCommentsController::add', '_locale' => 'en'], ['id'], null, null, false, false, null]],
-        1000 => [
+        1019 => [[['_route' => 'invitation', '_controller' => 'App\\Controller\\InvitationController::index', '_locale' => 'en'], ['id', 'personId'], null, null, false, true, null]],
+        1039 => [[['_route' => 'project_comments', '_controller' => 'App\\Controller\\ProjectCommentsController::index', '_locale' => 'en'], ['id'], null, null, false, false, null]],
+        1055 => [[['_route' => 'project_comments_new', '_controller' => 'App\\Controller\\ProjectCommentsController::add', '_locale' => 'en'], ['id'], null, null, false, false, null]],
+        1075 => [
             [['_route' => 'project_comment_edit', '_controller' => 'App\\Controller\\ProjectCommentsController::update', '_locale' => 'en'], ['id', 'commentId'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'project_comments_delete', '_controller' => 'App\\Controller\\ProjectCommentsController::delete', '_locale' => 'en'], ['id', 'commentId'], ['DELETE' => 0], null, false, true, null],
         ],
-        1023 => [[['_route' => 'document_list', '_controller' => 'App\\Controller\\ProjectDocumentsController::index', '_locale' => 'en'], ['id'], null, null, false, false, null]],
-        1042 => [[['_route' => 'document_search', '_controller' => 'App\\Controller\\ProjectDocumentsController::search', '_locale' => 'en'], ['id'], null, null, false, false, null]],
-        1064 => [[['_route' => 'document_view', '_controller' => 'App\\Controller\\ProjectDocumentsController::view', '_locale' => 'en'], ['id', 'documentId'], null, null, false, true, null]],
-        1076 => [[['_route' => 'document_new', '_controller' => 'App\\Controller\\ProjectDocumentsController::add', '_locale' => 'en'], ['id'], null, null, false, false, null]],
-        1093 => [[['_route' => 'document_delete', '_controller' => 'App\\Controller\\ProjectDocumentsController::delete', '_locale' => 'en'], ['id', 'documentId'], ['DELETE' => 0], null, false, true, null]],
-        1115 => [[['_route' => 'planning_list', '_controller' => 'App\\Controller\\ProjectPlanningController::index', '_locale' => 'en'], ['id'], null, null, false, false, null]],
-        1132 => [[['_route' => 'planning_list_json', '_controller' => 'App\\Controller\\ProjectPlanningController::list_json', '_locale' => 'en'], ['id'], null, null, false, false, null]],
-        1147 => [[['_route' => 'planning_search', '_controller' => 'App\\Controller\\ProjectPlanningController::search', '_locale' => 'en'], ['id'], null, null, false, false, null]],
-        1159 => [[['_route' => 'planning_new', '_controller' => 'App\\Controller\\ProjectPlanningController::add', '_locale' => 'en'], ['id'], null, null, false, false, null]],
-        1179 => [
-            [['_route' => 'planning_edit', '_controller' => 'App\\Controller\\ProjectPlanningController::update', '_locale' => 'en'], ['id', 'taskId'], ['GET' => 0, 'POST' => 1], null, false, true, null],
-            [['_route' => 'planning_delete', '_controller' => 'App\\Controller\\ProjectPlanningController::delete', '_locale' => 'en'], ['id', 'taskId'], ['DELETE' => 0], null, false, true, null],
-        ],
-        1198 => [[['_route' => 'project_works_list', '_controller' => 'App\\Controller\\ProjectWorksController::index', '_locale' => 'en'], ['projectId'], null, null, false, false, null]],
-        1217 => [[['_route' => 'project_works_search', '_controller' => 'App\\Controller\\ProjectWorksController::search', '_locale' => 'en'], ['projectId'], null, null, false, false, null]],
-        1229 => [[['_route' => 'project_works_new', '_controller' => 'App\\Controller\\ProjectWorksController::add', '_locale' => 'en'], ['projectId'], null, null, false, false, null]],
-        1249 => [
+        1098 => [[['_route' => 'document_list', '_controller' => 'App\\Controller\\ProjectDocumentsController::index', '_locale' => 'en'], ['id'], null, null, false, false, null]],
+        1117 => [[['_route' => 'document_search', '_controller' => 'App\\Controller\\ProjectDocumentsController::search', '_locale' => 'en'], ['id'], null, null, false, false, null]],
+        1139 => [[['_route' => 'document_view', '_controller' => 'App\\Controller\\ProjectDocumentsController::view', '_locale' => 'en'], ['id', 'documentId'], null, null, false, true, null]],
+        1151 => [[['_route' => 'document_new', '_controller' => 'App\\Controller\\ProjectDocumentsController::add', '_locale' => 'en'], ['id'], null, null, false, false, null]],
+        1168 => [[['_route' => 'document_delete', '_controller' => 'App\\Controller\\ProjectDocumentsController::delete', '_locale' => 'en'], ['id', 'documentId'], ['DELETE' => 0], null, false, true, null]],
+        1190 => [[['_route' => 'planning_list', '_controller' => 'App\\Controller\\ProjectPlanningController::index', '_locale' => 'en'], ['id'], null, null, false, false, null]],
+        1207 => [[['_route' => 'planning_list_json', '_controller' => 'App\\Controller\\ProjectPlanningController::list_json', '_locale' => 'en'], ['id'], null, null, false, false, null]],
+        1222 => [[['_route' => 'planning_search', '_controller' => 'App\\Controller\\ProjectPlanningController::search', '_locale' => 'en'], ['id'], null, null, false, false, null]],
+        1234 => [[['_route' => 'planning_new', '_controller' => 'App\\Controller\\ProjectPlanningController::add', '_locale' => 'en'], ['id'], null, null, false, false, null]],
+        1254 => [[['_route' => 'planning_edit', '_controller' => 'App\\Controller\\ProjectPlanningController::update', '_locale' => 'en'], ['id', 'taskId'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        1272 => [[['_route' => 'planning_update_dates', '_controller' => 'App\\Controller\\ProjectPlanningController::updateDates', '_locale' => 'en'], ['id', 'taskId'], ['POST' => 0], null, false, false, null]],
+        1289 => [[['_route' => 'planning_update_progress', '_controller' => 'App\\Controller\\ProjectPlanningController::updateProgress', '_locale' => 'en'], ['id', 'taskId'], ['POST' => 0], null, false, false, null]],
+        1305 => [[['_route' => 'planning_add_comment', '_controller' => 'App\\Controller\\ProjectPlanningController::addComment', '_locale' => 'en'], ['id', 'taskId'], ['POST' => 0], null, false, false, null]],
+        1321 => [[['_route' => 'planning_history', '_controller' => 'App\\Controller\\ProjectPlanningController::history', '_locale' => 'en'], ['id', 'taskId'], null, null, false, false, null]],
+        1331 => [[['_route' => 'planning_delete', '_controller' => 'App\\Controller\\ProjectPlanningController::delete', '_locale' => 'en'], ['id', 'taskId'], ['DELETE' => 0], null, false, true, null]],
+        1350 => [[['_route' => 'project_works_list', '_controller' => 'App\\Controller\\ProjectWorksController::index', '_locale' => 'en'], ['projectId'], null, null, false, false, null]],
+        1369 => [[['_route' => 'project_works_search', '_controller' => 'App\\Controller\\ProjectWorksController::search', '_locale' => 'en'], ['projectId'], null, null, false, false, null]],
+        1381 => [[['_route' => 'project_works_new', '_controller' => 'App\\Controller\\ProjectWorksController::add', '_locale' => 'en'], ['projectId'], null, null, false, false, null]],
+        1401 => [
             [['_route' => 'project_works_edit', '_controller' => 'App\\Controller\\ProjectWorksController::update', '_locale' => 'en'], ['projectId', 'workId'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'project_works_delete', '_controller' => 'App\\Controller\\ProjectWorksController::delete', '_locale' => 'en'], ['projectId', 'workId'], ['DELETE' => 0], null, false, true, null],
         ],
-        1262 => [
+        1414 => [
             [['_route' => 'project_edit', '_controller' => 'App\\Controller\\ProjectController::update', '_locale' => 'en'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'project_delete', '_controller' => 'App\\Controller\\ProjectController::delete', '_locale' => 'en'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        1316 => [[['_route' => 'invitation', '_controller' => 'App\\Controller\\InvitationController::index', '_locale' => 'fr'], ['id', 'personId'], null, null, false, true, null]],
-        1336 => [[['_route' => 'project_comments', '_controller' => 'App\\Controller\\ProjectCommentsController::index', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
-        1352 => [[['_route' => 'project_comments_new', '_controller' => 'App\\Controller\\ProjectCommentsController::add', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
-        1372 => [
+        1468 => [[['_route' => 'invitation', '_controller' => 'App\\Controller\\InvitationController::index', '_locale' => 'fr'], ['id', 'personId'], null, null, false, true, null]],
+        1488 => [[['_route' => 'project_comments', '_controller' => 'App\\Controller\\ProjectCommentsController::index', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
+        1504 => [[['_route' => 'project_comments_new', '_controller' => 'App\\Controller\\ProjectCommentsController::add', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
+        1524 => [
             [['_route' => 'project_comment_edit', '_controller' => 'App\\Controller\\ProjectCommentsController::update', '_locale' => 'fr'], ['id', 'commentId'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'project_comments_delete', '_controller' => 'App\\Controller\\ProjectCommentsController::delete', '_locale' => 'fr'], ['id', 'commentId'], ['DELETE' => 0], null, false, true, null],
         ],
-        1395 => [[['_route' => 'document_list', '_controller' => 'App\\Controller\\ProjectDocumentsController::index', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
-        1414 => [[['_route' => 'document_search', '_controller' => 'App\\Controller\\ProjectDocumentsController::search', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
-        1436 => [[['_route' => 'document_view', '_controller' => 'App\\Controller\\ProjectDocumentsController::view', '_locale' => 'fr'], ['id', 'documentId'], null, null, false, true, null]],
-        1448 => [[['_route' => 'document_new', '_controller' => 'App\\Controller\\ProjectDocumentsController::add', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
-        1465 => [[['_route' => 'document_delete', '_controller' => 'App\\Controller\\ProjectDocumentsController::delete', '_locale' => 'fr'], ['id', 'documentId'], ['DELETE' => 0], null, false, true, null]],
-        1487 => [[['_route' => 'planning_list', '_controller' => 'App\\Controller\\ProjectPlanningController::index', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
-        1504 => [[['_route' => 'planning_list_json', '_controller' => 'App\\Controller\\ProjectPlanningController::list_json', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
-        1519 => [[['_route' => 'planning_search', '_controller' => 'App\\Controller\\ProjectPlanningController::search', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
-        1531 => [[['_route' => 'planning_new', '_controller' => 'App\\Controller\\ProjectPlanningController::add', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
-        1551 => [
-            [['_route' => 'planning_edit', '_controller' => 'App\\Controller\\ProjectPlanningController::update', '_locale' => 'fr'], ['id', 'taskId'], ['GET' => 0, 'POST' => 1], null, false, true, null],
-            [['_route' => 'planning_delete', '_controller' => 'App\\Controller\\ProjectPlanningController::delete', '_locale' => 'fr'], ['id', 'taskId'], ['DELETE' => 0], null, false, true, null],
-        ],
-        1570 => [[['_route' => 'project_works_list', '_controller' => 'App\\Controller\\ProjectWorksController::index', '_locale' => 'fr'], ['projectId'], null, null, false, false, null]],
-        1589 => [[['_route' => 'project_works_search', '_controller' => 'App\\Controller\\ProjectWorksController::search', '_locale' => 'fr'], ['projectId'], null, null, false, false, null]],
-        1601 => [[['_route' => 'project_works_new', '_controller' => 'App\\Controller\\ProjectWorksController::add', '_locale' => 'fr'], ['projectId'], null, null, false, false, null]],
-        1621 => [
+        1547 => [[['_route' => 'document_list', '_controller' => 'App\\Controller\\ProjectDocumentsController::index', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
+        1566 => [[['_route' => 'document_search', '_controller' => 'App\\Controller\\ProjectDocumentsController::search', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
+        1588 => [[['_route' => 'document_view', '_controller' => 'App\\Controller\\ProjectDocumentsController::view', '_locale' => 'fr'], ['id', 'documentId'], null, null, false, true, null]],
+        1600 => [[['_route' => 'document_new', '_controller' => 'App\\Controller\\ProjectDocumentsController::add', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
+        1617 => [[['_route' => 'document_delete', '_controller' => 'App\\Controller\\ProjectDocumentsController::delete', '_locale' => 'fr'], ['id', 'documentId'], ['DELETE' => 0], null, false, true, null]],
+        1639 => [[['_route' => 'planning_list', '_controller' => 'App\\Controller\\ProjectPlanningController::index', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
+        1656 => [[['_route' => 'planning_list_json', '_controller' => 'App\\Controller\\ProjectPlanningController::list_json', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
+        1671 => [[['_route' => 'planning_search', '_controller' => 'App\\Controller\\ProjectPlanningController::search', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
+        1683 => [[['_route' => 'planning_new', '_controller' => 'App\\Controller\\ProjectPlanningController::add', '_locale' => 'fr'], ['id'], null, null, false, false, null]],
+        1703 => [[['_route' => 'planning_edit', '_controller' => 'App\\Controller\\ProjectPlanningController::update', '_locale' => 'fr'], ['id', 'taskId'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        1721 => [[['_route' => 'planning_update_dates', '_controller' => 'App\\Controller\\ProjectPlanningController::updateDates', '_locale' => 'fr'], ['id', 'taskId'], ['POST' => 0], null, false, false, null]],
+        1738 => [[['_route' => 'planning_update_progress', '_controller' => 'App\\Controller\\ProjectPlanningController::updateProgress', '_locale' => 'fr'], ['id', 'taskId'], ['POST' => 0], null, false, false, null]],
+        1754 => [[['_route' => 'planning_add_comment', '_controller' => 'App\\Controller\\ProjectPlanningController::addComment', '_locale' => 'fr'], ['id', 'taskId'], ['POST' => 0], null, false, false, null]],
+        1770 => [[['_route' => 'planning_history', '_controller' => 'App\\Controller\\ProjectPlanningController::history', '_locale' => 'fr'], ['id', 'taskId'], null, null, false, false, null]],
+        1780 => [[['_route' => 'planning_delete', '_controller' => 'App\\Controller\\ProjectPlanningController::delete', '_locale' => 'fr'], ['id', 'taskId'], ['DELETE' => 0], null, false, true, null]],
+        1799 => [[['_route' => 'project_works_list', '_controller' => 'App\\Controller\\ProjectWorksController::index', '_locale' => 'fr'], ['projectId'], null, null, false, false, null]],
+        1818 => [[['_route' => 'project_works_search', '_controller' => 'App\\Controller\\ProjectWorksController::search', '_locale' => 'fr'], ['projectId'], null, null, false, false, null]],
+        1830 => [[['_route' => 'project_works_new', '_controller' => 'App\\Controller\\ProjectWorksController::add', '_locale' => 'fr'], ['projectId'], null, null, false, false, null]],
+        1850 => [
             [['_route' => 'project_works_edit', '_controller' => 'App\\Controller\\ProjectWorksController::update', '_locale' => 'fr'], ['projectId', 'workId'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'project_works_delete', '_controller' => 'App\\Controller\\ProjectWorksController::delete', '_locale' => 'fr'], ['projectId', 'workId'], ['DELETE' => 0], null, false, true, null],
         ],
-        1634 => [
+        1863 => [
             [['_route' => 'project_edit', '_controller' => 'App\\Controller\\ProjectController::update', '_locale' => 'fr'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null],
             [['_route' => 'project_delete', '_controller' => 'App\\Controller\\ProjectController::delete', '_locale' => 'fr'], ['id'], ['DELETE' => 0], null, false, true, null],
             [null, null, null, null, false, false, 0],

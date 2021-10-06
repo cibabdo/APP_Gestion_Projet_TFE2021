@@ -44,7 +44,7 @@ class ProjectType extends AbstractType
                     'En cours' => '2',
                     'Clôturé' => '3',
                     'Stand By' => '4',
-                    'Reporté' => '5'           
+                    'Reporté' => '5'     
                 ]
             ])             
 

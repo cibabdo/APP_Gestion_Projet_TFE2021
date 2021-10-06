@@ -45,38 +45,55 @@ class __TwigTemplate_7d87fd9a778185a8c6b067e3e5f7c69fa8c7890905699145d8b6ad979cc
         echo "<!DOCTYPE html>
 <html>
     <head>
-        <title>CHU</title>
-        <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl\" crossorigin=\"anonymous\">
+        <title>Gestion Projets</title>
+        <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC\" crossorigin=\"anonymous\">
         <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css\">
-        <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css\">
+        <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\">
+        <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css\">        
+        
+        <!-- Pour que les assets passe sur ovh modification de chemin -->
         <link rel=\"stylesheet\" href=\"";
-        // line 8
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("./css/style.css"), "html", null, true);
+        // line 11
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("css/style.css"), "html", null, true);
         echo "\">
-        <link rel=\"stylesheet\" type=\"text/css\" href=\"";
-        // line 9
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("./css/Chart.min.css"), "html", null, true);
-        echo "\">        
-        <script src=\"https://code.jquery.com/jquery-3.5.1.min.js\" integrity=\"sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=\" crossorigin=\"anonymous\"></script>
-        <script src=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js\"></script>
-        <script src=\"https://www.gstatic.com/charts/loader.js\"></script>
-        <script src=\"";
+        <!--<link rel=\"stylesheet\" type=\"text/css\" href=\"";
+        // line 12
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("css/Chart.min.css"), "html", null, true);
+        echo "\"> -->
+        <link rel=\"stylesheet\" href=\"";
         // line 13
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("./js/Chart.min.js"), "html", null, true);
-        echo "\"></script>  
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("css/frappe-gantt.css"), "html", null, true);
+        echo "\">
+        <!--<script src=\"https://code.jquery.com/jquery-3.5.1.min.js\" integrity=\"sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=\" crossorigin=\"anonymous\"></script>-->
+        <script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>
+        <script src=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js\"></script>
+        <!--<script src=\"https://www.gstatic.com/charts/loader.js\"></script>-->
+        <!--<script src=\"";
+        // line 18
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("js/Chart.min.js"), "html", null, true);
+        echo "\"></script>-->
+        <script src=\"";
+        // line 19
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("js/drapeau.js"), "html", null, true);
+        echo "\"></script>                   
+        <script src=\"";
+        // line 20
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("js/frappe-gantt.js"), "html", null, true);
+        echo "\"></script> 
+        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM\" crossorigin=\"anonymous\"></script>
+        
     </head>
     <body>
         ";
-        // line 16
+        // line 25
         $this->displayBlock('navbar', $context, $blocks);
         echo "     
         <div class=\"container\">
             ";
-        // line 18
+        // line 27
         $this->displayBlock('content', $context, $blocks);
         echo "       
-        </div>                                      
-        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf\" crossorigin=\"anonymous\"></script>  
+        </div>              
     </body>
 </html>";
         
@@ -87,7 +104,7 @@ class __TwigTemplate_7d87fd9a778185a8c6b067e3e5f7c69fa8c7890905699145d8b6ad979cc
 
     }
 
-    // line 16
+    // line 25
     public function block_navbar($context, array $blocks = [])
     {
         $macros = $this->macros;
@@ -105,7 +122,7 @@ class __TwigTemplate_7d87fd9a778185a8c6b067e3e5f7c69fa8c7890905699145d8b6ad979cc
 
     }
 
-    // line 18
+    // line 27
     public function block_content($context, array $blocks = [])
     {
         $macros = $this->macros;
@@ -135,7 +152,7 @@ class __TwigTemplate_7d87fd9a778185a8c6b067e3e5f7c69fa8c7890905699145d8b6ad979cc
 
     public function getDebugInfo()
     {
-        return array (  109 => 18,  91 => 16,  76 => 18,  71 => 16,  65 => 13,  58 => 9,  54 => 8,  45 => 1,);
+        return array (  126 => 27,  108 => 25,  94 => 27,  89 => 25,  81 => 20,  77 => 19,  73 => 18,  65 => 13,  61 => 12,  57 => 11,  45 => 1,);
     }
 
     public function getSourceContext()
@@ -143,24 +160,32 @@ class __TwigTemplate_7d87fd9a778185a8c6b067e3e5f7c69fa8c7890905699145d8b6ad979cc
         return new Source("<!DOCTYPE html>
 <html>
     <head>
-        <title>CHU</title>
-        <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl\" crossorigin=\"anonymous\">
+        <title>Gestion Projets</title>
+        <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC\" crossorigin=\"anonymous\">
         <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css\">
-        <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css\">
-        <link rel=\"stylesheet\" href=\"{{asset('./css/style.css')}}\">
-        <link rel=\"stylesheet\" type=\"text/css\" href=\"{{asset('./css/Chart.min.css')}}\">        
-        <script src=\"https://code.jquery.com/jquery-3.5.1.min.js\" integrity=\"sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=\" crossorigin=\"anonymous\"></script>
+        <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\">
+        <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css\">        
+        
+        <!-- Pour que les assets passe sur ovh modification de chemin -->
+        <link rel=\"stylesheet\" href=\"{{asset('css/style.css')}}\">
+        <!--<link rel=\"stylesheet\" type=\"text/css\" href=\"{{asset('css/Chart.min.css')}}\"> -->
+        <link rel=\"stylesheet\" href=\"{{asset('css/frappe-gantt.css')}}\">
+        <!--<script src=\"https://code.jquery.com/jquery-3.5.1.min.js\" integrity=\"sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=\" crossorigin=\"anonymous\"></script>-->
+        <script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>
         <script src=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js\"></script>
-        <script src=\"https://www.gstatic.com/charts/loader.js\"></script>
-        <script src=\"{{asset('./js/Chart.min.js')}}\"></script>  
+        <!--<script src=\"https://www.gstatic.com/charts/loader.js\"></script>-->
+        <!--<script src=\"{{asset('js/Chart.min.js')}}\"></script>-->
+        <script src=\"{{asset('js/drapeau.js')}}\"></script>                   
+        <script src=\"{{asset('js/frappe-gantt.js')}}\"></script> 
+        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM\" crossorigin=\"anonymous\"></script>
+        
     </head>
     <body>
         {% block navbar %}{% endblock %}     
         <div class=\"container\">
             {% block content %}{% endblock %}       
-        </div>                                      
-        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf\" crossorigin=\"anonymous\"></script>  
+        </div>              
     </body>
-</html>", "base.html.twig", "C:\\xampp803\\htdocs\\symfony\\templates\\base.html.twig");
+</html>", "base.html.twig", "C:\\Users\\utilisateur\\Videos\\APP_Gestion_Projet\\templates\\base.html.twig");
     }
 }

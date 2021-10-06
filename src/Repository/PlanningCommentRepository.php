@@ -39,7 +39,9 @@ class PlanningCommentRepository extends ServiceEntityRepository
     {       
         return $this->createQueryBuilder('c')
             ->where('c.date >= :date')
-            ->setParameter('date', $date)            
+            ->setParameter('date', $date)      
+            ->orderBy('c.project', 'ASC')
+            ->orderBy('c.date', 'ASC')
             ->getQuery()
             ->getResult();
         /*

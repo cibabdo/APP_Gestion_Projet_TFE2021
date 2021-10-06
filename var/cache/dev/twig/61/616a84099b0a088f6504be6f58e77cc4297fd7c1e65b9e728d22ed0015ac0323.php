@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* home.html.twig */
+/* /home.html.twig */
 class __TwigTemplate_11ae00793822ac60cb3477170db35a9c9c383472e2bfdd7abc3fddcda1dc51c6 extends Template
 {
     private $source;
@@ -40,12 +40,12 @@ class __TwigTemplate_11ae00793822ac60cb3477170db35a9c9c383472e2bfdd7abc3fddcda1d
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "home.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "/home.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "home.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "/home.html.twig"));
 
-        $this->parent = $this->loadTemplate("base.html.twig", "home.html.twig", 1);
+        $this->parent = $this->loadTemplate("base.html.twig", "/home.html.twig", 1);
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->leave($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof);
@@ -67,7 +67,7 @@ class __TwigTemplate_11ae00793822ac60cb3477170db35a9c9c383472e2bfdd7abc3fddcda1d
 
         // line 4
         echo "    ";
-        $this->loadTemplate("navbar.html.twig", "home.html.twig", 4)->display($context);
+        $this->loadTemplate("navbar.html.twig", "/home.html.twig", 4)->display($context);
         
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->leave($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof);
 
@@ -89,8 +89,22 @@ class __TwigTemplate_11ae00793822ac60cb3477170db35a9c9c383472e2bfdd7abc3fddcda1d
         // line 8
         echo "    <div class=\"row mt-5\">
         <div class=\"col\">
-            <h2>Bienvenue dans notre application web vous permettant de gérer et suivre vos projets</h2>
-        </div>    
+            ";
+        // line 10
+        if ($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_ADMIN")) {
+            // line 11
+            echo "            <h2>Bienvenue sur votre dashboard administrateur</h2>
+            ";
+        }
+        // line 13
+        echo "            ";
+        if (($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_EXTERNAL") || $this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_INTERNAL"))) {
+            // line 14
+            echo "            <h2>Bienvenue dans notre application web vous permettant de gérer et suivre vos projets</h2>
+            ";
+        }
+        // line 16
+        echo "        </div>    
     </div>
 ";
         
@@ -103,7 +117,7 @@ class __TwigTemplate_11ae00793822ac60cb3477170db35a9c9c383472e2bfdd7abc3fddcda1d
 
     public function getTemplateName()
     {
-        return "home.html.twig";
+        return "/home.html.twig";
     }
 
     public function isTraitable()
@@ -113,7 +127,7 @@ class __TwigTemplate_11ae00793822ac60cb3477170db35a9c9c383472e2bfdd7abc3fddcda1d
 
     public function getDebugInfo()
     {
-        return array (  90 => 8,  80 => 7,  69 => 4,  59 => 3,  36 => 1,);
+        return array (  107 => 16,  103 => 14,  100 => 13,  96 => 11,  94 => 10,  90 => 8,  80 => 7,  69 => 4,  59 => 3,  36 => 1,);
     }
 
     public function getSourceContext()
@@ -127,9 +141,14 @@ class __TwigTemplate_11ae00793822ac60cb3477170db35a9c9c383472e2bfdd7abc3fddcda1d
 {% block content %}
     <div class=\"row mt-5\">
         <div class=\"col\">
+            {% if is_granted('ROLE_ADMIN') %}
+            <h2>Bienvenue sur votre dashboard administrateur</h2>
+            {% endif %}
+            {% if is_granted('ROLE_EXTERNAL') or is_granted('ROLE_INTERNAL') %}
             <h2>Bienvenue dans notre application web vous permettant de gérer et suivre vos projets</h2>
+            {% endif %}
         </div>    
     </div>
-{% endblock %}", "home.html.twig", "C:\\xampp803\\htdocs\\symfony\\templates\\home.html.twig");
+{% endblock %}", "/home.html.twig", "C:\\Users\\utilisateur\\Videos\\APP_Gestion_Projet\\templates\\home.html.twig");
     }
 }

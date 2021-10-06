@@ -147,6 +147,6 @@ class __TwigTemplate_7bf5935f932fd042d083a44e38b148ddffdb24306dc7b86f45883653831
                 </tr>
             {% endfor %}
         </tbody>        
-    </table>   ", "project/project_list.html.twig", "C:\\xampp803\\htdocs\\symfony\\templates\\project\\project_list.html.twig");
+    </table>   ", "project/project_list.html.twig", "C:\\Users\\utilisateur\\Videos\\APP_Gestion_Projet\\templates\\project\\project_list.html.twig");
     }
 }

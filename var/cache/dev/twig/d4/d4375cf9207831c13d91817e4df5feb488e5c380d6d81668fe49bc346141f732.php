@@ -232,6 +232,6 @@ class __TwigTemplate_bd3523f30f656abef32e5f3e43a84f0bdc3cea32b467c88c9c869628790
 </script>
 {% endblock %}
 
-", "project/project.html.twig", "C:\\xampp803\\htdocs\\symfony\\templates\\project\\project.html.twig");
+", "project/project.html.twig", "C:\\Users\\utilisateur\\Videos\\APP_Gestion_Projet\\templates\\project\\project.html.twig");
     }
 }

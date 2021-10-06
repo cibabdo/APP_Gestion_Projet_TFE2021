@@ -209,12 +209,12 @@ class __TwigTemplate_d0f809020276377b15138fc61a856c4baca5f7c46f9885d97198586cdae
         echo "                ";
         echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 59, $this->source); })()), "percentDone", [], "any", false, false, false, 59), 'widget', ["attr" => ["class" => "form-control"]]);
         echo "    
-            </div>    
-
+            </div>   
+            
             <div class=\"mb-3\">                    
                 ";
         // line 63
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 63, $this->source); })()), "color", [], "any", false, false, false, 63), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Couleur"]);
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 63, $this->source); })()), "color", [], "any", false, false, false, 63), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Pourcentage effecutée"]);
         echo "
                 ";
         // line 64
@@ -232,32 +232,87 @@ class __TwigTemplate_d0f809020276377b15138fc61a856c4baca5f7c46f9885d97198586cdae
         echo "                ";
         echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 69, $this->source); })()), "color", [], "any", false, false, false, 69), 'widget', ["attr" => ["class" => "form-control"]]);
         echo "    
-            </div>    
+            </div> 
 
-            <div class=\"my-2\">
-                <button type=\"submit\" class=\"btn btn-primary\">Ok</button>     
+            <div class=\"mb-3\">
+                ";
+        // line 73
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 73, $this->source); })()), "comment", [], "any", false, false, false, 73), 'label', ["label_attr" => ["class" => "form-label"], "label" => "Commentaire"]);
+        echo "
                 ";
         // line 74
-        if (twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 74, $this->source); })()), "vars", [], "any", false, false, false, 74), "value", [], "any", false, false, false, 74), "id", [], "any", false, false, false, 74)) {
-            echo "           
-                    <a href=\"#\" class=\"btn btn-danger ml-3\" onClick=\"deletePlanning()\">Supprimer</a>
+        if ($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 74, $this->source); })()), "comment", [], "any", false, false, false, 74), 'errors')) {
+            echo "            
+                    <div class=\"form-error text-danger\">
+                        <span class=\"span_error bg-danger text-white\">ERREUR</span>&nbsp;";
+            // line 76
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 76, $this->source); })()), "comment", [], "any", false, false, false, 76), 'errors');
+            echo "
+                    </div>            
                 ";
         }
-        // line 77
+        // line 79
+        echo "                ";
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 79, $this->source); })()), "comment", [], "any", false, false, false, 79), 'widget', ["attr" => ["class" => "form-control"]]);
+        echo "    
+            </div>     
+         
+            <div class=\"my-2\">
+                ";
+        // line 83
+        if (($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_EXTERNAL") == false)) {
+            // line 84
+            echo "                    <button type=\"submit\" class=\"btn btn-primary\">Ok</button>     
+                    ";
+            // line 85
+            if (twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 85, $this->source); })()), "vars", [], "any", false, false, false, 85), "value", [], "any", false, false, false, 85), "id", [], "any", false, false, false, 85)) {
+                echo "           
+                        <a href=\"#\" class=\"btn btn-danger ml-3\" onClick=\"deletePlanning()\">Supprimer</a>
+                    ";
+            }
+            // line 88
+            echo "                ";
+        }
+        // line 89
         echo "                <a href=\"";
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_edit", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 77, $this->source); })()), "onglet" => "planning"]), "html", null, true);
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_edit", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 89, $this->source); })()), "onglet" => "planning"]), "html", null, true);
         echo "\" class=\"btn btn-secondary ml-3\">Retour</a>
             </div>            
         ";
-        // line 79
-        echo         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 79, $this->source); })()), 'form_end');
+        // line 91
+        echo         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 91, $this->source); })()), 'form_end');
         echo "
     </div>    
 </div>
 <script>
+    const id = '";
+        // line 95
+        echo twig_escape_filter($this->env, (isset($context["id"]) || array_key_exists("id", $context) ? $context["id"] : (function () { throw new RuntimeError('Variable "id" does not exist.', 95, $this->source); })()), "html", null, true);
+        echo "';
+
+    \$('form').on('submit', function() {
+        // valider cohérence des dates
+        const planning_startDate = parseInt(\$('#planning_startDate').val().replaceAll('-',''));
+        const planning_endDate = parseInt(\$('#planning_endDate').val().replaceAll('-',''));
+        //console.log(planning_startDate, planning_endDate);        
+        if (planning_endDate <= planning_startDate) {
+            \$('#planning_endDate').focus();
+            alert('La date de fin doit être postérieure à la date de début');
+            return false;
+        }        
+
+        if (id != '0' && \$('#planning_comment').val().trim() == '') {
+            \$('#planning_comment').focus();
+            alert('Veuillez encoder un commentaire');
+            return false;
+        }
+
+        return true;
+    });
+
     document.getElementById(\"planning_name\").focus()  
-    
-    \$('#planning_percentDone').on('input', function () {
+        
+        \$('#planning_percentDone').on('input', function () {
         const val = \$(this).val()
         \$('#val').html(val + ' %')
     })
@@ -266,16 +321,16 @@ class __TwigTemplate_d0f809020276377b15138fc61a856c4baca5f7c46f9885d97198586cdae
         if (confirm('Confirmer la suppression ?')) {                    
             \$.ajax({
                 url: '";
-        // line 93
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_delete", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 93, $this->source); })()), "taskId" => (isset($context["id"]) || array_key_exists("id", $context) ? $context["id"] : (function () { throw new RuntimeError('Variable "id" does not exist.', 93, $this->source); })())]), "html", null, true);
+        // line 127
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_delete", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 127, $this->source); })()), "taskId" => (isset($context["id"]) || array_key_exists("id", $context) ? $context["id"] : (function () { throw new RuntimeError('Variable "id" does not exist.', 127, $this->source); })())]), "html", null, true);
         echo "',
                 type: 'DELETE',
                 dataType: 'text',
                 success: function (result) {                    
                     document.location.href = '";
-        // line 97
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_list", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 97, $this->source); })())]), "html", null, true);
-        echo "?message=Tâche supprimée'
+        // line 131
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_edit", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 131, $this->source); })()), "onglet" => "planning"]), "html", null, true);
+        echo "&message=Tâche supprimée'                    
                 },
                 error: function(jqXHR, textStatus, errorThrown ) {
                     console.log(jqXHR, textStatus, errorThrown)
@@ -306,7 +361,7 @@ class __TwigTemplate_d0f809020276377b15138fc61a856c4baca5f7c46f9885d97198586cdae
 
     public function getDebugInfo()
     {
-        return array (  277 => 97,  270 => 93,  253 => 79,  247 => 77,  241 => 74,  232 => 69,  226 => 66,  221 => 64,  217 => 63,  209 => 59,  203 => 56,  198 => 54,  192 => 53,  184 => 49,  178 => 46,  173 => 44,  169 => 43,  161 => 39,  155 => 36,  150 => 34,  146 => 33,  138 => 29,  132 => 26,  127 => 24,  123 => 23,  115 => 19,  109 => 16,  104 => 14,  100 => 13,  94 => 10,  90 => 8,  80 => 7,  69 => 4,  59 => 3,  36 => 1,);
+        return array (  332 => 131,  325 => 127,  290 => 95,  283 => 91,  277 => 89,  274 => 88,  268 => 85,  265 => 84,  263 => 83,  255 => 79,  249 => 76,  244 => 74,  240 => 73,  232 => 69,  226 => 66,  221 => 64,  217 => 63,  209 => 59,  203 => 56,  198 => 54,  192 => 53,  184 => 49,  178 => 46,  173 => 44,  169 => 43,  161 => 39,  155 => 36,  150 => 34,  146 => 33,  138 => 29,  132 => 26,  127 => 24,  123 => 23,  115 => 19,  109 => 16,  104 => 14,  100 => 13,  94 => 10,  90 => 8,  80 => 7,  69 => 4,  59 => 3,  36 => 1,);
     }
 
     public function getSourceContext()
@@ -370,22 +425,34 @@ class __TwigTemplate_d0f809020276377b15138fc61a856c4baca5f7c46f9885d97198586cdae
                     </div>     
                 {% endif %}
                 {{ form_widget(form.percentDone, {'attr': {'class': 'form-control'}}) }}    
-            </div>    
-
+            </div>   
+            
             <div class=\"mb-3\">                    
-                {{ form_label(form.color, 'Couleur', {'label_attr': { class: 'form-label' }}) }}
+                {{ form_label(form.color, 'Pourcentage effecutée', {'label_attr': { class: 'form-label' }}) }}
                 {% if form_errors(form.color) %}                            
                     <div class=\"form-error text-danger\">
                         <span class=\"span_error bg-danger text-white\">ERREUR</span>&nbsp;{{ form_errors(form.color) }}
                     </div>     
                 {% endif %}
                 {{ form_widget(form.color, {'attr': {'class': 'form-control'}}) }}    
-            </div>    
+            </div> 
 
+            <div class=\"mb-3\">
+                {{ form_label(form.comment, 'Commentaire', {'label_attr': { class: 'form-label' }}) }}
+                {% if form_errors(form.comment) %}            
+                    <div class=\"form-error text-danger\">
+                        <span class=\"span_error bg-danger text-white\">ERREUR</span>&nbsp;{{ form_errors(form.comment) }}
+                    </div>            
+                {% endif %}
+                {{ form_widget(form.comment, {'attr': {'class': 'form-control'}}) }}    
+            </div>     
+         
             <div class=\"my-2\">
-                <button type=\"submit\" class=\"btn btn-primary\">Ok</button>     
-                {% if form.vars.value.id %}           
-                    <a href=\"#\" class=\"btn btn-danger ml-3\" onClick=\"deletePlanning()\">Supprimer</a>
+                {% if (is_granted('ROLE_EXTERNAL') == false) %}
+                    <button type=\"submit\" class=\"btn btn-primary\">Ok</button>     
+                    {% if form.vars.value.id %}           
+                        <a href=\"#\" class=\"btn btn-danger ml-3\" onClick=\"deletePlanning()\">Supprimer</a>
+                    {% endif %}
                 {% endif %}
                 <a href=\"{{path('project_edit', {id:projectId, onglet:'planning'})}}\" class=\"btn btn-secondary ml-3\">Retour</a>
             </div>            
@@ -393,9 +460,31 @@ class __TwigTemplate_d0f809020276377b15138fc61a856c4baca5f7c46f9885d97198586cdae
     </div>    
 </div>
 <script>
+    const id = '{{id}}';
+
+    \$('form').on('submit', function() {
+        // valider cohérence des dates
+        const planning_startDate = parseInt(\$('#planning_startDate').val().replaceAll('-',''));
+        const planning_endDate = parseInt(\$('#planning_endDate').val().replaceAll('-',''));
+        //console.log(planning_startDate, planning_endDate);        
+        if (planning_endDate <= planning_startDate) {
+            \$('#planning_endDate').focus();
+            alert('La date de fin doit être postérieure à la date de début');
+            return false;
+        }        
+
+        if (id != '0' && \$('#planning_comment').val().trim() == '') {
+            \$('#planning_comment').focus();
+            alert('Veuillez encoder un commentaire');
+            return false;
+        }
+
+        return true;
+    });
+
     document.getElementById(\"planning_name\").focus()  
-    
-    \$('#planning_percentDone').on('input', function () {
+        
+        \$('#planning_percentDone').on('input', function () {
         const val = \$(this).val()
         \$('#val').html(val + ' %')
     })
@@ -407,7 +496,7 @@ class __TwigTemplate_d0f809020276377b15138fc61a856c4baca5f7c46f9885d97198586cdae
                 type: 'DELETE',
                 dataType: 'text',
                 success: function (result) {                    
-                    document.location.href = '{{path(\"planning_list\", {id:projectId})}}?message=Tâche supprimée'
+                    document.location.href = '{{path(\"project_edit\",{id:projectId, onglet:\"planning\"})}}&message=Tâche supprimée'                    
                 },
                 error: function(jqXHR, textStatus, errorThrown ) {
                     console.log(jqXHR, textStatus, errorThrown)
@@ -418,6 +507,6 @@ class __TwigTemplate_d0f809020276377b15138fc61a856c4baca5f7c46f9885d97198586cdae
     }
 </script>
 {% endblock %}
-", "planning/planning_edit.html.twig", "C:\\xampp803\\htdocs\\symfony\\templates\\planning\\planning_edit.html.twig");
+", "planning/planning_edit.html.twig", "C:\\Users\\utilisateur\\Videos\\APP_Gestion_Projet\\templates\\planning\\planning_edit.html.twig");
     }
 }

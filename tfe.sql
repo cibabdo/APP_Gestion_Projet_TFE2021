@@ -3629,7 +3629,7 @@ CREATE TABLE `project` (
 --
 
 INSERT INTO `project` (`id`, `reference`, `title`, `year`, `site_id`, `description`, `work_start_date`, `work_end_date`, `start_situation`, `end_situation`, `state`, `created_at`, `updated_at`) VALUES
-(3, '123', 'ESSAI', 2021, 1, 'test', '2021-06-18', '2021-06-19', 1, 1, 6, NULL, NULL),
+(3, '123', 'ESSAI', 2021, 1, 'test', '2021-06-18', '2021-06-19', 1, 1, 5, NULL, NULL),
 (4, 'TEST', 'TEST', 2021, 1, 'test', '2021-09-10', '2021-09-11', 0, 0, 0, NULL, NULL),
 (5, 'dsdsds', 'cvcxvcvcvcvcv', 2021, 1, 'dsdsdsdd', '2021-10-05', '2021-10-06', 1, 1, 1, NULL, NULL);
 
