@@ -32,6 +32,28 @@ class PlanningCommentRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+      /**
+    * @return PlanningComment[] Returns an array of PlanningComment objects
+    */    
+    public function findNewComments($date)
+    {       
+        return $this->createQueryBuilder('c')
+            ->where('c.date >= :date')
+            ->setParameter('date', $date)            
+            ->getQuery()
+            ->getResult();
+        /*
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            "select c.* " .
+            "from App\Entity\PlanningComment c " .             
+            "WHERE :date >= c.date"      
+        )->setParameter('date', $date);
+        return $query->getResult();
+        */
+    }
+
+
     // /**
     //  * @return PlanningComment[] Returns an array of PlanningComment objects
     //  */
