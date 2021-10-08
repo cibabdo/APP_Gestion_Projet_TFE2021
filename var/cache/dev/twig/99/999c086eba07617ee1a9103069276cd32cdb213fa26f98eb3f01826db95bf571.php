@@ -796,25 +796,153 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
     </div>    
 </div>
 <script>
-    document.getElementById(\"project_title\").focus()    
+    document.getElementById(\"project_title\").focus()   
+    
+    const div_error = '<div class=\"form-error form-error-small text-danger inline \$input\$\"><span class=\"span_error bg-danger text-white\">ERREUR</span>&nbsp;\$error\$</div>';
 
     setTimeout(function() {
         const tab = document.getElementsByClassName('alert')    
         if (tab.length) tab[0].remove()
     },3000)    
 
+    \$('label.required').append('<span class=\"stars_required\">*</span>')
+    
+    const project_title_server = \$('#project_title').val();
+    const project_reference_server = \$('#project_reference').val();
+
+    function verifyArchitect(architect1, architect2) {   
+        //console.log(architect1, architect2);
+        const error = 'L\\'architecte est déjà affecté à ce projet';
+        \$('.'+architect1).remove() // l'enlever l'erreur précédente
+        \$('.'+architect2).remove() // l'enlever l'erreur précédente
+        if (\$('#'+architect1).val() != '' && \$('#'+architect2).val() != '' && \$('#'+architect1).val() == \$('#'+architect2).val()) {                       
+            return error
+        }
+        return ''
+    }
+
+    \$('#project_architect').on('change', function() {            
+        const id = \$(this).attr('id');            
+        const error = verifyArchitect(id, 'project_secondArchitect');
+        if (error != '') {
+            \$('label[for=\"' + id + '\"]').append(div_error.replace('\$input\$', id).replace('\$error\$', error))
+        }
+    });
+    
+    \$('#project_secondArchitect').on('change', function() {
+        const id = \$(this).attr('id');            
+        const error = verifyArchitect('project_architect', id);
+        if (error != '') {
+            \$('label[for=\"' + id + '\"]').append(div_error.replace('\$input\$', id).replace('\$error\$', error))
+        }
+    });
+
+    \$('input').on('change', function(ev) {
+        let error, errors
+        let project_workStartDate
+        let project_workEndDate
+        
+        // initialisation, retirer l'erreur éventuelle sur la zone dont on modifie la valeur
+        \$('.'+\$(this).attr('id')).remove()    
+
+        // retirer l'erreur éventuelle rendue par le serveur (entity) lors d'un submit
+        const element_html = \$('label[for=\"' + \$(this).attr('id') + '\"]').next();        
+        if (element_html.hasClass('form-error')) element_html.remove();
+
+        // id et valeur
+        const id = \$(this).attr('id');
+        const val = \$(this).val();
+
+        // traitement
+        switch(id) {
+            case 'project_title' :
+                if (val.trim() == '') return // si champ vide, stop, ne pas aller jusqu'au serveur
+                if (\$('#project_title').val() == project_title_server) return;
+                validForm(id, 'title');       
+                break
+            case 'project_reference' : 
+                if (val.trim() == '') return // si champ vide, stop, ne pas aller jusqu'au serveur
+                if (\$('#project_reference_server').val() == project_reference_server) return;
+                validForm(id, 'reference');
+                break
+            case 'project_workStartDate' :                
+                error = validDate(val);
+                if (error != '') {
+                    \$('label[for=\"' + id + '\"]').append(div_error.replace('\$input\$', id).replace('\$error\$', error))
+                }                
+                break
+            case 'project_workEndDate' : 
+                error = validDate(\$(this).val());
+                if (error == '') error = validDates(\$('#project_workStartDate').val(), val);
+                if (error != '') {
+                    \$('label[for=\"' + id+ '\"]').append(div_error.replace('\$input\$',id).replace('\$error\$', error))
+                }                
+                break
+        }
+    })
+
+    function verifyError(errors, input, callback) {
+        if (errors.errors.violations) {
+            errors.errors.violations.forEach(function(obj) {
+                if (obj['propertyPath'] == input) {
+                    callback(obj['title']);
+                    return ;
+                } 
+            })        
+        }
+    }
+
+    function validForm(id, data) {        
+        let url = '";
+        // line 411
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_valid_form", ["id" => (isset($context["id"]) || array_key_exists("id", $context) ? $context["id"] : (function () { throw new RuntimeError('Variable "id" does not exist.', 411, $this->source); })())]), "html", null, true);
+        echo "';        
+        \$.ajax({
+            url: url,
+            async: true,
+            data: \$('form').serialize(),    // jquery construit le body pour la requête post
+            type: 'POST',
+            dataType: 'json',
+            success: function (errors) { 
+                //console.log(errors)                   
+                verifyError(errors, data, function(error) {
+                    \$('label[for=\"' + id + '\"]').append(div_error.replace('\$input\$', id).replace('\$error\$', error))
+                });   
+                return
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur lors de la suppression')                    
+            }
+        })       
+    }
+
+    function validDate(date) {       
+        date = parseInt(date.replaceAll('-',''));
+        if (isNaN(date)) return 'La date n\\'est pas valide';
+        return '';
+    }
+    
+
+    function validDates(start, end) {        
+        start = parseInt(start.replaceAll('-',''));
+        end = parseInt(end.replaceAll('-',''));                        
+        if (end <= start) return 'La date de fin doit être postérieure à la date de début';
+        return '';
+    }
+
     function deleteProject() {
         if (confirm('Confirmer la suppression ?')) {                    
             \$.ajax({
                 url: '";
-        // line 324
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_delete", ["id" => (isset($context["id"]) || array_key_exists("id", $context) ? $context["id"] : (function () { throw new RuntimeError('Variable "id" does not exist.', 324, $this->source); })())]), "html", null, true);
+        // line 449
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_delete", ["id" => (isset($context["id"]) || array_key_exists("id", $context) ? $context["id"] : (function () { throw new RuntimeError('Variable "id" does not exist.', 449, $this->source); })())]), "html", null, true);
         echo "',
                 type: 'DELETE',
                 dataType: 'text',
                 success: function (result) {                    
                     document.location.href = '";
-        // line 328
+        // line 453
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_list");
         echo "?message=Projet supprimé'
                 },
@@ -859,8 +987,8 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
     })
 
     const onglet = '";
-        // line 370
-        echo twig_escape_filter($this->env, (isset($context["onglet"]) || array_key_exists("onglet", $context) ? $context["onglet"] : (function () { throw new RuntimeError('Variable "onglet" does not exist.', 370, $this->source); })()), "html", null, true);
+        // line 495
+        echo twig_escape_filter($this->env, (isset($context["onglet"]) || array_key_exists("onglet", $context) ? $context["onglet"] : (function () { throw new RuntimeError('Variable "onglet" does not exist.', 495, $this->source); })()), "html", null, true);
         echo "';
     if (onglet != '') {      
         const obj = \$('a[data-id=\"'+onglet+'\"]')       
@@ -869,17 +997,45 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
     }
 
     \$('.select2').select2()
-
+    
     \$('form').on('submit', function() {
-        // valider cohérence des dates
-        const project_workStartDate = parseInt(\$('#project_workStartDate').val().replaceAll('-',''));
-        const project_workEndDate = parseInt(\$('#project_workEndDate').val().replaceAll('-',''));
-        //console.log(project_workStartDate, project_workEndDate);        
-        if (project_workEndDate <= project_workStartDate) {
-            \$('#project_workEndDate').focus();
-            alert('La date de fin doit être postérieure à la date de début');
+        let error;   
+
+        \$('.form-error ').remove();        
+
+        // valider date
+        error = validDate(\$('#project_workStartDate').val());
+        if (error != '') {
+            \$('#project_workStartDate').focus();            
+            \$('label[for=\"project_workStartDate\"]').append(div_error.replace('\$input\$', 'project_workStartDate').replace('\$error\$', error))
             return false;
         }
+       
+        // valider date
+        error = validDate(\$('#project_workEndDate').val());
+        if (error != '') {
+            \$('#project_workEndDate').focus();
+            \$('label[for=\"project_workEndDate\"]').append(div_error.replace('\$input\$', 'project_workEndDate').replace('\$error\$', error))
+            return false;
+        }
+       
+        // valider cohérence dates
+        error = validDates(\$('#project_workStartDate').val(), \$('#project_workEndDate').val());
+        if (error != '') {
+            \$('#project_workEndDate').focus();
+            \$('label[for=\"project_workEndDate\"]').append(div_error.replace('\$input\$', 'project_workEndDate').replace('\$error\$', error))
+            return false;
+        }
+       
+        // valider architectes
+        error = verifyArchitect('project_architect', 'project_secondArchitect');           
+        if (error != '') {
+        
+            \$('#project_secondArchitect').focus();
+            \$('label[for=\"project_secondArchitect\"]').append(div_error.replace('\$input\$', 'project_secondArchitect').replace('\$error\$', error))
+            return false;
+        }
+      
         return true;
     });
 
@@ -951,7 +1107,7 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
 
     public function getDebugInfo()
     {
-        return array (  863 => 370,  818 => 328,  811 => 324,  794 => 310,  787 => 307,  784 => 306,  781 => 305,  777 => 303,  775 => 302,  771 => 301,  768 => 300,  766 => 299,  754 => 291,  748 => 288,  743 => 286,  738 => 285,  732 => 283,  729 => 282,  727 => 281,  723 => 280,  715 => 276,  709 => 273,  704 => 271,  699 => 270,  693 => 268,  690 => 267,  688 => 266,  684 => 265,  676 => 261,  670 => 258,  665 => 256,  660 => 255,  654 => 253,  651 => 252,  649 => 251,  645 => 250,  632 => 241,  626 => 238,  621 => 236,  617 => 235,  609 => 231,  603 => 228,  598 => 226,  594 => 225,  586 => 221,  580 => 218,  575 => 216,  571 => 215,  563 => 211,  557 => 208,  552 => 206,  548 => 205,  540 => 201,  534 => 198,  529 => 196,  525 => 195,  517 => 191,  511 => 188,  506 => 186,  502 => 185,  494 => 181,  488 => 178,  483 => 176,  479 => 175,  471 => 171,  465 => 168,  460 => 166,  456 => 165,  445 => 158,  439 => 155,  434 => 153,  430 => 152,  422 => 148,  416 => 145,  411 => 143,  407 => 142,  396 => 135,  390 => 132,  385 => 130,  381 => 129,  373 => 125,  367 => 122,  362 => 120,  358 => 119,  352 => 117,  346 => 114,  341 => 112,  337 => 111,  328 => 106,  322 => 103,  317 => 101,  313 => 100,  307 => 98,  301 => 95,  296 => 93,  292 => 92,  284 => 88,  278 => 85,  273 => 83,  269 => 82,  261 => 78,  255 => 75,  250 => 73,  246 => 72,  238 => 68,  232 => 65,  227 => 63,  223 => 62,  215 => 58,  209 => 55,  204 => 53,  200 => 52,  192 => 48,  186 => 45,  181 => 43,  177 => 42,  164 => 36,  154 => 33,  144 => 30,  134 => 27,  126 => 24,  115 => 17,  106 => 14,  103 => 13,  99 => 12,  95 => 11,  90 => 8,  80 => 7,  69 => 4,  59 => 3,  36 => 1,);
+        return array (  991 => 495,  946 => 453,  939 => 449,  898 => 411,  794 => 310,  787 => 307,  784 => 306,  781 => 305,  777 => 303,  775 => 302,  771 => 301,  768 => 300,  766 => 299,  754 => 291,  748 => 288,  743 => 286,  738 => 285,  732 => 283,  729 => 282,  727 => 281,  723 => 280,  715 => 276,  709 => 273,  704 => 271,  699 => 270,  693 => 268,  690 => 267,  688 => 266,  684 => 265,  676 => 261,  670 => 258,  665 => 256,  660 => 255,  654 => 253,  651 => 252,  649 => 251,  645 => 250,  632 => 241,  626 => 238,  621 => 236,  617 => 235,  609 => 231,  603 => 228,  598 => 226,  594 => 225,  586 => 221,  580 => 218,  575 => 216,  571 => 215,  563 => 211,  557 => 208,  552 => 206,  548 => 205,  540 => 201,  534 => 198,  529 => 196,  525 => 195,  517 => 191,  511 => 188,  506 => 186,  502 => 185,  494 => 181,  488 => 178,  483 => 176,  479 => 175,  471 => 171,  465 => 168,  460 => 166,  456 => 165,  445 => 158,  439 => 155,  434 => 153,  430 => 152,  422 => 148,  416 => 145,  411 => 143,  407 => 142,  396 => 135,  390 => 132,  385 => 130,  381 => 129,  373 => 125,  367 => 122,  362 => 120,  358 => 119,  352 => 117,  346 => 114,  341 => 112,  337 => 111,  328 => 106,  322 => 103,  317 => 101,  313 => 100,  307 => 98,  301 => 95,  296 => 93,  292 => 92,  284 => 88,  278 => 85,  273 => 83,  269 => 82,  261 => 78,  255 => 75,  250 => 73,  246 => 72,  238 => 68,  232 => 65,  227 => 63,  223 => 62,  215 => 58,  209 => 55,  204 => 53,  200 => 52,  192 => 48,  186 => 45,  181 => 43,  177 => 42,  164 => 36,  154 => 33,  144 => 30,  134 => 27,  126 => 24,  115 => 17,  106 => 14,  103 => 13,  99 => 12,  95 => 11,  90 => 8,  80 => 7,  69 => 4,  59 => 3,  36 => 1,);
     }
 
     public function getSourceContext()
@@ -1269,12 +1425,137 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
     </div>    
 </div>
 <script>
-    document.getElementById(\"project_title\").focus()    
+    document.getElementById(\"project_title\").focus()   
+    
+    const div_error = '<div class=\"form-error form-error-small text-danger inline \$input\$\"><span class=\"span_error bg-danger text-white\">ERREUR</span>&nbsp;\$error\$</div>';
 
     setTimeout(function() {
         const tab = document.getElementsByClassName('alert')    
         if (tab.length) tab[0].remove()
     },3000)    
+
+    \$('label.required').append('<span class=\"stars_required\">*</span>')
+    
+    const project_title_server = \$('#project_title').val();
+    const project_reference_server = \$('#project_reference').val();
+
+    function verifyArchitect(architect1, architect2) {   
+        //console.log(architect1, architect2);
+        const error = 'L\\'architecte est déjà affecté à ce projet';
+        \$('.'+architect1).remove() // l'enlever l'erreur précédente
+        \$('.'+architect2).remove() // l'enlever l'erreur précédente
+        if (\$('#'+architect1).val() != '' && \$('#'+architect2).val() != '' && \$('#'+architect1).val() == \$('#'+architect2).val()) {                       
+            return error
+        }
+        return ''
+    }
+
+    \$('#project_architect').on('change', function() {            
+        const id = \$(this).attr('id');            
+        const error = verifyArchitect(id, 'project_secondArchitect');
+        if (error != '') {
+            \$('label[for=\"' + id + '\"]').append(div_error.replace('\$input\$', id).replace('\$error\$', error))
+        }
+    });
+    
+    \$('#project_secondArchitect').on('change', function() {
+        const id = \$(this).attr('id');            
+        const error = verifyArchitect('project_architect', id);
+        if (error != '') {
+            \$('label[for=\"' + id + '\"]').append(div_error.replace('\$input\$', id).replace('\$error\$', error))
+        }
+    });
+
+    \$('input').on('change', function(ev) {
+        let error, errors
+        let project_workStartDate
+        let project_workEndDate
+        
+        // initialisation, retirer l'erreur éventuelle sur la zone dont on modifie la valeur
+        \$('.'+\$(this).attr('id')).remove()    
+
+        // retirer l'erreur éventuelle rendue par le serveur (entity) lors d'un submit
+        const element_html = \$('label[for=\"' + \$(this).attr('id') + '\"]').next();        
+        if (element_html.hasClass('form-error')) element_html.remove();
+
+        // id et valeur
+        const id = \$(this).attr('id');
+        const val = \$(this).val();
+
+        // traitement
+        switch(id) {
+            case 'project_title' :
+                if (val.trim() == '') return // si champ vide, stop, ne pas aller jusqu'au serveur
+                if (\$('#project_title').val() == project_title_server) return;
+                validForm(id, 'title');       
+                break
+            case 'project_reference' : 
+                if (val.trim() == '') return // si champ vide, stop, ne pas aller jusqu'au serveur
+                if (\$('#project_reference_server').val() == project_reference_server) return;
+                validForm(id, 'reference');
+                break
+            case 'project_workStartDate' :                
+                error = validDate(val);
+                if (error != '') {
+                    \$('label[for=\"' + id + '\"]').append(div_error.replace('\$input\$', id).replace('\$error\$', error))
+                }                
+                break
+            case 'project_workEndDate' : 
+                error = validDate(\$(this).val());
+                if (error == '') error = validDates(\$('#project_workStartDate').val(), val);
+                if (error != '') {
+                    \$('label[for=\"' + id+ '\"]').append(div_error.replace('\$input\$',id).replace('\$error\$', error))
+                }                
+                break
+        }
+    })
+
+    function verifyError(errors, input, callback) {
+        if (errors.errors.violations) {
+            errors.errors.violations.forEach(function(obj) {
+                if (obj['propertyPath'] == input) {
+                    callback(obj['title']);
+                    return ;
+                } 
+            })        
+        }
+    }
+
+    function validForm(id, data) {        
+        let url = '{{path(\"project_valid_form\", {id:id})}}';        
+        \$.ajax({
+            url: url,
+            async: true,
+            data: \$('form').serialize(),    // jquery construit le body pour la requête post
+            type: 'POST',
+            dataType: 'json',
+            success: function (errors) { 
+                //console.log(errors)                   
+                verifyError(errors, data, function(error) {
+                    \$('label[for=\"' + id + '\"]').append(div_error.replace('\$input\$', id).replace('\$error\$', error))
+                });   
+                return
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur lors de la suppression')                    
+            }
+        })       
+    }
+
+    function validDate(date) {       
+        date = parseInt(date.replaceAll('-',''));
+        if (isNaN(date)) return 'La date n\\'est pas valide';
+        return '';
+    }
+    
+
+    function validDates(start, end) {        
+        start = parseInt(start.replaceAll('-',''));
+        end = parseInt(end.replaceAll('-',''));                        
+        if (end <= start) return 'La date de fin doit être postérieure à la date de début';
+        return '';
+    }
 
     function deleteProject() {
         if (confirm('Confirmer la suppression ?')) {                    
@@ -1333,17 +1614,45 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
     }
 
     \$('.select2').select2()
-
+    
     \$('form').on('submit', function() {
-        // valider cohérence des dates
-        const project_workStartDate = parseInt(\$('#project_workStartDate').val().replaceAll('-',''));
-        const project_workEndDate = parseInt(\$('#project_workEndDate').val().replaceAll('-',''));
-        //console.log(project_workStartDate, project_workEndDate);        
-        if (project_workEndDate <= project_workStartDate) {
-            \$('#project_workEndDate').focus();
-            alert('La date de fin doit être postérieure à la date de début');
+        let error;   
+
+        \$('.form-error ').remove();        
+
+        // valider date
+        error = validDate(\$('#project_workStartDate').val());
+        if (error != '') {
+            \$('#project_workStartDate').focus();            
+            \$('label[for=\"project_workStartDate\"]').append(div_error.replace('\$input\$', 'project_workStartDate').replace('\$error\$', error))
             return false;
         }
+       
+        // valider date
+        error = validDate(\$('#project_workEndDate').val());
+        if (error != '') {
+            \$('#project_workEndDate').focus();
+            \$('label[for=\"project_workEndDate\"]').append(div_error.replace('\$input\$', 'project_workEndDate').replace('\$error\$', error))
+            return false;
+        }
+       
+        // valider cohérence dates
+        error = validDates(\$('#project_workStartDate').val(), \$('#project_workEndDate').val());
+        if (error != '') {
+            \$('#project_workEndDate').focus();
+            \$('label[for=\"project_workEndDate\"]').append(div_error.replace('\$input\$', 'project_workEndDate').replace('\$error\$', error))
+            return false;
+        }
+       
+        // valider architectes
+        error = verifyArchitect('project_architect', 'project_secondArchitect');           
+        if (error != '') {
+        
+            \$('#project_secondArchitect').focus();
+            \$('label[for=\"project_secondArchitect\"]').append(div_error.replace('\$input\$', 'project_secondArchitect').replace('\$error\$', error))
+            return false;
+        }
+      
         return true;
     });
 
@@ -1395,6 +1704,6 @@ class __TwigTemplate_9a8fcb33e186bfcfa3e62bd563cc7e1b08fd2d93d852cf9133a01340f33
     */
 </script>
 {% endblock %}
-", "project/project_edit.html.twig", "C:\\Users\\utilisateur\\Videos\\APP_Gestion_Projet\\templates\\project\\project_edit.html.twig");
+", "project/project_edit.html.twig", "C:\\Users\\AbdO\\Documents\\GitHub\\APP_Gestion_Projet_TFE2021\\templates\\project\\project_edit.html.twig");
     }
 }

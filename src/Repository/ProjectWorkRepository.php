@@ -45,7 +45,7 @@ class ProjectWorkRepository extends ServiceEntityRepository
             ->orderBy('w.name', 'asc')
             ->getQuery()
             ->getResult();
-    }
+    }     
 
     // /**
     //  * @return ProjectWork[] Returns an array of ProjectWork objects

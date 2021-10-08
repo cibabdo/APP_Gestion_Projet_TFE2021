@@ -6,14 +6,17 @@ use App\Entity\Document;
 use App\Entity\ProjectWork;
 use App\Form\ProjectWorkType;
 use App\Repository\ProjectRepository;
+use Symfony\Component\Form\FormError;
 use App\Repository\ProjectWorkRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\ProjectAccessRepository;
+use App\Repository\ProjectCompanyRepository;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -66,12 +69,30 @@ class ProjectWorksController extends AbstractController
     }
 
     /**
+     * @Route("/project/{projectId}/work/{workId}/validForm", methods={"POST"}, name="work_valid_form")
+     */
+    public function validForm($projectId, Request $request, ValidatorInterface $validator,  ProjectRepository $projectRepository): Response
+    {        
+        $project = $projectRepository->find($projectId); 
+
+        $projectWork = new ProjectWork();     
+        $projectWork->setProject($project);      
+
+        $form = $this->createForm(ProjectWorkType::class, $projectWork);   
+        $form->handleRequest($request);        
+        $errors = $validator->validate($projectWork);        
+        return $this->json(['errors' => $errors]);
+    }
+
+    /**
      * @Route("/project/{projectId}/work/new", name="project_works_new")
      */
-    public function add($projectId, Request $request, ProjectRepository $projectRepository, ManagerRegistry $managerRegistry, SluggerInterface $slugger): Response
+    public function add($projectId, Request $request, ProjectCompanyRepository $projectCompanyRepository, ProjectRepository $projectRepository, ManagerRegistry $managerRegistry, SluggerInterface $slugger): Response
     {
         // Contrôle d'accès à vérifier        
         if ($this->isGranted('ROLE_EXTERNAL')) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
+
+        //dd($projectCompanyRepository->findCompanyByProject($projectId));
 
         $project = $projectRepository->find($projectId);         
 
@@ -81,6 +102,21 @@ class ProjectWorksController extends AbstractController
 
         // form submit
         $form->handleRequest($request);        
+
+        // vérifier cohérence dates avec les dates de début et fin du projet
+        if ($form->isSubmitted()) {            
+            if ($work->getProvisionalReceptionDate() != null && $work->getProvisionalReceptionDate() < $project->getWorkStartDate()) {                
+                $form->get('provisionalReceptionDate')->addError(new FormError('La date provisoire doit être postérieure ou égale à la date de début du projet'));   
+            }
+            if ($work->getFinalDeliveryDate() != null && $work->getFinalDeliveryDate() < $project->getWorkEndDate()) {                
+                $form->get('finalDeliveryDate')->addError(new FormError('La date définitive doit être postérieure ou égale à la date de fin du projet'));   
+            }
+            if ($work->getVincotteReceptionDate() != null && $work->getVincotteReceptionDate() < $project->getWorkEndDate()) {                
+                $form->get('vincotteReceptionDate')->addError(new FormError('La date réception vincotte doit être postérieure ou égale à la date de fin du projet'));   
+            }
+        }
+
+        // form submit      
         if ($form->isSubmitted() && $form->isValid()) {                        
             // envoi de documents attachés aux travaux
             $documents = $form->get('documents')->getData();
@@ -145,6 +181,21 @@ class ProjectWorksController extends AbstractController
 
         // form submit
         $form->handleRequest($request);
+
+        // vérifier cohérence dates avec les dates de début et fin du projet
+        if ($form->isSubmitted()) {            
+            if ($work->getProvisionalReceptionDate() != null && $work->getProvisionalReceptionDate() < $project->getWorkStartDate()) {                
+                $form->get('provisionalReceptionDate')->addError(new FormError('La date provisoire doit être postérieure ou égale à la date de début du projet'));   
+            }
+            if ($work->getFinalDeliveryDate() != null && $work->getFinalDeliveryDate() < $project->getWorkEndDate()) {                
+                $form->get('finalDeliveryDate')->addError(new FormError('La date définitive doit être postérieure ou égale à la date de fin du projet'));   
+            }
+            if ($work->getVincotteReceptionDate() != null && $work->getVincotteReceptionDate() < $project->getWorkEndDate()) {                
+                $form->get('vincotteReceptionDate')->addError(new FormError('La date réception vincotte doit être postérieure ou égale à la date de fin du projet'));   
+            }
+        }
+
+        // form submit      
         if ($form->isSubmitted() && $form->isValid()) {   
             // Contrôle d'accès à vérifier        
             if ($this->isGranted('ROLE_EXTERNAL')) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  

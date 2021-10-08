@@ -61,9 +61,12 @@ class __TwigTemplate_2af4d53a6283db3193dc28b6a66a041ac5b5037eb2cd2a3ad8a08eea410
             echo "';\">
                     <td style=\"text-align: center;\">";
             // line 12
-            echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["comment"], "date", [], "any", false, false, false, 12), "d/m/Y"), "html", null, true);
+            echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["comment"], "date", [], "any", false, false, false, 12), "d/m/Y H:i:s"), "html", null, true);
             echo "</td>                    
-                    <td style=\"text-align: center;\">Luigi</td>
+                    <td style=\"text-align: center;\">";
+            // line 13
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, $context["comment"], "user", [], "any", false, false, false, 13), "username", [], "any", false, false, false, 13), "html", null, true);
+            echo "</td>
                     <td style=\"text-align: center;\">";
             // line 14
             echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["comment"], "comment", [], "any", false, false, false, 14), "html", null, true);
@@ -97,7 +100,7 @@ class __TwigTemplate_2af4d53a6283db3193dc28b6a66a041ac5b5037eb2cd2a3ad8a08eea410
 
     public function getDebugInfo()
     {
-        return array (  78 => 17,  69 => 14,  64 => 12,  60 => 11,  54 => 10,  43 => 1,);
+        return array (  81 => 17,  72 => 14,  68 => 13,  64 => 12,  60 => 11,  54 => 10,  43 => 1,);
     }
 
     public function getSourceContext()
@@ -113,12 +116,12 @@ class __TwigTemplate_2af4d53a6283db3193dc28b6a66a041ac5b5037eb2cd2a3ad8a08eea410
         <tbody>                       
             {% for comment in comments %}             
                 <tr class=\"choice\" onclick=\"document.location.href='{{path(\"project_comment_edit\",{id:comment.project.Id, commentId:comment.id})}}';\">
-                    <td style=\"text-align: center;\">{{comment.date|date(\"d/m/Y\")}}</td>                    
-                    <td style=\"text-align: center;\">Luigi</td>
+                    <td style=\"text-align: center;\">{{comment.date|date(\"d/m/Y H:i:s\")}}</td>                    
+                    <td style=\"text-align: center;\">{{comment.user.username}}</td>
                     <td style=\"text-align: center;\">{{comment.comment}}</td>                    
                 </tr>
             {% endfor %}
         </tbody>        
-    </table>   ", "project_comments/project_comments_list.html.twig", "C:\\xampp803\\htdocs\\symfony\\templates\\project_comments\\project_comments_list.html.twig");
+    </table>   ", "project_comments/project_comments_list.html.twig", "C:\\Users\\AbdO\\Documents\\GitHub\\APP_Gestion_Projet_TFE2021\\templates\\project_comments\\project_comments_list.html.twig");
     }
 }

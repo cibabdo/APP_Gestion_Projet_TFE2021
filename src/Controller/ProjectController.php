@@ -3,16 +3,15 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Form\ProjectType;
-use App\Entity\PersonContact;
 use App\Entity\ProjectPerson;
-use App\Repository\DocumentRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\DocumentRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Repository\PersonContactRepository;
 use App\Repository\ProjectAccessRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -81,6 +80,18 @@ class ProjectController extends AbstractController {
         return $this->render('project/project_list.html.twig', [
             'projects' => $projects
         ]);
+    }
+
+    /**
+     * @Route("/project/{id}/validForm", methods={"POST"}, name="project_valid_form")
+     */
+    public function validForm($id, Request $request, ValidatorInterface $validator): Response
+    {        
+        $project = new Project();         
+        $form = $this->createForm(ProjectType::class, $project);   
+        $form->handleRequest($request);        
+        $errors = $validator->validate($project);        
+        return $this->json(['errors' => $errors]);
     }
 
     /**
@@ -407,7 +418,7 @@ class ProjectController extends AbstractController {
         if (isset($person)) return $person->getPersonEngineering();
         return null;
     }
-
+   
     /**
      * @Route("/project/{id}", methods={"DELETE"}, name="project_delete")
      */
@@ -430,14 +441,4 @@ class ProjectController extends AbstractController {
         // response
         return $this->json(['status' => 'success']);       
     }
-
-    /*
-    private function getChoices($rows) {
-        $tab = array();
-        foreach ($rows as $row) {   
-            $tab[$row['firstname']] = $row['id'];            
-        };  
-        return $tab;
-    }
-    */
 }

@@ -67,19 +67,25 @@ class __TwigTemplate_a4d44501fa90aa0040ba89676e906bfca89018b27d7ab123e42467735a8
         echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_works_search", ["projectId" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 9, $this->source); })())]), "html", null, true);
         echo "\" data-target=\"#projects\" placeholder=\"Nom du poste\">        
         </div>   
-        &nbsp;<a href=\"";
+        ";
         // line 11
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_works_new", ["projectId" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 11, $this->source); })())]), "html", null, true);
-        echo "\" class=\"btn btn-primary btn-sm ml-5 add\">Ajouter</a>
-    </div>
+        if (($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_EXTERNAL") == false)) {
+            // line 12
+            echo "            &nbsp;<a href=\"";
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_works_new", ["projectId" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 12, $this->source); })())]), "html", null, true);
+            echo "\" class=\"btn btn-primary btn-sm ml-5 add\">Ajouter</a>
+        ";
+        }
+        // line 14
+        echo "    </div>
 </div>
 <div class=\"row\">
     <div class=\"col\">
         <div id=\"projects\" class=\"d-flex flex-row  justify-content-center\" style=\"flex-wrap: wrap;\">
             ";
-        // line 17
-        $this->loadTemplate("project_works/project_works_list.html.twig", "project_works/project_works.html.twig", 17)->display($context);
-        // line 18
+        // line 19
+        $this->loadTemplate("project_works/project_works_list.html.twig", "project_works/project_works.html.twig", 19)->display($context);
+        // line 20
         echo "        </div> 
     </div>
 </div>
@@ -122,7 +128,7 @@ class __TwigTemplate_a4d44501fa90aa0040ba89676e906bfca89018b27d7ab123e42467735a8
 
     public function getDebugInfo()
     {
-        return array (  83 => 18,  81 => 17,  72 => 11,  67 => 9,  63 => 7,  54 => 5,  51 => 4,  47 => 3,  43 => 1,);
+        return array (  89 => 20,  87 => 19,  80 => 14,  74 => 12,  72 => 11,  67 => 9,  63 => 7,  54 => 5,  51 => 4,  47 => 3,  43 => 1,);
     }
 
     public function getSourceContext()
@@ -137,7 +143,9 @@ class __TwigTemplate_a4d44501fa90aa0040ba89676e906bfca89018b27d7ab123e42467735a8
         <div class=\"form-group inline\">
             <input type=\"text\" class=\"form-control\" id=\"search\" value=\"\" data-url=\"{{path('project_works_search', {projectId:projectId})}}\" data-target=\"#projects\" placeholder=\"Nom du poste\">        
         </div>   
-        &nbsp;<a href=\"{{path('project_works_new', {projectId:projectId})}}\" class=\"btn btn-primary btn-sm ml-5 add\">Ajouter</a>
+        {% if is_granted('ROLE_EXTERNAL') == false %}
+            &nbsp;<a href=\"{{path('project_works_new', {projectId:projectId})}}\" class=\"btn btn-primary btn-sm ml-5 add\">Ajouter</a>
+        {% endif %}
     </div>
 </div>
 <div class=\"row\">
@@ -165,6 +173,6 @@ class __TwigTemplate_a4d44501fa90aa0040ba89676e906bfca89018b27d7ab123e42467735a8
             })
         }, 250)
     })    
-</script>", "project_works/project_works.html.twig", "C:\\xampp803\\htdocs\\symfony\\templates\\project_works\\project_works.html.twig");
+</script>", "project_works/project_works.html.twig", "C:\\Users\\AbdO\\Documents\\GitHub\\APP_Gestion_Projet_TFE2021\\templates\\project_works\\project_works.html.twig");
     }
 }

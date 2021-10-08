@@ -77,26 +77,32 @@ class __TwigTemplate_8e9782f986d378e36ccb0d7a9fd4eb0e19696024059d1cf55c544dd3d76
                 echo "                        <a href=\"";
                 echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("document_view", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 13, $this->source); })()), "documentId" => twig_get_attribute($this->env, $this->source, $context["document"], "id", [], "any", false, false, false, 13)]), "html", null, true);
                 echo "\" class=\"btn btn-primary btn-sm view\">Voir</a>
-                        <a href=\"";
+                        ";
                 // line 14
-                echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("document_delete", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 14, $this->source); })()), "documentId" => twig_get_attribute($this->env, $this->source, $context["document"], "id", [], "any", false, false, false, 14)]), "html", null, true);
-                echo "\" class=\"btn btn-danger btn-sm delete\">Supprimer</a>
-                    </div>
+                if (($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_EXTERNAL") == false)) {
+                    // line 15
+                    echo "                            <a href=\"";
+                    echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("document_delete", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 15, $this->source); })()), "documentId" => twig_get_attribute($this->env, $this->source, $context["document"], "id", [], "any", false, false, false, 15)]), "html", null, true);
+                    echo "\" class=\"btn btn-danger btn-sm delete\">Supprimer</a>
+                        ";
+                }
+                // line 17
+                echo "                    </div>
                 </div>
             ";
             }
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_iterated'], $context['_key'], $context['document'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 17
+            // line 19
             echo "    
         ";
         } else {
-            // line 19
+            // line 21
             echo "            Pas de documents
         ";
         }
-        // line 21
+        // line 23
         echo "   
 </div>
 <script>   
@@ -147,7 +153,7 @@ class __TwigTemplate_8e9782f986d378e36ccb0d7a9fd4eb0e19696024059d1cf55c544dd3d76
 
     public function getDebugInfo()
     {
-        return array (  100 => 21,  96 => 19,  92 => 17,  82 => 14,  77 => 13,  69 => 11,  67 => 10,  63 => 9,  59 => 8,  49 => 4,  47 => 3,  43 => 1,);
+        return array (  106 => 23,  102 => 21,  98 => 19,  90 => 17,  84 => 15,  82 => 14,  77 => 13,  69 => 11,  67 => 10,  63 => 9,  59 => 8,  49 => 4,  47 => 3,  43 => 1,);
     }
 
     public function getSourceContext()
@@ -165,7 +171,9 @@ class __TwigTemplate_8e9782f986d378e36ccb0d7a9fd4eb0e19696024059d1cf55c544dd3d76
                             <p class=\"card-text\">{{document.projectWork.company.name}} - {{document.projectWork.work.name}}</p>
                         {% endif %}
                         <a href=\"{{path('document_view',{id:projectId, documentId:document.id})}}\" class=\"btn btn-primary btn-sm view\">Voir</a>
-                        <a href=\"{{path('document_delete',{id:projectId, documentId:document.id})}}\" class=\"btn btn-danger btn-sm delete\">Supprimer</a>
+                        {% if (is_granted('ROLE_EXTERNAL') == false) %}
+                            <a href=\"{{path('document_delete',{id:projectId, documentId:document.id})}}\" class=\"btn btn-danger btn-sm delete\">Supprimer</a>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}    
@@ -201,6 +209,6 @@ class __TwigTemplate_8e9782f986d378e36ccb0d7a9fd4eb0e19696024059d1cf55c544dd3d76
         }  
         return false;
     })
-</script>", "document/document_list.html.twig", "C:\\xampp803\\htdocs\\symfony\\templates\\document\\document_list.html.twig");
+</script>", "document/document_list.html.twig", "C:\\Users\\AbdO\\Documents\\GitHub\\APP_Gestion_Projet_TFE2021\\templates\\document\\document_list.html.twig");
     }
 }

@@ -116,7 +116,130 @@
     </div>    
 </div>
 <script>
-    document.getElementById("project_work_comment").focus()    
+    document.getElementById("project_work_comment").focus()  
+    
+    $('label.required').append('<span class="stars_required">*</span>')
+
+    const div_error = '<div class="form-error form-error-small text-danger inline $input$"><span class="span_error bg-danger text-white">ERREUR</span>&nbsp;$error$</div>';
+
+    const project_work_company_server = $('#project_work_company').val();
+    const project_work_work_server = $('#project_work_work').val();
+
+    $('input, select').on('change', function(ev) {
+        let error, errors
+
+        // id et valeur
+        const id = $(this).attr('id');
+        const val = $(this).val();
+
+        /*
+        console.log('id', id);
+        console.log('val', val);        
+        */
+    
+        // initialisation, retirer l'erreur éventuelle sur la zone dont on modifie la valeur
+        $('.'+id).remove()    
+
+        // retirer l'erreur éventuelle rendue par le serveur (entity) lors d'un submit
+        let element_html = $('label[for="' + id + '"]').next();        
+        if (element_html.hasClass('form-error')) element_html.remove(); 
+
+        if (id == 'project_work_company') {            
+            $('.project_work_work').remove();
+            element_html = $('label[for="project_work_work"]').next();        
+            if (element_html.hasClass('form-error')) element_html.remove(); 
+        }
+
+        // traitement
+        switch(id) {
+            case 'project_work_company' :
+                if (val.trim() == '') return // si champ vide, stop, ne pas aller jusqu'au serveur
+                if ($(this).val() == project_work_company_server) return;
+                validForm('project_work_work', 'work');       
+                break
+            case 'project_work_work' :
+                if (val.trim() == '') return // si champ vide, stop, ne pas aller jusqu'au serveur
+                if ($(this).val() == project_work_work_server) return;
+                validForm(id, 'work');
+                break
+                case 'project_work_provisionalReceptionDate' : 
+                if (val.trim() == '') return // si champ vide, stop, ne pas aller jusqu'au serveur
+                error = validDate(val);
+                if (error == '') error = validDates1(val, $('#project_work_finalDeliveryDate').val());
+                if (error != '') {
+                    $('label[for="' + id+ '"]').append(div_error.replace('$input$',id).replace('$error$', error))
+                }                
+                break
+            case 'project_work_finalDeliveryDate' : 
+                if (val.trim() == '') return // si champ vide, stop, ne pas aller jusqu'au serveur
+                error = validDate(val);
+                if (error == '') error = validDates1($('#project_work_provisionalReceptionDate').val(), val);
+                if (error != '') {
+                    $('label[for="' + id+ '"]').append(div_error.replace('$input$',id).replace('$error$', error))
+                }                
+                break
+            case 'project_work_vincotteReceptionDate' : 
+                if (val.trim() == '') return // si champ vide, stop, ne pas aller jusqu'au serveur
+                error = validDate(val);
+                if (error == '') error = validDates2($('#project_work_finalDeliveryDate').val(), val);
+                if (error != '') {
+                    $('label[for="' + id+ '"]').append(div_error.replace('$input$',id).replace('$error$', error))
+                }            
+        }
+    });
+
+    function verifyError(errors, input, callback) {
+        if (errors.errors.violations) {
+            errors.errors.violations.forEach(function(obj) {
+                if (obj['propertyPath'] == input) {
+                    callback(obj['title']);
+                    return ;
+                } 
+            })        
+        }
+    }
+
+    function validForm(id, data) {        
+        let url = '{{path("work_valid_form", {projectId:projectId, workId:workId})}}';        
+        $.ajax({
+            url: url,
+            async: true,
+            data: $('form').serialize(),    // jquery construit le body pour la requête post
+            type: 'POST',
+            dataType: 'json',
+            success: function (errors) { 
+                //console.log(errors)                   
+                verifyError(errors, data, function(error) {
+                    $('label[for="' + id + '"]').append(div_error.replace('$input$', id).replace('$error$', error))
+                });   
+                return
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur lors de la suppression')                    
+            }
+        })       
+    }
+
+    function validDate(date) {       
+        date = parseInt(date.replaceAll('-',''));
+        if (isNaN(date)) return 'La date n\'est pas valide';
+        return '';
+    }
+
+    function validDates1(date1, date2) {        
+        date1 = parseInt(date1.replaceAll('-',''));
+        date2 = parseInt(date2.replaceAll('-',''));                        
+        if (date2 <= date1) return 'La date doit être postérieure à la date provisoire';
+        return '';
+    }
+
+    function validDates2(date1, date2) {        
+        date1 = parseInt(date1.replaceAll('-',''));
+        date2 = parseInt(date2.replaceAll('-',''));                        
+        if (date2 <= date1) return 'La date doit être postérieure à la date définitive';
+        return '';
+    }
 
     function deleteProject() {
         if (confirm('Confirmer la suppression ?')) {                    
@@ -148,8 +271,7 @@
                 url: url,
                 type: 'DELETE',
                 dataType: 'text',
-                success: function (result) {         
-                    console.log('ici', $(this).parent().parent());
+                success: function (result) {                           
                     $obj.parent().parent().remove();
                 },
                 error: function(jqXHR, textStatus, errorThrown ) {
@@ -162,37 +284,61 @@
     })
 
     $('form').on('submit', function() {
-        // valider cohérence des dates       
-        let project_work_provisionalReceptionDate = $('#project_work_provisionalReceptionDate').val().replaceAll('-','');
-        if (project_work_provisionalReceptionDate != '') 
-            project_work_provisionalReceptionDate = parseInt(project_work_provisionalReceptionDate);
-        else 
-            project_work_provisionalReceptionDate = 0;
+        
+        let error;   
 
-        let project_work_finalDeliveryDate = $('#project_work_finalDeliveryDate').val().replaceAll('-','');
-        if (project_work_finalDeliveryDate != '') 
-            project_work_finalDeliveryDate = parseInt(project_work_finalDeliveryDate);
-        else 
-            project_work_finalDeliveryDate = 0;
+        $('.form-error ').remove();        
 
-        let project_work_vincotteReceptionDate = $('#project_work_vincotteReceptionDate').val().replaceAll('-','');
-        if (project_work_vincotteReceptionDate != '') 
-            project_work_vincotteReceptionDate = parseInt(project_work_vincotteReceptionDate);
-        else 
-            project_work_vincotteReceptionDate = 0;
-
-        //console.log(project_work_provisionalReceptionDate, project_work_finalDeliveryDate, project_work_vincotteReceptionDate);        
-
-        if (project_work_finalDeliveryDate != 0 && project_work_finalDeliveryDate <= project_work_provisionalReceptionDate) {
-            $('#project_work_finalDeliveryDate').focus();
-            alert('La date doit être postérieure à la date provisoire');
-            return false;
+        // valider date
+        if ($('#project_work_provisionalReceptionDate').val() != '') {
+            error = validDate($('#project_work_provisionalReceptionDate').val());
+            if (error != '') {
+                $('#project_work_provisionalReceptionDate').focus();            
+                $('label[for="project_work_provisionalReceptionDate"]').append(div_error.replace('$input$', 'project_work_provisionalReceptionDate').replace('$error$', error))
+                return false;
+            }
         }
-        if (project_work_vincotteReceptionDate != 0 && project_work_vincotteReceptionDate <= project_work_finalDeliveryDate) {
-            $('#project_work_vincotteReceptionDate').focus();
-            alert('La date doit être postérieure à la date définitive');
-            return false;
+       
+        // valider date
+        if ($('#project_work_finalDeliveryDate').val() != '') {
+            error = validDate($('#project_work_finalDeliveryDate').val());
+            if (error != '') {
+                $('#project_work_finalDeliveryDate').focus();
+                $('label[for="project_work_finalDeliveryDate"]').append(div_error.replace('$input$', 'project_work_finalDeliveryDate').replace('$error$', error))
+                return false;
+            }   
         }
+
+         // valider date
+        if ($('#project_work_vincotteReceptionDate').val() != '') {
+            error = validDate($('#project_work_vincotteReceptionDate').val());
+            if (error != '') {
+                $('#project_work_vincotteReceptionDate').focus();
+                $('label[for="project_work_vincotteReceptionDate"]').append(div_error.replace('$input$', 'project_work_vincotteReceptionDate').replace('$error$', error))
+                return false;
+            }
+        }
+       
+        // valider cohérence dates
+        if ($('#project_work_provisionalReceptionDate').val() != '' && $('#project_work_finalDeliveryDate').val() != '') {
+            error = validDates1($('#project_work_provisionalReceptionDate').val(), $('#project_work_finalDeliveryDate').val());
+            if (error != '') {
+                $('#project_work_finalDeliveryDate').focus();
+                $('label[for="project_work_finalDeliveryDate"]').append(div_error.replace('$input$', 'project_work_finalDeliveryDate').replace('$error$', error))
+                return false;
+            }
+        }
+
+        // valider cohérence dates
+        if ($('#project_work_finalDeliveryDate').val() != '' && $('#project_work_vincotteReceptionDate').val() != '') {
+            error = validDates2($('#project_work_finalDeliveryDate').val(), $('#project_work_vincotteReceptionDate').val());
+            if (error != '') {
+                $('#project_work_vincotteReceptionDate').focus();
+                $('label[for="project_work_vincotteReceptionDate"]').append(div_error.replace('$input$', 'project_work_vincotteReceptionDate').replace('$error$', error))
+                return false;
+            }
+        }
+        
         return true;
     });
 </script>

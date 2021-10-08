@@ -20,18 +20,22 @@ class ProjectWorkType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //$work = $builder->getData();
+        $work = $builder->getData();
+
         $builder
             ->add('comment', TextareaType::class)
             ->add('provisionalReceptionDate', DateType::class, ['widget' => 'single_text', 'required' => false])
             ->add('finalDeliveryDate', DateType::class, ['widget' => 'single_text', 'required' => false])
             ->add('vincotteReceptionDate', DateType::class, ['widget' => 'single_text', 'required' => false])
             ->add('company', EntityType::class, [       
-                /*        
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('c')
-                        ->where('c.project_id = ' . $work->getProjectId());
-                },                  
+                /*                             
+                'query_builder' => function (EntityRepository $er) use ( $work ) {
+                    return $er->createQueryBuilder('w')                        
+                        ->from('App\Entity\Company', 'c')
+                        ->innerJoin('App\Entity\ProjectCompany', 'pc', 'WITH', 'pc.company = c.id')
+                        ->where('pc.project = :id')
+                        ->setParameter('id', $work->getProject()->getId());
+                },                                
                 */
                 'class' => Company::class,
                 'choice_label' => "name"              

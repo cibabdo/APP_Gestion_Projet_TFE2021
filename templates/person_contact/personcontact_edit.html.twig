@@ -40,16 +40,6 @@
             </div>  
 
             <div class="mb-3">
-                {{ form_label(form.role, 'Fonction', {'label_attr': { class: 'form-label' }}) }}
-                {% if form_errors(form.role) %}
-                    <div class="form-error text-danger">
-                        <span class="span_error bg-danger text-white">ERREUR</span>&nbsp;{{ form_errors(form.role) }}
-                    </div>
-                {% endif %}
-                {{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}       
-            </div>  
-
-            <div class="mb-3">
                 {{ form_label(form.company, 'Entreprise', {'label_attr': { class: 'form-label' }}) }}
                 {% if form_errors(form.company) %}            
                     <div class="form-error text-danger">

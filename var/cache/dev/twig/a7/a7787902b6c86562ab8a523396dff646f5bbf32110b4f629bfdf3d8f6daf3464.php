@@ -149,7 +149,7 @@ class __TwigTemplate_010ce8e8f8166f3c86fcd8138ecc6051817b98a816e1f731d3d5daeabaf
                 <button type=\"submit\" class=\"btn btn-primary\">Ok</button>     
                 ";
         // line 36
-        if (twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 36, $this->source); })()), "vars", [], "any", false, false, false, 36), "value", [], "any", false, false, false, 36), "id", [], "any", false, false, false, 36)) {
+        if ((twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 36, $this->source); })()), "vars", [], "any", false, false, false, 36), "value", [], "any", false, false, false, 36), "id", [], "any", false, false, false, 36) && ($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_EXTERNAL") == false))) {
             echo "           
                     <a href=\"#\" class=\"btn btn-danger ml-3\" onClick=\"deleteProject()\">Supprimer</a>                    
                 ";
@@ -182,7 +182,7 @@ class __TwigTemplate_010ce8e8f8166f3c86fcd8138ecc6051817b98a816e1f731d3d5daeabaf
                     document.location.href = '";
         // line 55
         echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("project_edit", ["id" => (isset($context["projectId"]) || array_key_exists("projectId", $context) ? $context["projectId"] : (function () { throw new RuntimeError('Variable "projectId" does not exist.', 55, $this->source); })()), "onglet" => "comment"]), "html", null, true);
-        echo "?message=Commentaire supprimé'
+        echo "&message=Commentaire supprimé'
                 },
                 error: function(jqXHR, textStatus, errorThrown ) {
                     console.log(jqXHR, textStatus, errorThrown)
@@ -253,7 +253,7 @@ class __TwigTemplate_010ce8e8f8166f3c86fcd8138ecc6051817b98a816e1f731d3d5daeabaf
 
             <div class=\"my-2\">
                 <button type=\"submit\" class=\"btn btn-primary\">Ok</button>     
-                {% if form.vars.value.id %}           
+                {% if (form.vars.value.id and is_granted('ROLE_EXTERNAL') == false) %}           
                     <a href=\"#\" class=\"btn btn-danger ml-3\" onClick=\"deleteProject()\">Supprimer</a>                    
                 {% endif %}
                 <a href=\"{{path('project_edit',{id:projectId, onglet:'comment'})}}\" class=\"btn btn-secondary ml-3\">Retour</a>
@@ -272,7 +272,7 @@ class __TwigTemplate_010ce8e8f8166f3c86fcd8138ecc6051817b98a816e1f731d3d5daeabaf
                 type: 'DELETE',
                 dataType: 'text',
                 success: function (result) {                    
-                    document.location.href = '{{path(\"project_edit\",{id:projectId, onglet:\"comment\"})}}?message=Commentaire supprimé'
+                    document.location.href = '{{path(\"project_edit\",{id:projectId, onglet:\"comment\"})}}&message=Commentaire supprimé'
                 },
                 error: function(jqXHR, textStatus, errorThrown ) {
                     console.log(jqXHR, textStatus, errorThrown)
@@ -283,6 +283,6 @@ class __TwigTemplate_010ce8e8f8166f3c86fcd8138ecc6051817b98a816e1f731d3d5daeabaf
     }
 </script>
 {% endblock %}
-", "project_comments/project_comments_edit.html.twig", "C:\\xampp803\\htdocs\\symfony\\templates\\project_comments\\project_comments_edit.html.twig");
+", "project_comments/project_comments_edit.html.twig", "C:\\Users\\AbdO\\Documents\\GitHub\\APP_Gestion_Projet_TFE2021\\templates\\project_comments\\project_comments_edit.html.twig");
     }
 }

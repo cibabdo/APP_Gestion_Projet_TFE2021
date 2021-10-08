@@ -94,29 +94,143 @@
 <script>
     const id = '{{id}}';
 
-    $('form').on('submit', function() {
-        // valider cohérence des dates
-        const planning_startDate = parseInt($('#planning_startDate').val().replaceAll('-',''));
-        const planning_endDate = parseInt($('#planning_endDate').val().replaceAll('-',''));
-        //console.log(planning_startDate, planning_endDate);        
-        if (planning_endDate <= planning_startDate) {
-            $('#planning_endDate').focus();
-            alert('La date de fin doit être postérieure à la date de début');
-            return false;
-        }        
+    document.getElementById("planning_name").focus()
 
-        if (id != '0' && $('#planning_comment').val().trim() == '') {
-            $('#planning_comment').focus();
-            alert('Veuillez encoder un commentaire');
+    $('label.required').append('<span class="stars_required">*</span>')
+
+    const div_error = '<div class="form-error form-error-small text-danger inline $input$"><span class="span_error bg-danger text-white">ERREUR</span>&nbsp;$error$</div>';
+
+    $('form').on('submit', function() {
+        let error;   
+
+        $('.form-error').remove();        
+
+        // valider date
+        error = validDate($('#planning_startDate').val());
+        if (error != '') {
+            $('#planning_startDate').focus();            
+            $('label[for="planning_startDate"]').append(div_error.replace('$input$', 'planning_startDate').replace('$error$', error))
             return false;
         }
+       
+        // valider date
+        error = validDate($('#planning_endDate').val());
+        if (error != '') {
+            $('#planning_endDate').focus();
+            $('label[for="planning_endDate"]').append(div_error.replace('$input$', 'planning_endDate').replace('$error$', error))
+            return false;
+        }
+       
+        // valider cohérence dates
+        error = validDates($('#planning_startDate').val(), $('#planning_endDate').val());
+        if (error != '') {
+            $('#planning_endDate').focus();
+            $('label[for="planning_endDate"]').append(div_error.replace('$input$', 'planning_endDate').replace('$error$', error))
+            return false;
+        }
+        
+        // commentaire
+        /*
+        if (id != '0' && $('#planning_comment').val().trim() == '') {
+            $('#planning_comment').focus();
+            $('label[for="planning_endDate"]').append(div_error.replace('$input$', 'planning_comment').replace('$error$', 'Veuillez encoder un commentaire'))            
+            return false;
+        }
+        */
 
         return true;
     });
 
-    document.getElementById("planning_name").focus()  
-        
-        $('#planning_percentDone').on('input', function () {
+    $('input').on('change', function(ev) {
+        let error, errors
+
+        // id et valeur
+        const id = $(this).attr('id');
+        const val = $(this).val();
+
+        /*
+        console.log('id', id);
+        console.log('val', val);  
+        */      
+    
+        // initialisation, retirer l'erreur éventuelle sur la zone dont on modifie la valeur
+        $('.'+id).remove()    
+
+        // retirer l'erreur éventuelle rendue par le serveur (entity) lors d'un submit
+        let element_html = $('label[for="' + id + '"]').next();        
+        if (element_html.hasClass('form-error')) element_html.remove(); 
+
+        if (id == 'project_work_company') {            
+            $('.project_work_work').remove();
+            element_html = $('label[for="project_work_work"]').next();        
+            if (element_html.hasClass('form-error')) element_html.remove(); 
+        }
+
+        // traitement
+        switch(id) {           
+            case 'planning_startDate' :                 
+                error = validDate(val);
+                if (error == '') error = validDates(val, $('#planning_endDate').val());
+                if (error != '') {
+                    $('label[for="' + id+ '"]').append(div_error.replace('$input$',id).replace('$error$', error))
+                }                
+                break
+            case 'planning_endDate' :                
+                error = validDate(val);
+                if (error == '') error = validDates($('#planning_startDate').val(), val);
+                if (error != '') {
+                    $('label[for="' + id+ '"]').append(div_error.replace('$input$',id).replace('$error$', error))
+                }            
+        }
+    });
+
+    function verifyError(errors, input, callback) {
+        if (errors.errors.violations) {
+            errors.errors.violations.forEach(function(obj) {
+                if (obj['propertyPath'] == input) {
+                    callback(obj['title']);
+                    return ;
+                } 
+            })        
+        }
+    }
+
+    function validForm(id, data) {        
+        let url = '{{path("planning_valid_form", {projectId:projectId, taskId:id})}}';        
+        $.ajax({
+            url: url,
+            async: true,
+            data: $('form').serialize(),    // jquery construit le body pour la requête post
+            type: 'POST',
+            dataType: 'json',
+            success: function (errors) { 
+                //console.log(errors)                   
+                verifyError(errors, data, function(error) {
+                    $('label[for="' + id + '"]').append(div_error.replace('$input$', id).replace('$error$', error))
+                });   
+                return
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                console.log(jqXHR, textStatus, errorThrown)
+                alert('Erreur lors de la suppression')                    
+            }
+        })       
+    }
+
+    function validDate(date) {       
+        date = parseInt(date.replaceAll('-',''));
+        if (isNaN(date)) return 'La date n\'est pas valide';
+        return '';
+    }
+
+    function validDates(start, end) {        
+        start = parseInt(start.replaceAll('-',''));
+        end = parseInt(end.replaceAll('-',''));                        
+        if (end <= start) return 'La date de fin doit être postérieure à la date de début';
+        return '';
+    }
+    
+    $('#planning_percentDone').on('input', function () {
         const val = $(this).val()
         $('#val').html(val + ' %')
     })

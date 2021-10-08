@@ -142,6 +142,6 @@ class __TwigTemplate_6e9980ec464aec04b66e1546a2071bd1750bd598574fd5fb14f28cdc671
                 </tr>
             {% endfor %}
         </tbody>        
-    </table>   ", "project_works/project_works_list.html.twig", "C:\\xampp803\\htdocs\\symfony\\templates\\project_works\\project_works_list.html.twig");
+    </table>   ", "project_works/project_works_list.html.twig", "C:\\Users\\AbdO\\Documents\\GitHub\\APP_Gestion_Projet_TFE2021\\templates\\project_works\\project_works_list.html.twig");
     }
 }

@@ -18,7 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @UniqueEntity(
  *  fields={"reference"},
- *  message="Ce référence est déjà renseignée"
+ *  message="Cette référence est déjà renseignée"
  * )
  */
 class Project
@@ -249,7 +249,7 @@ class Project
         $this->company = new \Doctrine\Common\Collections\ArrayCollection();
         $this->engineeringOffice = new \Doctrine\Common\Collections\ArrayCollection();        
     }
-
+    
     public function getId(): ?int
     {
         return $this->id;

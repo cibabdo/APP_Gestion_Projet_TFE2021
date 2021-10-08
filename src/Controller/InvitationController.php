@@ -47,7 +47,7 @@ class InvitationController extends AbstractController
 
         // sécurité mail en dev
         $env = strtolower($kernel->getEnvironment());        
-        //if ($env == 'dev') $person->setEmail('donato.abiuso@gmail.com');
+        if ($env == 'dev') $person->setEmail('donato.abiuso@gmail.com');
 
         // récupération id projet
         $project = $projectRepository->find($id);

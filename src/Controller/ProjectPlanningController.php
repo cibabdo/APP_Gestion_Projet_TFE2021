@@ -16,6 +16,7 @@ use App\Repository\PlanningCommentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -75,6 +76,18 @@ class ProjectPlanningController extends AbstractController
         return $this->render('planning/planning_list.html.twig', [
             'plannings' => $plannings
         ]);
+    }
+
+    /**
+     * @Route("/project/{projectId}/planning/{taskId}/validForm", methods={"POST"}, name="planning_valid_form")
+     */
+    public function validForm(Request $request, ValidatorInterface $validator): Response
+    {        
+        $planning = new Planning();             
+        $form = $this->createForm(ProjectWorkType::class, $planning);   
+        $form->handleRequest($request);        
+        $errors = $validator->validate($planning);        
+        return $this->json(['errors' => $errors]);
     }
 
     /**
@@ -291,7 +304,7 @@ class ProjectPlanningController extends AbstractController
         // planning
         $planning = $planningRepository->findOneBy(['id' => $taskId]);
         // user
-        $user = $userRepository->find($this->getUser()->getId());                      
+        $user = $userRepository->find($this->getUser()->getId());
 
         // planning comment        
         $planning_comment = new PlanningComment();
@@ -312,17 +325,19 @@ class ProjectPlanningController extends AbstractController
     /**
      * @Route("/project/{id}/planning/{taskId}", methods={"DELETE"}, name="planning_delete")
      */
-    public function delete($taskId, PlanningRepository $planningRepository): Response
+    public function delete($taskId, PlanningRepository $planningRepository, PlanningCommentRepository $planningCommentRepository): Response
     {      
         // Contrôle d'accès à vérifier        
         if ($this->isGranted('ROLE_EXTERNAL')) throw new AccessDeniedException('Vous n\'êtes pas autorisé');  
-        
+                
         // chercher dans table                 
-        $planning = $planningRepository->findOneBy(['id' => $taskId]);        
+        $planning = $planningRepository->findOneBy(['id' => $taskId]);  
+
         // delete       
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();        
         $entityManager->remove($planning);
         $entityManager->flush();       
+
         // response
         return $this->json(['status' => 'success']);       
     }

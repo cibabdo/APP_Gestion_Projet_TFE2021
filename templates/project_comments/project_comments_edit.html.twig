@@ -43,7 +43,9 @@
     </div>    
 </div>
 <script>
-    document.getElementById("project_comment_comment").focus()    
+    document.getElementById("project_comment_comment").focus() 
+    
+    $('label.required').append('<span class="stars_required">*</span>')
 
     function deleteProject() {
         if (confirm('Confirmer la suppression ?')) {                    

@@ -35,7 +35,7 @@ class BackupDB extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output) { 
         // exécuter la commande du backup        
-        $output->exec($this->backupDBService->getCommand());
+        $output->write($this->backupDBService->getCommand());
         echo $this->backupDBService->getCommand();
         /*     
         // envoi d'un mail avec la fichier sql         

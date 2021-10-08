@@ -10,7 +10,6 @@
         {% endif %}
     </div>
 </div>
-<!-- Ajout d'un popup modal pour le commentaire en cas de modif sur tâche -->
 <svg id="gantt" class="m-5"></svg>
 <div id="showPopup" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
     <div class="modal-dialog" role="document">
@@ -29,7 +28,7 @@
     </div>
 </div>
 <script>
-    const is_external = {{is_external}};
+    let is_external = {{is_external}};
 
     setTimeout(function() {
         const tab = document.getElementsByClassName('alert')    

@@ -12,9 +12,15 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class PlanningService
 {    
     private $env;
+    private $projectPersonRepository;
+    private $planningCommentRepository;
+    private $mailer;
 
-    public function __construct(private ProjectPersonRepository $projectPersonRepository, private PlanningCommentRepository $planningCommentRepository, private MailerInterface $mailer, private  KernelInterface $kernel) { 
+    public function __construct(ProjectPersonRepository $projectPersonRepository, PlanningCommentRepository $planningCommentRepository, MailerInterface $mailer, KernelInterface $kernel) { 
         $this->env = strtolower($kernel->getEnvironment());        
+        $this->projectPersonRepository = $projectPersonRepository;
+        $this->planningCommentRepository = $planningCommentRepository;
+        $this->mailer = $mailer;
     } 
 
     public function verifyPlanning() {   
@@ -51,7 +57,7 @@ class PlanningService
         ->from('donato.abiuso@chuliege.be')
         ->to($to)
         ->subject('CHU - Projet ' . $comment->getProject()->getTitle() . ' - changement dans le planning')
-        ->html($html);        
+        ->html($html); 
        
         $this->mailer->send($email);
     }
